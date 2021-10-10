@@ -1,5 +1,7 @@
 # mini-amazon-skeleton
 
+# Katherine successfully made a commit! Yay databases!
+
 Skeleton code for the CompSci 316 undergraduate course project.
 This course project is intended as a 'standard option'.
 Created by [Rickard Stureborg](http://www.rickard.stureborg.com) and [Yihao Hu](https://www.linkedin.com/in/yihaoh/).
