@@ -24,4 +24,8 @@ def create_app():
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
 
+    from .home import bp as home_bp
+    app.register_blueprint(home_bp)
+
+
     return app
