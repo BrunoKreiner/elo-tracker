@@ -29,6 +29,16 @@ CREATE TABLE League (
     president VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE Matches (
+    activity VARCHAR(255) NOT NULL,
+    matchID INT NOT NULL PRIMARY KEY,
+    user1_ID INT NOT NULL,
+    user2_ID INT NOT NULL,
+    user1_score INT NOT NULL,
+    user2_score INT NOT NULL,
+    date_time datetime NOT NULL
+);
+
 CREATE TABLE Activity (
     name VARCHAR(255) NOT NULL PRIMARY KEY
 );
