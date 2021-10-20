@@ -15,7 +15,7 @@ bp = Blueprint('history', __name__)
 @bp.route('/history')
 def history():
     # get all available products for sale:
-    #products = Product.get_all(True)
+    matches = Match.get_all(True)
     # find the products current user has bought:
     #if current_user.is_authenticated:
     #    purchases = Purchase.get_all_by_uid_since(
@@ -23,7 +23,8 @@ def history():
     #else:
     #    purchases = None
     # render the page by adding information to the index.html file
-    return render_template('history.html') #,
+    return render_template('history.html',
+                            my_matches=matches) #,
                            #avail_products=products,
                            #purchase_history=purchases)
 

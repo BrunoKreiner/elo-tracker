@@ -1,17 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% block head %}
-    <link rel="stylesheet" href="style.css" />
-    <title>{% block title %}{% endblock %} - My Webpage</title>
-    {% endblock %}
-</head>
-<body>
-    <div id="content">{% block content %}{% endblock %}</div>
-    <div id="footer">
-        {% block footer %}
-        &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
-        {% endblock %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="w3-main" style="margin-left:300px;margin-top:43px;"></div>
+
+<header class="w3-container" style="padding-top:22px">
+  <h5><b><i class="fa fa-dashboard"></i> My Match History</b></h5>
+</header>
+
+<table>
+    <tr>
+      <th>Company</th>
+      <th>Contact</th> 
+      <th>Country</th>
+    </tr>
+    <tr>
+      <td>Alfreds Futterkiste</td>
+      <td>Maria Anders</td> 
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <td>Centro comercial Moctezuma</td>
+      <td>Francisco Chang</td> 
+      <td>Mexico</td>
+    </tr>
+  </table>
+
+  <table class="w3-table w3-striped w3-white">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Activity</th>
+        <th scope="col">Match ID</th>
+        <th scope="col">Opponent</th>
+        <th scope="col">Your Score</th>
+        <th scope="col">Their Score</th>
+        <th scope="col">Datetime</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in my_matches%}
+      <tr>
+        <!--  <th scope="row">{{match.id}}</th>  --> 
+        <td>{{match.activity}}</td>
+        <td>{{match.id}}</td>
+        <td>{{match.user1_id}}</td>
+        <td>{{match.user1_score}}</td>
+        <td>{{match.user2_score}}</td>
+        <td>{{match.datetime}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+<div class="w3-panel">
+  <div class="w3-row-padding" style="margin:0 -16px">
+    <div class="w3-third">
+      <h5>Regions</h5>
+      <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
     </div>
-</body>
-</html>
+    <div class="w3-twothird">
+      <h5>Feeds</h5>
+      <table class="w3-table w3-striped w3-white">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in avail_products%}
+          <tr>
+            <th scope="row">{{product.id}}</th>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+
+
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<hr>
+    <div class="w3-container">
+      <h5>General Stats</h5>
+      <p>New Visitors</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-green" style="width:25%">+25%</div>
+      </div>
+
+      <p>New Users</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-orange" style="width:50%">50%</div>
+      </div>
+
+      <p>Bounce Rate</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-red" style="width:75%">75%</div>
+      </div>
+    </div>
+<hr>
+
+<br>
+<div class="w3-container w3-dark-grey w3-padding-32">
+  <div class="w3-row">
+    <div class="w3-container w3-third">
+      <h5 class="w3-bottombar w3-border-green">Demographic</h5>
+      <p>Language</p>
+      <p>Country</p>
+      <p>City</p>
+    </div>
+    <div class="w3-container w3-third">
+      <h5 class="w3-bottombar w3-border-red">System</h5>
+      <p>Browser</p>
+      <p>OS</p>
+      <p>More</p>
+    </div>
+    <div class="w3-container w3-third">
+      <h5 class="w3-bottombar w3-border-orange">Target</h5>
+      <p>Users</p>
+      <p>Active</p>
+      <p>Geo</p>
+      <p>Interests</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
