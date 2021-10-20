@@ -8,11 +8,9 @@ class League:
         self.president = president
 
     @staticmethod
-    def get(name):
+    def get_all():
         rows = app.db.execute('''
-SELECT name
-FROM Activity
-WHERE name = :name
-''',
-                              name=name)
-        return Activity(*(rows[0])) if rows is not None else None
+SELECT *
+FROM League
+''')
+        return League(*(rows[0])) if rows is not None else None
