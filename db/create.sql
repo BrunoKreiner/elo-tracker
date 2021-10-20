@@ -24,7 +24,7 @@ CREATE TABLE Purchases (
 );
 
 CREATE TABLE League (
-    l_id INT NOT NULL PRIMARY KEY,
+    l_id VARCHAR(255) NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     president VARCHAR(255) NOT NULL
 );
@@ -36,7 +36,7 @@ CREATE TABLE Matches (
     user2_ID INT NOT NULL,
     user1_score INT NOT NULL,
     user2_score INT NOT NULL,
-    date_time datetime NOT NULL
+    date_time TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Activity (
@@ -50,12 +50,12 @@ CREATE TABLE Rankables (
 );
 
 CREATE TABLE People (
-    person_id INT NOT NULL REFERENCES Rankable(rankable_id),
+    person_id INT NOT NULL REFERENCES Rankables(rankable_id),
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Restaurants (
-    restaurant_id INT NOT NULL REFERENCES Rankable(rankable_id),
+    restaurant_id INT NOT NULL REFERENCES Rankables(rankable_id),
     description VARCHAR NOT NULL
 );

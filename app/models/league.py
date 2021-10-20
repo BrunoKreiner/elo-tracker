@@ -1,10 +1,7 @@
 from flask import current_app as app
 
-
-from flask import current_app as app
-
-
-class League:
+class Leagues:
+    
     def __init__(self, l_id, name, president):
         self.l_id = l_id
         self.name = name
@@ -13,7 +10,7 @@ class League:
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT *
+SELECT l_id, name, president
 FROM League
 ''')
-        return League(*(rows[0])) if rows is not None else None
+        return [Leagues(*row) for row in rows]

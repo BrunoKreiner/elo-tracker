@@ -6,11 +6,10 @@ class Activity:
         self.name = name
 
     @staticmethod
-    def get(name):
+    def get_all():
         rows = app.db.execute('''
 SELECT name
 FROM Activity
-WHERE name = :name
-''',
-                              name=name)
-        return Activity(*(rows[0])) if rows is not None else None
+''')
+        return [Activity(*row) for row in rows]
+        
