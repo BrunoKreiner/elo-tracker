@@ -15,7 +15,7 @@ bp = Blueprint('league_page', __name__)
 @bp.route('/league_page')
 def league_page():
     # get table displaying all leagues:
-    leagues = league.get_all()
+    leagues = League.get_all()
 
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
