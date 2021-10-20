@@ -27,5 +27,8 @@ def create_app():
     from .home import bp as home_bp
     app.register_blueprint(home_bp)
 
+    from .history import bp as history_bp
+    app.register_blueprint(history_bp)
+
 
     return app
