@@ -14,7 +14,7 @@ bp = Blueprint('activity_page', __name__)
 
 
 @bp.route('/activity_page')
-def league_page():
+def activity_page():
     # get table displaying all leagues:
     a_table = Activity.get_all()
 
