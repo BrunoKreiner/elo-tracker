@@ -12,4 +12,6 @@ SELECT name
 FROM Activity
 ''')
         return [Activity(*row) for row in rows]
-        
+
+
+# add a new activity.
