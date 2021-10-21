@@ -6,7 +6,7 @@ from .db import DB
 
 
 login = LoginManager()
-login.login_view = 'users.login'
+login.login_view = 'rankables.login'
 babel = Babel()
 
 
@@ -21,7 +21,7 @@ def create_app():
     from .index import bp as index_bp
     app.register_blueprint(index_bp)
 
-    from .users import bp as user_bp
+    from .rankables import bp as user_bp
     app.register_blueprint(user_bp)
 
     from .home import bp as home_bp
