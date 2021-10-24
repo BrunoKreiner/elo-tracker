@@ -27,5 +27,11 @@ def create_app():
     from .home import bp as home_bp
     app.register_blueprint(home_bp)
 
+    from .league_page import bp as league_page_bp
+    app.register_blueprint(league_page_bp)
+
+    from .activity_page import bp as activity_page_bp
+    app.register_blueprint(activity_page_bp)
+
 
     return app
