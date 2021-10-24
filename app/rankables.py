@@ -6,11 +6,11 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
-from .models.user import User
+from .models.rankables import Rankables
 
 
 from flask import Blueprint
-bp = Blueprint('users', __name__)
+bp = Blueprint('rankables', __name__)
 
 
 class LoginForm(FlaskForm):
@@ -29,8 +29,10 @@ def login():
         user = Rankables.get_by_auth(form.email.data, form.password.data)
         if user is None:
             flash('Invalid email or password')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('rankables.login'))
+        
         login_user(user)
+        print("helooo2")
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home.home')
@@ -51,7 +53,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField(_l('Register'))
 
     def validate_email(self, email):
-        if User.email_exists(email.data):
+        if Rankables.email_exists(email.data):
             raise ValidationError(_('Already a user with this email.'))
 
 
@@ -60,18 +62,20 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
     form = RegistrationForm()
+    print("test")
     if form.validate_on_submit():
+        print("test2")
         if Rankables.register(form.email.data,
                          form.password.data,
                          form.name.data,
                          form.category.data,
                          form.about.data):
             flash('Congratulations, you are now a registered user!')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('rankables.login'))
     return render_template('register.html', title='Register', form=form)
 
 
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('users.login'))
+    return redirect(url_for('rankables.login'))
