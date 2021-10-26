@@ -32,5 +32,6 @@ def addMatches():
                          form.user2_score.data,
                          form.datetime.data):
             flash('Congratulations, you have added a match!')
-            #return redirect(url_for('users.login'))
+            print('yay!')
+            return redirect(url_for('addMatches.addMatches'))
     return render_template('add_Matches.html', form=form)

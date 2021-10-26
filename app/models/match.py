@@ -34,12 +34,20 @@ FROM Matches
     def addMatch(activity, user2_id, user1_score, user2_score, datetime):
 
         try:
+            maxMatchID = app.db.execute("""
+SELECT MAX(matchID)
+FROM Matches;
+"""
+                                  )[0][0]
+
+
             rows = app.db.execute("""
-INSERT INTO Matches(activity, user1_ID, user2_ID, user1_score, user2_score, date_time)
-VALUES(:activity, 69, :user2_id, :user1_score, :user2_score, :datetime)
+INSERT INTO Matches(activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time)
+VALUES(:activity, :matchID, 69, :user2_id, :user1_score, :user2_score, :datetime)
 RETURNING matchID
 """,
                                   activity=activity,
+                                  matchID=maxMatchID + 1,
                                   user2_id=user2_id,
                                   user1_score=user1_score,
                                   user2_score=user2_score,

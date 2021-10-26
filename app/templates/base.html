@@ -74,7 +74,7 @@
         <a href="{{ url_for('league_page.league_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Leagues</a>
         <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-trophy fa-fw"></i> Events</a>
         <a href="{{ url_for('activity_page.activity_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-handshake-o fa-fw"></i> Activities</a>
-        <a href="{{ url_for('history.history') }}" class="w3-bar-item w3-button w3-padding"></a><i class="fa fa-history fa-fw"></i> My History</a>
+        <a href="{{ url_for('history.history') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> My History</a>
         {% block msg %}
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('rankables.logout') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sign-out fa-fw"></i> Log out</a><br><br>
