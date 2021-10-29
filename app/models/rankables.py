@@ -25,6 +25,7 @@ WHERE email = :email
             return None
         elif not check_password_hash(rows[0][0], password):
             # incorrect password
+            print("wrong password")
             return None
         else:
             return Rankables(*(rows[0][1:]))

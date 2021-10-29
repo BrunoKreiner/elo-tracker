@@ -6,3 +6,4 @@
 -- \COPY Matches FROM 'data/Matches.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY League FROM 'data/League.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Activity FROM 'data/Activity.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Rankables FROM 'data/Rankables.csv' WITH DELIMITER ',' NULL '' CSV
