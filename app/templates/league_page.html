@@ -95,7 +95,8 @@
       </form>
 
     <div class="w3-twothird">
-      <h5>Current Leagues</h5>
+      <h5>All Leagues</h5>
+
       <table class="w3-table w3-striped w3-white">
         <thead class="thead-dark">
           <tr>
@@ -110,19 +111,40 @@
             <th scope="row">{{league.l_id}}</th>
             <td>{{league.name}}</td>
             <td>{{league.president}}</td>
-            <style>
-              .dabutton:focus {
-                  background-color:yellow;
-              }
-            </style>
             <td><button type="button" class="w3-hover-text-white">Join League!</button></td>
           </tr>
           {% endfor %}
         </tbody>
-
       </table>
+
     </div>
   </div>
+</div>
+
+<div class="w3-twothird">
+  <h5>My Leagues</h5>
+
+  <table class="w3-table w3-striped w3-white">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">l_id</th>
+        <th scope="col">name</th>
+        <th scope="col">president</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for league in league_table%}
+      <tr>
+        <th scope="row">{{league.l_id}}</th>
+        <td>{{league.name}}</td>
+        <td>{{league.president}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+</div>
 </div>
 
 <hr>
