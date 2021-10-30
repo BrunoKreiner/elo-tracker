@@ -50,8 +50,6 @@
               {% block msg2 %}
                 {% if current_user.is_authenticated %}
                   Welcome, {{current_user.name}}!
-                  About: {{current_user.about}}
-                  Category: {{current_user.category}}
                 {% endif %}
               {% endblock %}
             </strong>
