@@ -23,5 +23,5 @@ VALUES(:name)
 RETURNING name
 """, name=name)
         name = rows[0][0] # why do we want to return the first name?
-        return name 
+        return name
 
