@@ -24,11 +24,11 @@ def activity_page():
     # get table displaying all leagues:
     a_table = Activity.get_all()
 
-    # create a form to add a match.
+    # create a form to add an activity.
     form = ActivityForm() # should i define another method for adding an activity separate from activity_page?
     if form.validate_on_submit():
         if Activity.addActivity(form.name.data):
-            flash('Congratulations, you have added an Activity!')
+            flash('Congratulations, you have added a new Activity!')
             print('yay!')
             return redirect(url_for('activity_page.activity_page'))
 
