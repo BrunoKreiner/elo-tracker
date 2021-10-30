@@ -13,6 +13,9 @@ class Rankables(UserMixin):
         self.email = email
         self.about = about
 
+    def get_id(self):
+        return self.rankable_id
+
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Add a Match</h1>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.activity.label }}<br/>
+    {{ form.activity(size=32) }}<br/>
+    {% for error in form.activity.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.user2_id.label }} <br/>
+    {{ form.user2_id(size=64) }}<br/>
+    {% for error in form.user2_id.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.user1_score.label }} <br/>
+    {{ form.user1_score(size=64) }}<br/>
+    {% for error in form.user1_score.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.user2_score.label }}<br/>
+    {{ form.user2_score(size=64) }}<br/>
+    {% for error in form.user2_score.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.datetime.label }}<br/>
+    {{ form.datetime(size=64) }}<br/>
+    {% for error in form.datetime.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

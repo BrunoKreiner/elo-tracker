@@ -18,7 +18,7 @@ FROM Matches
 WHERE matchID = :id
 ''',
                               id=id)
-        return Product(*(rows[0])) if rows is not None else None
+        return Match(*(rows[0])) if rows is not None else None
 
     
     @staticmethod
@@ -29,3 +29,33 @@ FROM Matches
 '''
                               )
         return [Match(*row) for row in rows]
+
+    @staticmethod
+    def addMatch(activity, user2_id, user1_score, user2_score, datetime):
+
+        try:
+            maxMatchID = app.db.execute("""
+SELECT MAX(matchID)
+FROM Matches;
+"""
+                                  )[0][0]
+
+
+            rows = app.db.execute("""
+INSERT INTO Matches(activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time)
+VALUES(:activity, :matchID, 69, :user2_id, :user1_score, :user2_score, :datetime)
+RETURNING matchID
+""",
+                                  activity=activity,
+                                  matchID=maxMatchID + 1,
+                                  user2_id=user2_id,
+                                  user1_score=user1_score,
+                                  user2_score=user2_score,
+                                  datetime=datetime)
+            matchID = rows[0][0]
+            return matchID
+        except Exception as e:
+            print(str(e))
+            # likely email already in use; better error checking and
+            # reporting needed
+            return None
