@@ -128,16 +128,16 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">l_id</th>
-        <th scope="col">name</th>
-        <th scope="col">president</th>
+        <th scope="col">user_id</th>
+        <th scope="col">status</th>
       </tr>
     </thead>
     <tbody>
-      {% for league in league_table%}
+      {% for member in myleagues_table%}
       <tr>
-        <th scope="row">{{league.l_id}}</th>
-        <td>{{league.name}}</td>
-        <td>{{league.president}}</td>
+        <th scope="row">{{member.l_id}}</th>
+        <td>{{member.user_id}}</td>
+        <td>{{member.status}}</td>
       </tr>
       {% endfor %}
     </tbody>

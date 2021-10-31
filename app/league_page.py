@@ -13,6 +13,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
 from .models.match import Match
+from .models.member_of import Member_of
 
 from flask import Blueprint
 
@@ -32,6 +33,9 @@ def league_page():
     # get table displaying all leagues:
     l_table = Leagues.get_all()
 
+    # get table displaying my leagues:
+    myleagues_table = Member_of.get_user_leagues()
+
     # create a form to add a league.
     form = LeagueForm() # should i define another method for adding an activity separate from activity_page?
     if form.validate_on_submit():
@@ -45,5 +49,5 @@ def league_page():
             
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
-                           league_table=l_table, form=form)
+                           league_table=l_table, myleagues_table=myleagues_table, form=form)
 

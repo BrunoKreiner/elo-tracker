@@ -37,9 +37,10 @@ CREATE TABLE League (
 );
 
 CREATE TABLE Member_of (
-    l_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES league.l_id,
-    user_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES Users.id,
-    status VARCHAR(255) NOT NULL
+    l_id VARCHAR(255) NOT NULL,  -- REFERENCES League.l_id (schema "league" does not exist)
+    user_id VARCHAR(255) NOT NULL, --  REFERENCES Users.id
+    status VARCHAR(255) NOT NULL,
+    PRIMARY KEY (l_id, user_id)
 );
 
 CREATE TABLE Matches (
