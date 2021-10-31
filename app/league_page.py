@@ -2,8 +2,6 @@ from flask import render_template
 from flask_login import current_user
 import datetime
 
-from .models.product import Product
-from .models.purchase import Purchase
 from .models.league import Leagues
 
 from flask import render_template, redirect, url_for, flash, request
@@ -48,5 +46,4 @@ def league_page():
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
                            league_table=l_table, form=form)
-
 
