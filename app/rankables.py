@@ -32,7 +32,6 @@ def login():
             return redirect(url_for('rankables.login'))
         
         login_user(user)
-        print("helooo2")
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home.home')
@@ -56,6 +55,32 @@ class RegistrationForm(FlaskForm):
         if Rankables.email_exists(email.data):
             raise ValidationError(_('Already a user with this email.'))
 
+class UpdateEmailForm(FlaskForm):
+    email = StringField(_l('New Email'), validators=[DataRequired(), Email()])
+    submit = SubmitField(_l('Confirm'))
+
+    def validate_email(self, email):
+        if Rankables.email_exists(email.data):
+            raise ValidationError(_('Already a user with this email.'))
+
+class UpdateAboutForm(FlaskForm):
+    about = StringField(_l('New About'), validators=[DataRequired()])
+    submit = SubmitField(_l('Confirm'))
+
+class UpdateCategoryForm(FlaskForm):
+    category = StringField(_l('New Category'), validators=[DataRequired()])
+    submit = SubmitField(_l('Confirm'))
+
+class UpdateNameForm(FlaskForm):
+    name = StringField(_l('New Name'), validators=[DataRequired()])
+    submit = SubmitField(_l('Confirm'))
+
+class UpdatePasswordForm(FlaskForm):
+    password = PasswordField(_l('New Password'), validators=[DataRequired()])
+    password2 = PasswordField(
+        _l('Repeat New Password'), validators=[DataRequired(),
+                                           EqualTo('password')])
+    submit = SubmitField(_l('Confirm'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -74,6 +99,45 @@ def register():
             return redirect(url_for('rankables.login'))
     return render_template('register.html', title='Register', form=form)
 
+@bp.route('/updateEmail', methods=['GET', 'POST'])
+def updateEmail():
+    form = UpdateEmailForm()
+    if form.validate_on_submit():
+            if Rankables.updateEmail(current_user.rankable_id, form.email.data):
+                return redirect(url_for('home.home'))
+    return render_template('updateEmail.html', form=form)
+
+@bp.route('/updateName', methods=['GET', 'POST'])
+def updateName():
+    form = UpdateNameForm()
+    if form.validate_on_submit():
+            if Rankables.updateName(current_user.rankable_id, form.name.data):
+                return redirect(url_for('home.home'))
+    return render_template('updateName.html', form=form)
+
+@bp.route('/updateCategory', methods=['GET', 'POST'])
+def updateCategory():
+    form = UpdateCategoryForm()
+    if form.validate_on_submit():
+            if Rankables.updateCategory(current_user.rankable_id, form.category.data):
+                return redirect(url_for('home.home'))
+    return render_template('updateCategory.html', form=form)
+
+@bp.route('/updateAbout', methods=['GET', 'POST'])
+def updateAbout():
+    form = UpdateAboutForm()
+    if form.validate_on_submit():
+            if Rankables.updateAbout(current_user.rankable_id, form.about.data):
+                return redirect(url_for('home.home'))
+    return render_template('updateAbout.html', form=form)
+
+@bp.route('/updatePassword', methods=['GET', 'POST'])
+def updatePassword():
+    form = UpdatePasswordForm()
+    if form.validate_on_submit():
+            if Rankables.updatePassword(current_user.rankable_id, form.password.data):
+                return redirect(url_for('home.home'))
+    return render_template('updatePassword.html', form=form)
 
 @bp.route('/logout')
 def logout():

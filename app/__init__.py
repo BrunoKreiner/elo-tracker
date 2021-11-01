@@ -35,5 +35,8 @@ def create_app():
     from .activity_page import bp as activity_page_bp
     app.register_blueprint(activity_page_bp)
 
+    from .players import bp as players_bp
+    app.register_blueprint(players_bp)
+
 
     return app
