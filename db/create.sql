@@ -65,3 +65,10 @@ CREATE TABLE Rankables (
     category VARCHAR NOT NULL,
     about VARCHAR NOT NULL
 );
+
+CREATE TABLE ELOHistory (
+    user_ID INT NOT NULL,
+    activity VARCHAR(255) NOT NULL,
+    elo INT NOT NULL,
+    matchID INT
+);
