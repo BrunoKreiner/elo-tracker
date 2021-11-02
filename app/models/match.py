@@ -34,19 +34,19 @@ FROM Matches
         return [Match(*row) for row in rows]
 
     @staticmethod
-    def get_user_history(user_id):
+    def get_user_history(user_id, curr_datetime):
         matches_user1 = app.db.execute('''
 SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
 FROM Matches
-WHERE user1_ID = :user_id
+WHERE user1_ID = :user_id AND date_time < :curr_datetime
 ''',
-                              user_id=user_id)
+                              user_id=user_id, curr_datetime=curr_datetime)
         matches_user2 = app.db.execute('''
 SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
 FROM Matches
-WHERE user2_ID = :user_id
+WHERE user2_ID = :user_id AND date_time < :curr_datetime
 ''',
-                              user_id=user_id)
+                              user_id=user_id, curr_datetime=curr_datetime)
         rows = matches_user1 + matches_user2
         rows.sort(key=sortingFunc)
         rows = [Match(*row) for row in rows]

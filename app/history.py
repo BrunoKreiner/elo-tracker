@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_login import current_user
-import datetime
+from datetime import datetime
 
 
 from .models.product import Product
@@ -14,8 +14,9 @@ bp = Blueprint('history', __name__)
 
 @bp.route('/history')
 def history():
+    now = datetime.now()
     # get all available products for sale:
-    matches = Match.get_user_history(current_user.rankable_id)
+    matches = Match.get_user_history(current_user.rankable_id, now)
     # find the products current user has bought:
     #if current_user.is_authenticated:
     #    purchases = Purchase.get_all_by_uid_since(
