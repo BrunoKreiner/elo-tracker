@@ -1,5 +1,8 @@
 from flask import current_app as app
 
+def sortingFunc(match):
+        return match[1]
+
 class Match:
     def __init__(self, activity, id, user1_id, user2_id, user1_score, user2_score, datetime):
         self.activity = activity
@@ -31,7 +34,26 @@ FROM Matches
         return [Match(*row) for row in rows]
 
     @staticmethod
-    def addMatch(activity, user2_id, user1_score, user2_score, datetime):
+    def get_user_history(user_id):
+        matches_user1 = app.db.execute('''
+SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+FROM Matches
+WHERE user1_ID = :user_id
+''',
+                              user_id=user_id)
+        matches_user2 = app.db.execute('''
+SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
+FROM Matches
+WHERE user2_ID = :user_id
+''',
+                              user_id=user_id)
+        rows = matches_user1 + matches_user2
+        rows.sort(key=sortingFunc)
+        rows = [Match(*row) for row in rows]
+        return rows
+
+    @staticmethod
+    def addMatch(activity, user1_id, user2_id, user1_score, user2_score, datetime):
 
         try:
             maxMatchID = app.db.execute("""
@@ -43,11 +65,12 @@ FROM Matches;
 
             rows = app.db.execute("""
 INSERT INTO Matches(activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time)
-VALUES(:activity, :matchID, 69, :user2_id, :user1_score, :user2_score, :datetime)
+VALUES(:activity, :matchID, :user1_id, :user2_id, :user1_score, :user2_score, :datetime)
 RETURNING matchID
 """,
                                   activity=activity,
                                   matchID=maxMatchID + 1,
+                                  user1_id=user1_id,
                                   user2_id=user2_id,
                                   user1_score=user1_score,
                                   user2_score=user2_score,

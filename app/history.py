@@ -15,7 +15,7 @@ bp = Blueprint('history', __name__)
 @bp.route('/history')
 def history():
     # get all available products for sale:
-    matches = Match.get_all(True)
+    matches = Match.get_user_history(current_user.rankable_id)
     # find the products current user has bought:
     #if current_user.is_authenticated:
     #    purchases = Purchase.get_all_by_uid_since(

@@ -27,6 +27,7 @@ def addMatches():
     form = MatchForm()
     if form.validate_on_submit():
         if Match.addMatch(form.activity.data,
+                         current_user.rankable_id,
                          form.user2_id.data,
                          form.user1_score.data,
                          form.user2_score.data,
