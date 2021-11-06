@@ -8,13 +8,19 @@ from .models.purchase import Purchase
 from .models.match import Match
 
 
-from flask import Blueprint
+from flask import Blueprint, redirect, url_for, request
 bp = Blueprint('history', __name__)
 
 
-@bp.route('/history')
+@bp.route('/history', methods=['POST', 'GET'])
 def history():
     now = datetime.now()
+
+    if request.method == "POST":
+        print("/createlist request.method == POST")
+        print(request.form)
+        filtered_activity = request.form['activity']
+
     # get all available products for sale:
     matches = Match.get_user_history(current_user.rankable_id, now)
     # find the products current user has bought:

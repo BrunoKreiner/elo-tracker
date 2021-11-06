@@ -8,6 +8,34 @@
   <h5><b><i class="fa fa-dashboard"></i> My Match History</b></h5>
 </header>
 
+<div class="table-filter">
+  <div class="row">
+    <div class="col-sm-3">
+        <div class="filter-group">
+          <form class="adminPlaylistMainForm" action="history" id="genreForm" method="POST">
+            <div class="playlistGenre">
+              <p>Filter by activity
+              <select class="filterActivity" id="activity" name="activity">
+                <option value="all">All</option>
+                <option value="spikeball">Spikeball</option>
+                <option value="punk">Punk</option>
+                <option value="rock">Rock</option>
+              </select>
+              </p>
+              <p>Filter by date</p>
+              <label>
+                Start date <input type="date" name="start-date">
+              </label>
+              <label>
+                End date <input type="date" name="end-date">
+              </label>
+              <input type="submit" value="Send form">
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+</div>
 
   <table id="data"  class="w3-table w3-striped w3-white">
     <thead class="thead-dark">
@@ -45,3 +73,23 @@
     });
   </script>
 {% endblock %}
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("mylist");
+    filter = input.value;
+    table = document.getElementById("data");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>
