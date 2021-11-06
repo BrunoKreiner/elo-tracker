@@ -9,7 +9,7 @@
 </header>
 
 
-  <table class="w3-table w3-striped w3-white">
+  <table id="data"  class="w3-table w3-striped w3-white">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Activity</th>
@@ -36,4 +36,12 @@
     </table>
 
 
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#data').DataTable();
+    });
+  </script>
 {% endblock %}
