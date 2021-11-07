@@ -119,6 +119,15 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
         return rows
 
     @staticmethod
+    def get_user_num_won(user_id):
+        return 0
+
+    @staticmethod
+    def get_user_num_played(user_id):
+        return 0
+
+
+    @staticmethod
     def addMatch(activity, user1_id, user2_id, user1_score, user2_score, datetime):
 
         try:
