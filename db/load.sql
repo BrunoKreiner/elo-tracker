@@ -8,4 +8,4 @@
 \COPY Activity FROM 'data/Activity.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Member_of FROM 'data/Member_of.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY Events FROM 'data/Events.csv' WITH DELIMITER ',' NULL '' CSV
+--\COPY Events FROM 'data/Events.csv' WITH DELIMITER ',' NULL '' CSV
