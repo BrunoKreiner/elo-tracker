@@ -3,6 +3,7 @@ from flask_login import current_user
 import datetime
 
 from .models.league import Leagues
+from .models.member_of import Member_of
 
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
@@ -37,7 +38,7 @@ def league_page():
     myleagues_table = Member_of.get_user_leagues()
 
     # create a form to add a league.
-    form = LeagueForm() # should i define another method for adding an activity separate from activity_page?
+    form = LeagueForm()
     if form.validate_on_submit():
         # print('success')
         if Leagues.addLeague(form.l_id.data,
@@ -46,8 +47,28 @@ def league_page():
             flash('Congratulations, you have added a new League!')
             print('yay!')
             return redirect(url_for('league_page.league_page'))
-            
+
+    # populate the Member_of table with one more user after button push.
+    # button = JoinButton() # is there a button class?
+    # if button.validate_on_submit():
+    #     # print('success')
+    #     if Member_of.addMember(button.l_id.data,
+    #     button.user_id.data,
+    #     button.status.data):
+    #         flash('Congratulations, you are a new league member!')
+    #         print('yay!')
+    #         return redirect(url_for('league_page.league_page'))
+
+
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
                            league_table=l_table, myleagues_table=myleagues_table, form=form)
 
+
+ButtonPressed = 0        
+@bp.route('/league_page', methods=["GET", "POST"])
+def button():
+    if request.method == "POST":
+        return render_template("league_page.html", ButtonPressed = ButtonPressed)
+        # I think you want to increment, that case ButtonPressed will be plus 1.
+    return render_template("league_page.html", ButtonPressed = ButtonPressed)

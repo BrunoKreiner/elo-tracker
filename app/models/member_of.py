@@ -23,3 +23,14 @@ SELECT l_id, user_id, status
 FROM Member_of
 ''') # WHERE user_id = {{current_user.name}}
         return [Member_of(*row) for row in rows]
+
+    # add a new Member_of.
+    @staticmethod
+    def addMember(l_id, user_id, status): 
+        rows = app.db.execute("""
+INSERT INTO Member_of(l_id, user_id, status)
+VALUES(:l_id, :user_id, :status)
+RETURNING l_id
+""", l_id=l_id, user_id=user_id, status=status)
+        l_id = rows[0][0]
+        return l_id
