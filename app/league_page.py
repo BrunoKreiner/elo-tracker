@@ -23,7 +23,7 @@ from flask import Blueprint
 bp = Blueprint('league_page', __name__)
 
 class LeagueForm(FlaskForm):
-    l_id = StringField(_l('l_id'), validators=[DataRequired()])
+    
     name = StringField(_l('name'), validators=[DataRequired()])
     president = StringField(_l('president'), validators=[DataRequired()])
 
@@ -41,7 +41,7 @@ def league_page():
     form = LeagueForm()
     if form.validate_on_submit():
         # print('success')
-        if Leagues.addLeague(form.l_id.data,
+        if Leagues.addLeague(
         form.name.data,
         form.president.data):
             flash('Congratulations, you have added a new League!')

@@ -31,7 +31,7 @@ CREATE TABLE Purchases (
 );
 
 CREATE TABLE League (
-    l_id VARCHAR(255) NOT NULL PRIMARY KEY,
+    l_id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     president VARCHAR(255) NOT NULL
 );
