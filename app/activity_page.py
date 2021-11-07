@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_login import current_user
-import datetime
+from datetime import datetime
 
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
@@ -41,11 +41,13 @@ class ActiivityForm(FlaskForm):
 
 @bp.route('/activity_page', methods=['GET', 'POST'])
 def activity_page():
+    now = datetime.now()
+
     # get table displaying all activities:
     a_table = Activity.get_all()
 
     # get table displaying all of my activities:
-    # a2_table = Match.get_user_activities()
+    a2_table = Match.get_user_activities(current_user.rankable_id, now)
 
     # create a form to add a league.
     form = ActiivityForm() # should i define another method for adding an activity separate from activity_page?
@@ -60,4 +62,4 @@ def activity_page():
 
     # render the page by adding information to the index.html file
     return render_template('activity_page.html',
-                           activity_table=a_table, form=form)
+                           activity_table=a_table, my_activities_table=a2_table, form=form)

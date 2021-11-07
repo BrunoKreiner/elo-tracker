@@ -82,6 +82,7 @@
       </form>
 
     </div>
+
     <div class="w3-twothird">
       <h5>Current Activities</h5>
       <table class="w3-table w3-striped w3-white">
@@ -94,6 +95,24 @@
           {% for a in activity_table%}
           <tr>
             <th scope="row">{{a.name}}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+
+      </table>
+
+      <h5>My Activities</h5>
+      <table class="w3-table w3-striped w3-white">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">l_id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in my_activities_table%}
+          <tr>
+            <th scope="row">{{a.activity}}</th>
           </tr>
           {% endfor %}
         </tbody>
