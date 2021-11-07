@@ -14,6 +14,7 @@ from flask_babel import _, lazy_gettext as _l
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.league import Leagues
+from .models.match import Match
 
 from .models.activity import Activity
 
@@ -40,9 +41,11 @@ class ActiivityForm(FlaskForm):
 
 @bp.route('/activity_page', methods=['GET', 'POST'])
 def activity_page():
-    # get table displaying all leagues:
+    # get table displaying all activities:
     a_table = Activity.get_all()
 
+    # get table displaying all of my activities:
+    # a2_table = Match.get_user_activities()
 
     # create a form to add a league.
     form = ActiivityForm() # should i define another method for adding an activity separate from activity_page?

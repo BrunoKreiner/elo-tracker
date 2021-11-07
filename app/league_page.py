@@ -34,8 +34,9 @@ def league_page():
     # get table displaying all leagues:
     l_table = Leagues.get_all()
 
-    # get table displaying my leagues:
-    myleagues_table = Member_of.get_user_leagues()
+    # get table displaying user leagues:
+    myleagues_table = Member_of.get_user_leagues(current_user.name)
+    # myleagues_table = Member_of.get_user_leagues()
 
     # create a form to add a league.
     form = LeagueForm()
@@ -58,6 +59,7 @@ def league_page():
     #         flash('Congratulations, you are a new league member!')
     #         print('yay!')
     #         return redirect(url_for('league_page.league_page'))
+
 
 
     # render the page by adding information to the index.html file
