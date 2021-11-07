@@ -17,9 +17,10 @@
               <p>Filter by activity
               <select class="filterActivity" id="activity" name="activity">
                 <option value="all">All</option>
-                <option value="spikeball">Spikeball</option>
-                <option value="punk">Punk</option>
-                <option value="rock">Rock</option>
+                {% for activity in my_activities%}
+                <p> {{activity}} </p>
+                  <option value={{activity}}>{{activity}}</option>
+                {% endfor %}
               </select>
               </p>
               <p>Filter by date</p>
@@ -29,7 +30,7 @@
               <label>
                 End date <input type="date" name="end-date">
               </label>
-              <input type="submit" value="Send form">
+              <input type="submit" value="Filter">
             </div>
           </form>
         </div>

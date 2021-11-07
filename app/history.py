@@ -15,14 +15,32 @@ bp = Blueprint('history', __name__)
 @bp.route('/history', methods=['POST', 'GET'])
 def history():
     now = datetime.now()
+    filtered_activity = None
+    start_date = None
+    end_date = None
 
     if request.method == "POST":
         print("/createlist request.method == POST")
         print(request.form)
-        filtered_activity = request.form['activity']
+        if request.form['activity'] != 'all':
+            print(request.form['activity'])
+            filtered_activity = request.form['activity']
+
+        date_format = "%m-%d-%Y"
+        try:
+            datetime.strptime(request.form['start-date'], date_format)
+            datetime.strptime(request.form['end-date'], date_format)
+            start_date = request.form['start-date']
+            end_date = request.form['end-date']
+            print("This is the correct date string format.")
+        except ValueError:
+            print("This is the incorrect date string format. It should be MM-DD-YYYY")
+        
 
     # get all available products for sale:
-    matches = Match.get_user_history(current_user.rankable_id, now)
+    matches = Match.get_user_history(current_user.rankable_id, filtered_activity, start_date, end_date, now)
+    myActivities = Match.get_user_activities(current_user.rankable_id, now)
+    print(myActivities)
     # find the products current user has bought:
     #if current_user.is_authenticated:
     #    purchases = Purchase.get_all_by_uid_since(
@@ -31,7 +49,7 @@ def history():
     #    purchases = None
     # render the page by adding information to the index.html file
     return render_template('history.html',
-                            my_matches=matches) #,
+                            my_matches=matches, my_activities=myActivities) #,
                            #avail_products=products,
                            #purchase_history=purchases)
 
