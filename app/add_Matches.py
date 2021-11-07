@@ -28,6 +28,12 @@ def addMatches():
     form = MatchForm()
     if form.validate_on_submit():
         now = datetime.now()
+        try:
+            datetime.strptime(str(form.datetime.data), '%m-%d-%Y %H:%M:%S')
+            print("This is the correct date string format.")
+        except ValueError:
+            print("This is the incorrect date string format. It should be MM-DD-YYYY H:M:S")
+
         form_datetime = datetime.strptime(str(form.datetime.data), '%m-%d-%Y %H:%M:%S')
         if (form_datetime > now):
             print('user1_score is: ', form.user1_score.data)
