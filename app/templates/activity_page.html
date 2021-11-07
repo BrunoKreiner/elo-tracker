@@ -55,7 +55,32 @@
   <div class="w3-row-padding" style="margin:0 -16px">
     <div class="w3-third">
       <h5>Add New Activity</h5>
-      <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+      
+
+      <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.name.label }}<br/>
+          {{ form.name(size=32) }}<br/>
+          {% for error in form.name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+  
+        <p>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endwith %}
+        </p>
+        <p>{{ form.submit() }}</p>
+      </form>
+
     </div>
     <div class="w3-twothird">
       <h5>Current Activities</h5>

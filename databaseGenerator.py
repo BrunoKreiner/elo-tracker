@@ -48,16 +48,11 @@ def matchRow(i):
   month = random.randint(1,12)
   day = random.randint(1, 28)
   hour = random.randint(1, 12)
-  minute = random.randint(0, 60)
-  second = random.randint(0, 60)
+  minute = random.randint(0, 59)
+  second = random.randint(0, 59)
 
   timestamp = "{}-{:02d}-{:02d} {}:{:02d}:{:02d}".format(year, month, day, hour, minute, second)
   return ["fakeactivity{num}".format(num = i), i, random.randint(20, 4999),  random.randint(20, 4999),  random.randint(0, 21),  random.randint(0, 21), timestamp]
 
-writeToFile("Activity", generateRows(activityRow))
-writeToFile("Events", generateRows(eventRow))
-writeToFile("League", generateRows(leagueRow))
-writeToFile("ParticipatesIn", generateRows(participatesRow))
-writeToFile("People", generateRows(peopleRow))
-writeToFile("Rankables", generateRows(rankableRow))
+
 writeToFile("Matches", generateRows(matchRow))

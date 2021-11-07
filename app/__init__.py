@@ -37,6 +37,9 @@ def create_app():
 
     from .add_Matches import bp as add_Matches_bp
     app.register_blueprint(add_Matches_bp)
+    
+    from .players import bp as players_bp
+    app.register_blueprint(players_bp)
 
 
     return app

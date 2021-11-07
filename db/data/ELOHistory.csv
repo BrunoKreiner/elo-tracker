@@ -1,0 +1,16 @@
+0,spikeball,1000,NULL
+5,spikeball,1000,NULL
+1,soccer,1000,NULL
+2,soccer,1000,NULL
+4,frisbee,1000,NULL
+9,frisbee,1000,NULL
+1,chess,1000,NULL
+8,chess,1000,NULL
+0,spikeball,1100,0
+5,spikeball,900,0
+1,soccer,1100,2
+2,soccer,900,2
+4,frisbee,900,5
+9,frisbee,1100,5
+1,chess,900,7
+8,chess,1100,7
