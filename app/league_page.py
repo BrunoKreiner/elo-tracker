@@ -36,7 +36,6 @@ def league_page():
 
     # get table displaying user leagues:
     myleagues_table = Member_of.get_user_leagues(current_user.name)
-    # myleagues_table = Member_of.get_user_leagues()
 
     # create a form to add a league.
     form = LeagueForm()

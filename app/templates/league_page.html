@@ -55,11 +55,11 @@
           </tr>
         </thead>
         <tbody>
-          {% for league in league_table%}
+          {% for league in league_table[:10]%}
           <tr>
             <td>{{league.name}}</td>
             <td>{{league.president}}</td>
-            <td><button type="button" class="w3-hover-text-white">Join League!</button></td>
+            <td><button onclick = "" type="button" class="w3-hover-text-white">Join League!</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -88,8 +88,6 @@
       {% endfor %}
     </tbody>
   </table>
-
-
 
 
 

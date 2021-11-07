@@ -16,15 +16,6 @@ FROM Member_of
         return [Member_of(*row) for row in rows]
 
 
-#     @staticmethod # get the leagues the logged in user is a member of.
-#     def get_user_leagues():
-#         rows = app.db.execute('''
-# SELECT l_id, user_id, status
-# FROM Member_of
-# ''') # WHERE user_id = {{current_user.name}}
-#         return [Member_of(*row) for row in rows]
-
-
     @staticmethod # get the leagues the logged in user is a member of.
     def get_user_leagues(rankable_id):
         rows = app.db.execute('''
