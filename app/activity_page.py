@@ -40,6 +40,8 @@ class ActiivityForm(FlaskForm):
 
 @bp.route('/activity_page', methods=['GET', 'POST'])
 def activity_page():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     # get table displaying all leagues:
     a_table = Activity.get_all()
 

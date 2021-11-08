@@ -7,6 +7,8 @@ Created on Tue Oct 26 23:39:35 2021
 """
 from flask import current_app as app
 
+
+
 #import elo_calc as ec
 
 class elo_ref:
@@ -36,15 +38,16 @@ class elo_ref:
 
     def get_average(id):
         # Implementation tbd
-        return 200
+        app.jinja_env.globals.update(globalAverageElo=1200)
+        return 1200
 
     def get_all_current(id):
         return 0
 
     def get_max(id):
-        return 0
+        return 2000
 
-    def gete_min(id):
+    def get_min(id):
         return 0
 
     def play_game(activity, p1_id, p2_id, p1_score, p2_score):

@@ -120,11 +120,11 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
 
     @staticmethod
     def get_user_num_won(user_id):
-        return 0
+        return 10
 
     @staticmethod
     def get_user_num_played(user_id):
-        return 0
+        return 30
 
 
     @staticmethod

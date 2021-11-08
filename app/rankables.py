@@ -101,6 +101,8 @@ def register():
 
 @bp.route('/updateEmail', methods=['GET', 'POST'])
 def updateEmail():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateEmailForm()
     if form.validate_on_submit():
             if Rankables.updateEmail(current_user.rankable_id, form.email.data):
@@ -109,6 +111,8 @@ def updateEmail():
 
 @bp.route('/updateName', methods=['GET', 'POST'])
 def updateName():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateNameForm()
     if form.validate_on_submit():
             if Rankables.updateName(current_user.rankable_id, form.name.data):
@@ -117,6 +121,8 @@ def updateName():
 
 @bp.route('/updateCategory', methods=['GET', 'POST'])
 def updateCategory():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateCategoryForm()
     if form.validate_on_submit():
             if Rankables.updateCategory(current_user.rankable_id, form.category.data):
@@ -125,6 +131,8 @@ def updateCategory():
 
 @bp.route('/updateAbout', methods=['GET', 'POST'])
 def updateAbout():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateAboutForm()
     if form.validate_on_submit():
             if Rankables.updateAbout(current_user.rankable_id, form.about.data):
@@ -133,6 +141,8 @@ def updateAbout():
 
 @bp.route('/updatePassword', methods=['GET', 'POST'])
 def updatePassword():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdatePasswordForm()
     if form.validate_on_submit():
             if Rankables.updatePassword(current_user.rankable_id, form.password.data):

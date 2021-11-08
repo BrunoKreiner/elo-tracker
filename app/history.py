@@ -14,6 +14,8 @@ bp = Blueprint('history', __name__)
 
 @bp.route('/history', methods=['POST', 'GET'])
 def history():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     now = datetime.now()
     filtered_activity = None
     start_date = None
