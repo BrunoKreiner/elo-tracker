@@ -12,7 +12,7 @@
       {{ form.hidden_tag() }}
       <p style="font-size:x-large;">
         {{ form.category.label }}<br/><br/>
-        {{ form.category(size=32) }}<br/><br/>
+        {{ form.category() }}<br/><br/>
         {% for error in form.category.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
