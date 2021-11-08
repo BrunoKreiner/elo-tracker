@@ -16,3 +16,10 @@ SELECT event_id, name, type,date
 FROM Events
 ''')
         return [Events(*row) for row in rows]
+
+  # define method to add an event     
+
+    
+
+
+
