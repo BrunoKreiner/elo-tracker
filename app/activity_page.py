@@ -44,6 +44,9 @@ def activity_page():
     now = datetime.now()
 
     # get table displaying all activities:
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
+    # get table displaying all leagues:
     a_table = Activity.get_all()
 
     # get table displaying all of my activities:

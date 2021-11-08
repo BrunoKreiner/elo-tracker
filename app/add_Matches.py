@@ -24,7 +24,8 @@ class MatchForm(FlaskForm):
 
 @bp.route('/addMatches', methods=['GET', 'POST'])
 def addMatches():
-    
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = MatchForm()
     if form.validate_on_submit():
         now = datetime.now()
