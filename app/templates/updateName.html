@@ -2,18 +2,24 @@
 
 {% block content %}
 
-<h1>Update Name</h1>
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h2><b><i class="fa fa-pencil"></i> Update Name</b></h2>
+</header>
 
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.name.label }}<br/>
-    {{ form.name(size=32) }}<br/>
-    {% for error in form.name.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+<body>
+  <div style="text-align: center; padding-top:10%;">
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p style="font-size:x-large;">
+        {{ form.name.label }}<br/><br/>
+        {{ form.name(size=32) }}<br/><br/>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>{{ form.submit(class_="w3-button w3-pink w3-hover-grey w3-hover-text-dark-grey") }}</p>
+    </form>
+  </div>
+</body>
 
 {% endblock %}

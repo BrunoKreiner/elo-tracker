@@ -30,54 +30,57 @@
   </style>
 </head>
 
-<h1>Register</h1>
+<body class="w3-deep-purple">
+  <div style="text-align: center; padding-top:10%;">
+    <h1>Register</h1>
 
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.name.label }}<br/>
-    {{ form.name(size=32) }}<br/>
-    {% for error in form.name.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.email.label }} (Could be fake email address)<br/>
-    {{ form.email(size=64) }}<br/>
-    {% for error in form.email.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password.label }}<br/>
-    {{ form.password(size=32) }}<br/>
-    {% for error in form.password.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password2.label }}<br/>
-    {{ form.password2(size=32) }}<br/>
-    {% for error in form.password2.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.about.label }}<br/>
-    {{ form.about(size=32) }}<br/>
-    {% for error in form.about.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.category.label }}<br/>
-    {{ form.category(size=32) }}<br/>
-    {% for error in form.category.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.name.label }}<br/>
+        {{ form.name(size=32) }}<br/>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.email.label }}<br/>
+        {{ form.email(size=32) }}<br/>
+        {% for error in form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.password.label }}<br/>
+        {{ form.password(size=32) }}<br/>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.password2.label }}<br/>
+        {{ form.password2(size=32) }}<br/>
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.category.label }}<br/>
+        {{ form.category(size=32) }}<br/>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.about.label }}<br/>
+        {{ form.about(size=32) }}<br/>
+        {% for error in form.about.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>{{ form.submit(class_="w3-button w3-pink w3-hover-white w3-hover-text-dark-grey") }}</p>
+    </form>
+  </div>
 </body>
 </html>
 
