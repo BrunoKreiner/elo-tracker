@@ -100,6 +100,7 @@
             {% endif %}
             {% endwith %}
           </p>
+
           <p>{{ form.submit() }}</p>
         </form>
 
@@ -115,7 +116,9 @@
         <table class="w3-table w3-striped w3-white">
           <thead class="thead-dark">
             <tr>
-                <th scope="col">event_id</th>           
+                <th scope="col">Event Name</th>      
+                <th scope="col">Type</th>           
+                <th scope="col">Date</th>           
             </tr>
           </thead>
           <tbody>
@@ -136,8 +139,9 @@
         <table class="w3-table w3-striped w3-white">
           <thead class="thead-dark">
             <tr>
-                <th scope="col">event_id</th>           
-            </tr>
+              <th scope="col">Event Name</th>      
+              <th scope="col">Type</th>           
+              <th scope="col">Date</th>              </tr>
           </thead>
           <tbody>
             {% for event in events_past_table%}
@@ -157,8 +161,9 @@
         <table class="w3-table w3-striped w3-white">
           <thead class="thead-dark">
             <tr>
-                <th scope="col">event_id</th>           
-            </tr>
+              <th scope="col">Event Name</th>      
+              <th scope="col">Type</th>           
+              <th scope="col">Date</th>              </tr>
           </thead>
           <tbody>
             {% for event in events_future_table%}
