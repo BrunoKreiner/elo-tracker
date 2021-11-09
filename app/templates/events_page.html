@@ -4,6 +4,7 @@
 
 <div class="w3-main" style="margin-left:300px;margin-top:43px;"></div>
 
+
 <header class="w3-container" style="padding-top:22px">
     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
   </header>
@@ -55,8 +56,57 @@
     <div class="w3-row-padding" style="margin:0 -16px">
       <div class="w3-third">
         <h5>Create a New Event</h5>
-        <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+
+
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <p>
+            Event ID<br/>
+            {{ form.event_id(size=32) }}<br/>
+            {% for error in form.event_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            Event Name<br/>
+            {{ form.name(size=64) }}<br/>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            Event Type <br/>
+            {{ form.type(size=32) }}<br/>
+            {% for error in form.type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            Date <br/>
+            {{ form.date(size=32) }}<br/>
+            {% for error in form.date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+        
+          <p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+          </p>
+          <p>{{ form.submit() }}</p>
+        </form>
+
+
       </div>
+    </div>
+
 
 
 
@@ -77,13 +127,51 @@
             </tr>
             {% endfor %}
           </tbody>
-  
-
-
-  
         </table>
       </div>
-    </div>
+
+
+      <div class="w3-twothird">
+        <h5>Past Events</h5>
+        <table class="w3-table w3-striped w3-white">
+          <thead class="thead-dark">
+            <tr>
+                <th scope="col">event_id</th>           
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events_past_table%}
+            <tr>
+                <td>{{event.name}}</td>
+                <td>{{event.type}}</td>
+                <td>{{event.date}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="w3-twothird">
+        <h5>Future Events</h5>
+        <table class="w3-table w3-striped w3-white">
+          <thead class="thead-dark">
+            <tr>
+                <th scope="col">event_id</th>           
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events_future_table%}
+            <tr>
+                <td>{{event.name}}</td>
+                <td>{{event.type}}</td>
+                <td>{{event.date}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
   </div>
 
 <hr>
