@@ -1,1 +1,0 @@
-db.congress.find({$or:[name: "Angus", name: "Bernard"]}).toArray()
