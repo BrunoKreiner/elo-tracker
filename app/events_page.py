@@ -17,7 +17,7 @@ from flask import Blueprint
 bp = Blueprint('events_page', __name__)
 
 class EventsForm(FlaskForm):
-    event_id = StringField(_l('event_id'), validators=[DataRequired()])
+    # event_id = StringField(_l('event_id'), validators=[DataRequired()])
     name = StringField(_l('name'), validators=[DataRequired()])
     type = StringField(_l('type'), validators=[DataRequired()])
     date = StringField(_l('date'), validators=[DataRequired()])
@@ -36,7 +36,8 @@ def events_page():
     # create a form to add an event
     form = EventsForm()
     if form.validate_on_submit():
-        if Events.addEvent(form.event_id.data,
+        if Events.addEvent(
+            # form.event_id.data,
         form.name.data,
         form.type.data,
         form.date.data):

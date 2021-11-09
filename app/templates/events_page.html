@@ -61,13 +61,6 @@
         <form action="" method="post">
           {{ form.hidden_tag() }}
           <p>
-            Event ID<br/>
-            {{ form.event_id(size=32) }}<br/>
-            {% for error in form.event_id.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
             Event Name<br/>
             {{ form.name(size=64) }}<br/>
             {% for error in form.name.errors %}

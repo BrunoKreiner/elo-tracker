@@ -49,12 +49,16 @@ ORDER BY date, name
 
     # method to add a new league.
     @staticmethod
-    def addEvent(event_id, name, type, date): 
+    def addEvent(name, type, date): 
+        maxEventId = app.db.execute("""
+SELECT MAX(event_id)
+FROM Events
+        """)[0][0]
         rows = app.db.execute("""
 INSERT INTO Events(event_id, name, type, date)
 VALUES(:event_id, :name, :type, :date)
 RETURNING event_id
-""", event_id=event_id, name=name, type=type, date = date)
+""", event_id= maxEventId +1, name=name, type=type, date = date)
         event_id = rows[0][0] 
         return event_id
 
