@@ -72,3 +72,9 @@ CREATE TABLE ELOHistory (
     elo INT NOT NULL,
     matchID INT
 );
+
+CREATE TABLE ParticipatesIn (
+    user_ID INT NOT NULL,
+    activity VARCHAR(255) NOT NULL,
+    elo INT NOT NULL
+)

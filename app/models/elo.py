@@ -1,28 +1,29 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 26 23:39:35 2021
-
-@author: andrewkrier
-"""
 from flask import current_app as app
 
 import elo_calc as ec
 
 def get_current(activity, id):
+
     current = app.db.execute('''
     SELECT elo
-    FROM ELOHistory
-    WHERE :id = user_ID AND matchID in (
-        SELECT matchID, 
-        FROM Matches
-        WHERE date_time in (
-            SELECT MAX(date_time)
-            FROM Matches
-            WHERE (:id = user1_ID OR :id = user2_ID) AND :activity = activity
-        )
-    )
-                                ''', id = id, activity = activity)
+    FROM ParticipatesIn
+    WHERE :id = user_ID AND :activity = activity
+                            ''', id = id, activity = activity)
+    return current
+
+#    current = app.db.execute('''
+#    SELECT elo
+#    FROM ELOHistory
+#    WHERE :id = user_ID AND matchID in (
+#        SELECT matchID, 
+#        FROM Matches
+#        WHERE date_time in (
+#            SELECT MAX(date_time)
+#            FROM Matches
+#            WHERE (:id = user1_ID OR :id = user2_ID) AND :activity = activity
+#        )
+#    )
+#                                ''', id = id, activity = activity)
     return current
 
 def get_old(id, g_id):
@@ -35,16 +36,39 @@ def get_old(id, g_id):
 
 def get_average(id):
     # Implementation tbd
-    return 0
+    average = app.db.execute('''
+    SELECT AVG(elo)
+    FROM ParticipatesIn
+    WHERE :id = user_ID
+                            ''', id = id)
+    return average
 
-def get_all_current(id):
-    return 0
+def get_all_averages():
+    averages = app.db.execute('''
+    SELECT id, AVG(elo)
+    FROM ParticipatesIn
+    GROUP BY id
+                            ''', id = id)
+    return averages
+
+# def get_all_current(id):
+#     return 0
 
 def get_max(id):
-    return 0
+    maximum = app.db.execute('''
+    SELECT MAX(elo)
+    FROM ParticipatesIn
+    WHERE :id = user_ID
+                            ''', id = id)
+    return maximum
 
-def gete_min(id):
-    return 0
+def get_min(id):
+    minimum = app.db.execute('''
+    SELECT MIN(elo)
+    FROM ParticipatesIn
+    WHERE :id = user_ID
+                            ''', id = id)
+    return minimum
 
 def play_game(activity, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
