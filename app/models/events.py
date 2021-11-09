@@ -28,7 +28,8 @@ FROM Events
 SELECT event_id, name, type,date
 FROM Events
 WHERE date < (:currentDateTime)
-ORDER BY date DESC, name ASC
+ORDER BY date DESC, name
+
 ''', currentDateTime = currentDateTime)
         return [Events(*row) for row in rows]
 
@@ -53,7 +54,6 @@ ORDER BY date, name
 INSERT INTO Events(event_id, name, type, date)
 VALUES(:event_id, :name, :type, :date)
 RETURNING event_id
-ORDER BY date DESC, name ASC
 """, event_id=event_id, name=name, type=type, date = date)
         event_id = rows[0][0] 
         return event_id
