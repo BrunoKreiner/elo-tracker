@@ -65,7 +65,7 @@
         <a href="{{ url_for('league_page.league_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Leagues</a>
         <a href="{{ url_for('events_page.events_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-trophy fa-fw"></i> Events</a>
         <a href="{{ url_for('activity_page.activity_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-handshake-o fa-fw"></i> Activities</a>
-        <a href="{{ url_for('history.history') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> My History</a>
+        <a href="{{ url_for('history.history') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> My Match History</a>
         <a href="{{ url_for('players.players') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> View Players</a>
         {% block msg %}
           {% if current_user.is_authenticated %}
