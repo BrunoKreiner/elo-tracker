@@ -120,12 +120,41 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
         return rows
 
     @staticmethod
-    def get_user_num_won(user_id):
-        return 10
+    def get_user_num_won(user_id, curr_datetime):
+        num_won_user1 = app.db.execute('''
+SELECT COUNT(*)
+FROM Matches
+WHERE user1_ID = :user_id AND date_time < :curr_datetime AND user1_score >= user2_score
+''',
+                            user_id=user_id, curr_datetime=curr_datetime)
+        num_won_user1 = num_won_user1[0][0]
+        num_won_user2 = app.db.execute('''
+SELECT COUNT(*)
+FROM Matches
+WHERE user2_ID = :user_id AND date_time < :curr_datetime AND user2_score >= user1_score
+''',
+                            user_id=user_id, curr_datetime=curr_datetime)
+        num_won_user2 = num_won_user2[0][0]
+        return num_won_user1 + num_won_user2
 
     @staticmethod
-    def get_user_num_played(user_id):
-        return 30
+    def get_user_num_played(user_id, curr_datetime):
+        
+        num_played_user1 = app.db.execute('''
+SELECT COUNT(*)
+FROM Matches
+WHERE user1_ID = :user_id AND date_time < :curr_datetime
+''',
+                            user_id=user_id, curr_datetime=curr_datetime)
+        num_played_user1 = num_played_user1[0][0]
+        num_played_user2 = app.db.execute('''
+SELECT COUNT(*)
+FROM Matches
+WHERE user2_ID = :user_id AND date_time < :curr_datetime
+''',
+                            user_id=user_id, curr_datetime=curr_datetime)
+        num_played_user2 = num_played_user2[0][0]
+        return num_played_user1 + num_played_user2
 
 
     @staticmethod
