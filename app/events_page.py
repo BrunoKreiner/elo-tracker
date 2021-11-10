@@ -29,6 +29,8 @@ class EventsForm(FlaskForm):
 
 @bp.route('/events_page', methods = ['GET', 'POST'])
 def events_page():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     # get tables displaying events in different ways:
     events_table = Events.get_all()
     events_past_table = Events.get_all_past()
