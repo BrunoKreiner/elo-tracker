@@ -55,9 +55,15 @@ def calculate_diff(activity, p1_id, p1_score, p2_id, p2_score):
     print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
     print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
 
+    print(type(p1_score))
+    print(type(p2_score))
+    p1_score = int(p1_score)
+    p2_score = int(p2_score)
     if p1_score == p2_score:
         return 0,0
     did_p1_win = p1_score > p2_score
+    print("P1 score: ", p1_score)
+    print("P2 score: ", p2_score)
     print(did_p1_win)
     if p1_score > p2_score:
         print("Player 1 won")

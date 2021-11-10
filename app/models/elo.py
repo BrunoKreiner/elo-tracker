@@ -42,7 +42,8 @@ def get_average(id):
         FROM ParticipatesIn
         WHERE :id = user_ID
                                 ''', id = id)
-    except exc.SQLAlchemyError:
+        average = round(average[0][0], 1)
+    except (exc.SQLAlchemyError, TypeError) as e:
         average = 1000
     return average
 
@@ -64,7 +65,10 @@ def get_max(id):
         FROM ParticipatesIn
         WHERE :id = user_ID
                                 ''', id = id)
-    except exc.SQLAlchemyError:
+        maximum = maximum[0][0]
+        if maximum == None:
+            maximum = 1000
+    except (exc.SQLAlchemyError, TypeError) as e:
         maximum = 1000
     return maximum
 
@@ -75,7 +79,11 @@ def get_min(id):
         FROM ParticipatesIn
         WHERE :id = user_ID
                                 ''', id = id)
-    except exc.SQLAlchemyError:
+
+        minimum = minimum[0][0]
+        if maximum == None:
+            maximum = 1000
+    except (exc.SQLAlchemyError, TypeError) as e:
         minimum = 1000
     return minimum
 
@@ -143,7 +151,8 @@ def does_play(activity, id):
                                         ''',
                                         activity = activity,
                                         id = id)
-    return does_participate == 1
+    print("Does participate is ", does_participate[0][0] == 1)
+    return does_participate[0][0] == 1
 
 def get_last_games(activity, id, n):
     games = app.db.execute('''
