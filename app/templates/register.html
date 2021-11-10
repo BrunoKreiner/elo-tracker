@@ -1,54 +1,87 @@
-{% extends "base.html" %}
-
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Register</h1>
+<head>
+  <!--<title>Mini Amazon</title>
+  
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
+  <style>
+  </style>-->
+  <title>Elo Tracker</title>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: "Raleway", sans-serif
+    }
+  </style>
+</head>
 
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.name.label }}<br/>
-    {{ form.name(size=32) }}<br/>
-    {% for error in form.name.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.email.label }} (Could be fake email address)<br/>
-    {{ form.email(size=64) }}<br/>
-    {% for error in form.email.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password.label }}<br/>
-    {{ form.password(size=32) }}<br/>
-    {% for error in form.password.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password2.label }}<br/>
-    {{ form.password2(size=32) }}<br/>
-    {% for error in form.password2.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.about.label }}<br/>
-    {{ form.about(size=32) }}<br/>
-    {% for error in form.about.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.category.label }}<br/>
-    {{ form.category(size=32) }}<br/>
-    {% for error in form.category.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+<body class="w3-deep-purple">
+  <div style="text-align: center; padding-top:10%;">
+    <h1>Register</h1>
+
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.name.label }}<br/>
+        {{ form.name(size=32) }}<br/>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.email.label }}<br/>
+        {{ form.email(size=32) }}<br/>
+        {% for error in form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.password.label }}<br/>
+        {{ form.password(size=32) }}<br/>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.password2.label }}<br/>
+        {{ form.password2(size=32) }}<br/>
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.about.label }}<br/>
+        {{ form.about(size=32) }}<br/>
+        {% for error in form.about.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.category.label }}<br/>
+        {{ form.category() }}<br/>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>{{ form.submit(class_="w3-button w3-pink w3-hover-white w3-hover-text-dark-grey") }}</p>
+    </form>
+  </div>
+</body>
+</html>
 
 {% endblock %}

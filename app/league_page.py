@@ -23,7 +23,7 @@ from flask import Blueprint
 bp = Blueprint('league_page', __name__)
 
 class LeagueForm(FlaskForm):
-    l_id = StringField(_l('l_id'), validators=[DataRequired()])
+    
     name = StringField(_l('name'), validators=[DataRequired()])
     president = StringField(_l('president'), validators=[DataRequired()])
 
@@ -31,17 +31,19 @@ class LeagueForm(FlaskForm):
 
 @bp.route('/league_page', methods=['GET', 'POST'])
 def league_page():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     # get table displaying all leagues:
     l_table = Leagues.get_all()
 
-    # get table displaying my leagues:
-    myleagues_table = Member_of.get_user_leagues()
+    # get table displaying user leagues:
+    myleagues_table = Member_of.get_user_leagues(current_user.name)
 
     # create a form to add a league.
     form = LeagueForm()
     if form.validate_on_submit():
         # print('success')
-        if Leagues.addLeague(form.l_id.data,
+        if Leagues.addLeague(
         form.name.data,
         form.president.data):
             flash('Congratulations, you have added a new League!')
@@ -58,6 +60,7 @@ def league_page():
     #         flash('Congratulations, you are a new league member!')
     #         print('yay!')
     #         return redirect(url_for('league_page.league_page'))
+
 
 
     # render the page by adding information to the index.html file

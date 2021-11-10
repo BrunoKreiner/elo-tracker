@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="w3-main" style="margin-left:300px;"></div>
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h2><b><i class="fa fa-eye"></i> View Players</b></h2>
+</header>
+
+<div class="w3-container" style="padding-top:22px">
+    <div class="w3-container w3-center" style="margin:2%;">
+        <input type="text" id="nameSearch" placeholder="Name" name="search">
+        <!--<button type="submit" onclick="searchName()"><i class="fa fa-search"></i></button>-->
+        <input type="text" id="categorySearch" placeholder="Category" name="search">
+        <button type="submit" onclick="searchAll()"><i class="fa fa-search"></i></button>
+    </div>
+    <table id="myTable" class="w3-table w3-striped w3-white">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Average Elo</th>
+            <th scope="col">About</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for player in rankables%}
+            <tr>
+                <th scope="row">{{player.name}}</th>
+                <td>{{player.category}}</td>
+                <td>500</td>
+                <td>{{player.about}}</td>
+                
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+<script>
+    let searchString = "";
+    let categoryString = "";
+    function searchAll() {
+        searchString=document.getElementById("nameSearch").value.toUpperCase();
+      categoryString=document.getElementById("categorySearch").value.toUpperCase();
+      table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            th = tr[i].getElementsByTagName("th")[0];
+            if (td && th) {
+            txtValue = td.textContent || td.innerText;
+            txtValue2 = th.textContent || th.innerText;
+            console.log(txtValue);
+            if (txtValue.toUpperCase().indexOf(categoryString) > -1 && txtValue2.toUpperCase().indexOf(searchString) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+            }       
+        }
+    }
+</script>
+
+{% endblock %}
