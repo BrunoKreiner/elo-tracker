@@ -42,18 +42,24 @@ def get_average(id):
         FROM ParticipatesIn
         WHERE :id = user_ID
                                 ''', id = id)
-        average = round(average[0][0], 1)
+        average = round(average[0][0])
     except (exc.SQLAlchemyError, TypeError) as e:
-        average = 1000
+        average = "1000"
     return average
 
 def get_all_averages():
     averages = app.db.execute('''
-    SELECT id, AVG(elo)
+    SELECT user_ID, AVG(elo) AS avg
     FROM ParticipatesIn
-    GROUP BY id
+    GROUP BY user_ID
                             ''', id = id)
-    return averages
+
+    roundedAverages = [[0 for x in range(2)] for y in range(len(averages))] 
+    for x in range(len(averages)):
+        roundedAverages[x][0] = averages[x][0]
+        roundedAverages[x][1] = round(averages[x][1])
+    
+    return roundedAverages
 
 # def get_all_current(id):
 #     return 0
@@ -67,9 +73,9 @@ def get_max(id):
                                 ''', id = id)
         maximum = maximum[0][0]
         if maximum == None:
-            maximum = 1000
+            maximum = "1000"
     except (exc.SQLAlchemyError, TypeError) as e:
-        maximum = 1000
+        maximum = "1000"
     return maximum
 
 def get_min(id):
@@ -81,10 +87,10 @@ def get_min(id):
                                 ''', id = id)
 
         minimum = minimum[0][0]
-        if maximum == None:
-            maximum = 1000
+        if minimum == None:
+            minimum = "1000"
     except (exc.SQLAlchemyError, TypeError) as e:
-        minimum = 1000
+        minimum = "1000"
     return minimum
 
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):

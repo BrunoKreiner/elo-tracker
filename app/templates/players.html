@@ -31,7 +31,14 @@
             <tr>
                 <th scope="row">{{player.name}}</th>
                 <td>{{player.category}}</td>
-                <td>500</td>
+                {% if player.rankable_id in uninitializedIDs %}
+                  <td>1000</td>
+                {% endif %}
+                {% for row in elos %}
+                  {% if row[0]==player.rankable_id %}
+                    <td>{{row[1]}}</td>
+                  {% endif %}
+                {% endfor %}
                 <td>{{player.about}}</td>
                 
             </tr>
