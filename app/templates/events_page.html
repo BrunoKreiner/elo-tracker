@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="w3-main" style="margin-left:300px;"></div>
+
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h2><b><i class="fa fa-trophy"></i> View Events</b></h2>
+</header>
+
+  <div class="w3-panel">
+    <!--<input type = "button" value = "Create a New Event" onclick = "toggleEvents()">-->
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+        <h5>Create a New Event</h5>
+
+
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <p>
+            Event Name<br/>
+            {{ form.name(size=48) }}<br/>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            Event Type <br/>
+            {{ form.type(size=32) }}<br/>
+            {% for error in form.type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            Date <br/>
+            {{ form.date(size=32) }}<br/>
+            {% for error in form.date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+          <p>
+            MinElo <br/>
+            {{ form.minELO(size=16) }}<br/>
+            {% for error in form.minELO.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+          <p>
+            MaxElo <br/>
+            {{ form.maxELO(size=16) }}<br/>
+            {% for error in form.maxELO.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+        
+          <p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+              {% for message in messages %}
+              {{ message }}
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+          </p>
+
+          <p>{{ form.submit() }}</p>
+        </form>
+
+
+      </div>
+    </div>
+
+
+
+      <div class="w3-twothird">
+        <h5>Upcoming Events</h5>
+        <table class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Event Name</th>      
+              <th scope="col">Type</th>           
+              <th scope="col">Date</th>   
+              <th scope="col">ELO Range</th>              
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events_future_table%}
+            <tr>
+                <td>{{event.name}}</td>
+                <td>{{event.type}}</td>
+                <td>{{event.date}}</td>
+                <td>{{event.minELO}} - {{event.maxELO}}</td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+     
+
+
+
+      
+      <div class="w3-twothird">
+        <h5>Past Events</h5>
+        <table class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Event Name</th>      
+              <th scope="col">Type</th>           
+              <th scope="col">Date</th>  
+              <th scope="col">ELO Range</th>              
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events_past_table%}
+            <tr>
+                <td>{{event.name}}</td>
+                <td>{{event.type}}</td>
+                <td>{{event.date}}</td>
+                <td>{{event.minELO}} - {{event.maxELO}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+  </div>
+
+
+
+
+{% endblock %}
