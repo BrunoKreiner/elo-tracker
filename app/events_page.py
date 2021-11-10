@@ -37,10 +37,19 @@ def events_page():
     # create a form to add an event
     form = EventsForm()
     if form.validate_on_submit():
+        if (form.minELO.data > form.maxELO.data):
+            flash('Your minELO needs to be less than your maxELO')
+            return redirect(url_for('events_page.events_page'))
+        if (form.minELO.data < 0 | form.maxELO < 0):
+            flash('ELO needs to be above 0')
+            return redirect(url_for('events_page.events_page')) 
+        if (form.minELO.data > 2000 | form.maxELO > 2000):
+            flash('ELO needs to be below 2000')
+            return redirect(url_for('events_page.events_page'))
         if Events.addEvent(
         form.name.data,
         form.type.data,
-        form.date.data,
+        form.date.data, 
         form.minELO.data,
         form.maxELO.data):
             flash('Congratulations, you have added a new Event!')
