@@ -52,16 +52,32 @@ ORDER BY date, name
 
     # method to add a new league.
     @staticmethod
-    def addEvent(name, type, date,minELO, maxELO): 
+    def addEvent(name, type, date,minELO, maxELO):
+        if minELO is None:
+            minELO = 0 
+        if maxELO is None:
+            maxELO = 3200
         maxEventId = app.db.execute("""
 SELECT MAX(event_id)
 FROM Events
         """)[0][0]
+
+        if maxEventId is None:
+            maxEventId = -1
+
+
         rows = app.db.execute("""
-INSERT INTO Events(event_id, name, type, date,minELO, maxELO)
+INSERT INTO Events(event_id
+, name, type, date, minELO, maxELO)
 VALUES(:event_id, :name, :type, :date, :minELO, :maxELO)
 RETURNING event_id
-""", event_id= maxEventId +1, name=name, type=type, date = date, minELO = minELO, maxELO = maxELO)
+""", 
+event_id= maxEventId + 1, 
+name=name, 
+type=type, 
+date = date, 
+minELO = minELO,
+ maxELO = maxELO)
         event_id = rows[0][0] 
         return event_id
 

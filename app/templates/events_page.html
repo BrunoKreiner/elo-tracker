@@ -82,6 +82,22 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
           </p>
+
+          <p>
+            MinElo <br/>
+            {{ form.minELO(size=16) }}<br/>
+            {% for error in form.minELO.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+          <p>
+            MaxElo <br/>
+            {{ form.maxELO(size=16) }}<br/>
+            {% for error in form.maxELO.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
         
           <p>
             {% with messages = get_flashed_messages() %}

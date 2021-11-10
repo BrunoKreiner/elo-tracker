@@ -8,7 +8,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateTimeField
+from wtforms import StringField, SubmitField, DateTimeField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
@@ -19,7 +19,9 @@ bp = Blueprint('events_page', __name__)
 class EventsForm(FlaskForm):
     name = StringField(_l('name'), validators=[DataRequired()])
     type = StringField(_l('type'), validators=[DataRequired()])
-    date = StringField(_l('date'), validators=[DataRequired()])
+    date = DateTimeField(_l('date'), validators=[DataRequired()])
+    minELO = IntegerField(_l('minELO'))
+    maxELO = IntegerField(_l('maxELO'))
 
     submit = SubmitField(_l('Add Event'))
 
@@ -38,7 +40,9 @@ def events_page():
         if Events.addEvent(
         form.name.data,
         form.type.data,
-        form.date.data):
+        form.date.data,
+        form.minELO.data,
+        form.maxELO.data):
             flash('Congratulations, you have added a new Event!')
             return redirect(url_for('events_page.events_page'))
 
