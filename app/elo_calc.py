@@ -2,7 +2,8 @@ import numpy as np
 import math as m
 import time as t
 import random as r
-import matplotlib.pyplot as plt
+from .models import elo
+# import matplotlib.pyplot as plt
 
 d = 15
 
@@ -12,7 +13,7 @@ Things to further implement
 Mitigate the effect of new players on existing ELOs (log graph-ish?)
 
 '''
-
+        
 def reportELO():
     for p in playerToELO:
         print("Player {:} has an ELO of {:}".format(p, playerToELO[p]))
@@ -26,50 +27,67 @@ def report_game_log():
         print("Total ELO diff in this game is {:}".format(g[3] + g[7]))
 
 def amount_won(winner_ELO, loser_ELO):
+    print("Amount won:", winner_ELO, loser_ELO)
     return win_multiplier(winner_ELO) * base_amount_changed(winner_ELO, loser_ELO)
     
 def amount_lost(winner_ELO, loser_ELO):
+    print("Amount lost:", winner_ELO, loser_ELO)
     return loss_multiplier(loser_ELO) * base_amount_changed(winner_ELO, loser_ELO)
     
 def base_amount_changed(winner_ELO, loser_ELO):
+    print("Base changed:", winner_ELO, loser_ELO)
     diff = winner_ELO - loser_ELO
     c = 6
     #return (200 * (2 * ((1 + np.exp(c)) / (np.exp(c) - 1)) * ((1 / (1 + np.exp(c * diff / 2000))) - 0.5) + 1))
     return 200 + (200/c) * np.log((1 / (diff * (np.exp(c) - 1) / (4000 * (1 + np.exp(c))) + 0.5)) - 1)
     
 def win_multiplier(winner_ELO):
+    print("Win multiplied:", winner_ELO)
     return np.log(1 / (((np.exp(d) - 1) / (2 * (1 + np.exp(d)))) * (winner_ELO / 1000 - 1) + 0.5) - 1) / d + 1
     
     
 def loss_multiplier(loser_ELO):
+    print("Loss multiplied:", loser_ELO)
     #return 2 * ((1 + np.exp(d)) / (np.exp(d) - 1)) * ((1 / (1 + np.exp(-d * (loser_ELO - 1000) / 1000))) - 0.5) + 1
     return -1 * np.log(1 / (((np.exp(d) - 1) / (2 * (1 + np.exp(d)))) * (loser_ELO / 1000 - 1) + 0.5) - 1) / d + 1
     
 def calculate_diff(activity, p1_id, p1_score, p2_id, p2_score):
+    print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
+    print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
+
     if p1_score == p2_score:
         return 0,0
     did_p1_win = p1_score > p2_score
+    print(did_p1_win)
+    if p1_score > p2_score:
+        print("Player 1 won")
+    else:
+        print("Player 2 won")
     
-    p1_diff = amount_won(get_current(p1_id, activity), get_current(p2_id, activity)) if did_p1_win else -1 * amount_lost(get_current(p2_id, activity), get_current(p1_id, activity))
-    p2_diff = amount_won(get_current(p2_id, activity), get_current(p1_id, activity)) if not did_p1_win else -1 * amount_lost(get_current(p1_id, activity), get_current(p2_id, activity))
+    p1_diff = amount_won(elo.get_current(p1_id, activity), elo.get_current(p2_id, activity)) if did_p1_win else -1 * amount_lost(elo.get_current(p2_id, activity), elo.get_current(p1_id, activity))
+    p2_diff = amount_won(elo.get_current(p2_id, activity), elo.get_current(p1_id, activity)) if not did_p1_win else -1 * amount_lost(elo.get_current(p1_id, activity), elo.get_current(p2_id, activity))
     
     p1_diff = round(p1_diff * recent_consecutive_outcome_multiplier(activity, p1_id, p1_score, p2_id, p2_score))
-    p2_diff = round(p2_diff * recent_consecutive_outcome_multiplier(activity, p1_id, p1_score, p2_id, p2_score))
+    p2_diff = round(p2_diff * recent_consecutive_outcome_multiplier(activity, p2_id, p2_score, p1_id, p1_score))
     
     return (p1_diff, p2_diff)
 
 def game(activity, p1_id, p1_score, p2_id, p2_score):
     #if p1_id not in playerToELO:
     #    playerToELO[p1_id] = 1000
+    print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
+    print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
 
     #if p2_id not in playerToELO:
     #    playerToELO[p2_id] = 1000
-    p1_elo = get_current(p1_id, activity)
-    p2_elo = get_current(p2_id, activity)
+    p1_elo = elo.get_current(p1_id, activity)
+    p2_elo = elo.get_current(p2_id, activity)
 
-    p1_diff, p2_diff = calculate_diff(p1_id, p1_score, p2_id, p2_score)
+    p1_diff, p2_diff = calculate_diff(activity, p1_id, p1_score, p2_id, p2_score)
+    print("Player one diff: {:} \nPlayer two diff: {:}".format(p1_diff, p2_diff))
+    print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
     
-    report_game(p1_id, p1_score, p1_diff, p2_id, p2_score, p2_diff)
+    # report_game(p1_id, p1_score, p1_diff, p2_id, p2_score, p2_diff)
         
     p1_elo += p1_diff
     p2_elo += p2_diff
@@ -105,7 +123,7 @@ def did_win(p_id, g):
 
 def num_consecutive_times_a_beat_b_in_last_n_games(activity, a_id, b_id, n):
     count = 0
-    for g in get_last_games(activity, a_id, n):
+    for g in elo.get_last_games(activity, a_id, n):
         if did_win(a_id, g) and (b_id == g[0] or b_id == g[4]):
             count += 1
         else:

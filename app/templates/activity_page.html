@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="w3-main" style="margin-left:300px;margin-top:43px;"></div>
+<div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container" style="padding-top:22px">
   <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
@@ -82,6 +82,7 @@
       </form>
 
     </div>
+
     <div class="w3-twothird">
       <h5>Current Activities</h5>
       <table class="w3-table w3-striped w3-white">
@@ -91,9 +92,27 @@
           </tr>
         </thead>
         <tbody>
-          {% for a in activity_table%}
+          {% for a in activity_table[:10] %}
           <tr>
             <th scope="row">{{a.name}}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+
+      </table>
+
+      <h5>My Activities</h5>
+      <table class="w3-table w3-striped w3-white">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">l_id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in my_activities_table%}
+          <tr>
+            <th scope="row">{{a.activity}}</th>
           </tr>
           {% endfor %}
         </tbody>

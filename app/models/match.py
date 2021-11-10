@@ -1,4 +1,5 @@
 from flask import current_app as app
+from .elo import *
 
 def sortingFunc(match):
         return match[1]
@@ -119,6 +120,15 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
         return rows
 
     @staticmethod
+    def get_user_num_won(user_id):
+        return 10
+
+    @staticmethod
+    def get_user_num_played(user_id):
+        return 30
+
+
+    @staticmethod
     def addMatch(activity, user1_id, user2_id, user1_score, user2_score, datetime):
 
         try:
@@ -142,6 +152,15 @@ RETURNING matchID
                                   user2_score=user2_score,
                                   datetime=datetime)
             matchID = rows[0][0]
+            if(not does_play(activity, user1_id)):
+                plays_activity(activity, user1_id)
+            if(not does_play(activity, user2_id)):
+                plays_activity(activity, user2_id)
+            play_game(activity, matchID, user1_id, user2_id, user1_score, user2_score)
+            print(app.db.execute('''
+            SELECT user_ID, activity, elo
+            FROM ParticipatesIn
+                                '''))
             return matchID
         except Exception as e:
             print(str(e))

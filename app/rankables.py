@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
@@ -48,7 +48,7 @@ class RegistrationForm(FlaskForm):
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
     about = StringField(_l('About'), validators=[DataRequired()])
-    category = StringField(_l('Category'), validators=[DataRequired()])
+    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')])
     submit = SubmitField(_l('Register'))
 
     def validate_email(self, email):
@@ -68,7 +68,7 @@ class UpdateAboutForm(FlaskForm):
     submit = SubmitField(_l('Confirm'))
 
 class UpdateCategoryForm(FlaskForm):
-    category = StringField(_l('New Category'), validators=[DataRequired()])
+    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')])
     submit = SubmitField(_l('Confirm'))
 
 class UpdateNameForm(FlaskForm):
@@ -101,6 +101,8 @@ def register():
 
 @bp.route('/updateEmail', methods=['GET', 'POST'])
 def updateEmail():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateEmailForm()
     if form.validate_on_submit():
             if Rankables.updateEmail(current_user.rankable_id, form.email.data):
@@ -109,6 +111,8 @@ def updateEmail():
 
 @bp.route('/updateName', methods=['GET', 'POST'])
 def updateName():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateNameForm()
     if form.validate_on_submit():
             if Rankables.updateName(current_user.rankable_id, form.name.data):
@@ -117,6 +121,8 @@ def updateName():
 
 @bp.route('/updateCategory', methods=['GET', 'POST'])
 def updateCategory():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateCategoryForm()
     if form.validate_on_submit():
             if Rankables.updateCategory(current_user.rankable_id, form.category.data):
@@ -125,6 +131,8 @@ def updateCategory():
 
 @bp.route('/updateAbout', methods=['GET', 'POST'])
 def updateAbout():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdateAboutForm()
     if form.validate_on_submit():
             if Rankables.updateAbout(current_user.rankable_id, form.about.data):
@@ -133,6 +141,8 @@ def updateAbout():
 
 @bp.route('/updatePassword', methods=['GET', 'POST'])
 def updatePassword():
+    if not current_user.is_authenticated:
+        return redirect(url_for('rankables.login'))
     form = UpdatePasswordForm()
     if form.validate_on_submit():
             if Rankables.updatePassword(current_user.rankable_id, form.password.data):

@@ -42,35 +42,25 @@
     </div>-->
   
     <!-- Sidebar/menu -->
-    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <nav class="w3-sidebar w3-collapse w3-animate-left w3-deep-purple" style="z-index:3;width:300px;" id="mySidebar"><br>
       <div class="w3-container w3-row">
-        <div class="w3-col s4">
-          <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
-        </div>
-        <div class="w3-col s8 w3-bar">
+        <div class="w3-col w3-bar w3-center" style= "margin-top:10%;">
           <span>
-            <strong>
+            <strong style="font-size: x-large;">
               {% block msg2 %}
                 {% if current_user.is_authenticated %}
-                  Welcome, {{current_user.name}}!
+                Welcome, {{current_user.name}}!  
                 {% endif %}
               {% endblock %}
             </strong>
           </span>
           <br>
-          <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-          <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-          <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
         </div>
       </div>
-      <hr>
-      <div class="w3-container">
-        <h5>Dashboard</h5>
-      </div>
-      <div class="w3-bar-block">
+      <div class="w3-bar-block" style="margin-top: 5%; font-size:large">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
           onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i> Close Menu</a>
-        <a href="{{ url_for('home.home') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-desktop fa-fw"></i> Dashboard</a>
+        <a href="{{ url_for('home.home') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
         <a href="{{ url_for('addMatches.addMatches') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-gamepad fa-fw"></i> Add a Match</a>
         <a href="{{ url_for('league_page.league_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Leagues</a>
         <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-trophy fa-fw"></i> Events</a>
@@ -98,10 +88,7 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
     {% block scripts %} {% endblock %}
     
-    <footer class="w3-container w3-padding-16 w3-light-grey">
-      <h4>FOOTER</h4>
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-    </footer>
+   
 
 <!--  -->
 
