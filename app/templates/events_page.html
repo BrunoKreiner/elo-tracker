@@ -104,7 +104,6 @@
 
 
 
-
       <div class="w3-twothird">
         <h5>Upcoming Events</h5>
         <table class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
@@ -112,7 +111,9 @@
             <tr>
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
-              <th scope="col">Date</th>              </tr>
+              <th scope="col">Date</th>   
+              <th scope="col">ELO Range</th>              
+            </tr>
           </thead>
           <tbody>
             {% for event in events_future_table%}
@@ -120,11 +121,15 @@
                 <td>{{event.name}}</td>
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
+                <td>{{event.minELO}} - {{event.maxELO}}</td>
+
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
+     
+
 
 
       
@@ -135,7 +140,9 @@
             <tr>
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
-              <th scope="col">Date</th>              </tr>
+              <th scope="col">Date</th>  
+              <th scope="col">ELO Range</th>              
+            </tr>
           </thead>
           <tbody>
             {% for event in events_past_table%}
@@ -143,6 +150,7 @@
                 <td>{{event.name}}</td>
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
+                <td>{{event.minELO}} - {{event.maxELO}}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -174,25 +182,7 @@
 <br>
 <div class="w3-container w3-dark-grey w3-padding-32">
 <div class="w3-row">
-<div class="w3-container w3-third">
-  <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-  <p>Language</p>
-  <p>Country</p>
-  <p>City</p>
-</div>
-<div class="w3-container w3-third">
-  <h5 class="w3-bottombar w3-border-red">System</h5>
-  <p>Browser</p>
-  <p>OS</p>
-  <p>More</p>
-</div>
-<div class="w3-container w3-third">
-  <h5 class="w3-bottombar w3-border-orange">Target</h5>
-  <p>Users</p>
-  <p>Active</p>
-  <p>Geo</p>
-  <p>Interests</p>
-</div>
+
 </div>
 </div>
 
