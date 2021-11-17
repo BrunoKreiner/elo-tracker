@@ -12,40 +12,6 @@
 <div class="w3-panel" style="padding-top:22px">
   <div class="w3-row-padding" style="margin:0 -16px">
     <div class="w3-third">
-      <h5>Create A New League</h5>
-
-      <form action="" method="post">
-        {{ form.hidden_tag() }}
-       
-        <p>
-          {{ form.name.label }}<br/>
-          {{ form.name(size=32) }}<br/>
-          {% for error in form.name.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.president.label }} <br/>
-          {{ form.president(size=64) }}<br/>
-          {% for error in form.president.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
-      
-        <p>
-          {% with messages = get_flashed_messages() %}
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-          {% endwith %}
-        </p>
-        <p>{{ form.submit() }}</p>
-      </form>
-
 
       <h5>Join a League</h5>
 
@@ -110,6 +76,39 @@
     </tbody>
   </table>
 
+  <h5>Create A New League</h5>
+
+      <form action="" method="post">
+        {{ form.hidden_tag() }}
+       
+        <p>
+          {{ form.name.label }}<br/>
+          {{ form.name(size=32) }}<br/>
+          {% for error in form.name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.president.label }} <br/>
+          {{ form.president(size=64) }}<br/>
+          {% for error in form.president.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+      
+        <p>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endwith %}
+        </p>
+        <p>{{ form.submit() }}</p>
+      </form>
   
       <h5>All Leagues</h5>
 
