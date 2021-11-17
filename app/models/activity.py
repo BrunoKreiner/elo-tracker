@@ -2,13 +2,14 @@ from flask import current_app as app
 
 
 class Activity:
-    def __init__(self, name):
+    def __init__(self, name, category):
         self.name = name
+        self.category = category
 
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT name
+SELECT name, category
 FROM Activity
 ''')
         return [Activity(*row) for row in rows]
@@ -16,12 +17,12 @@ FROM Activity
 
 # add a new activity.
     @staticmethod
-    def addActivity(name): # what were the try-except blocks for?
+    def addActivity(name, category): # what were the try-except blocks for?
         rows = app.db.execute("""
-INSERT INTO Activity(name)
-VALUES(:name)
+INSERT INTO Activity(name, category)
+VALUES(:name, :category)
 RETURNING name
-""", name=name)
+""", name=name, category=category)
         name = rows[0][0] # why do we want to return the first name?
         return name
 

@@ -15,7 +15,6 @@ from .models.product import Product
 from .models.purchase import Purchase
 from .models.league import Leagues
 from .models.match import Match
-
 from .models.activity import Activity
 
 from flask import render_template, redirect, url_for, flash, request
@@ -30,9 +29,10 @@ from flask import Blueprint
 bp = Blueprint('activity_page', __name__)
 
 
-class ActiivityForm(FlaskForm):
+class ActivityForm(FlaskForm):
 
     name = StringField(_l('name'), validators=[DataRequired()])
+    category = StringField(_l('category'), validators=[DataRequired()])
 
 
     submit = SubmitField(_l('Add Activity'))
@@ -49,17 +49,15 @@ def activity_page():
     # get table displaying all leagues:
     a_table = Activity.get_all()
 
-    # get table displaying all of my activities:
+    # get table displaying all of my activities in previous matches I have played:
     a2_table = Match.get_user_activities(current_user.rankable_id, now)
 
     # create a form to add a league.
-    form = ActiivityForm() # should i define another method for adding an activity separate from activity_page?
+    form = ActivityForm() # should i define another method for adding an activity separate from activity_page?
     if form.validate_on_submit():
         # print('success')
-        if Activity.addActivity(
-        form.name.data):
+        if Activity.addActivity(form.name.data,form.category.data):
             flash('Congratulations, you have added a new Activity!')
-            print('yay!')
             return redirect(url_for('activity_page.activity_page'))
             
 

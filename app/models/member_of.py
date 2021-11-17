@@ -10,28 +10,28 @@ class Member_of:
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT l_id, user_id, status
+SELECT name, email, status
 FROM Member_of
 ''')
         return [Member_of(*row) for row in rows]
 
 
     @staticmethod # get the leagues the logged in user is a member of.
-    def get_user_leagues(rankable_id):
+    def get_user_leagues(email):
         rows = app.db.execute('''
-SELECT l_id, user_id, status
+SELECT name, email, status
 FROM Member_of
-WHERE user_id = :rankable_id
-''', rankable_id = rankable_id) # WHERE user_id = {{current_user.name}}
-        return [Member_of(*row) for row in rows]
+WHERE email = :email
+''', email = email)
+        return [row for row in rows]
 
     # add a new Member_of.
     @staticmethod
-    def addMember(l_id, user_id, status): 
+    def addMember(name, email, status): 
         rows = app.db.execute("""
-INSERT INTO Member_of(l_id, user_id, status)
-VALUES(:l_id, :user_id, :status)
-RETURNING l_id
-""", l_id=l_id, user_id=user_id, status=status)
-        l_id = rows[0][0]
-        return l_id
+INSERT INTO Member_of(name, email, status)
+VALUES(:name, :email, :status)
+RETURNING name
+""", name=name, email=email, status=status)
+        name = rows[0][0]
+        return name

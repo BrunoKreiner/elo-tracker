@@ -46,7 +46,71 @@
         <p>{{ form.submit() }}</p>
       </form>
 
+
+      <h5>Join a League</h5>
+
+      <form action="" method="post">
+        {{ leagueform.hidden_tag() }}
+       
+        <p>
+          {{ leagueform.name.label }}<br/>
+          {{ leagueform.name(size=32) }}<br/>
+          {% for error in leagueform.name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ leagueform.email.label }} <br/>
+          {{ leagueform.email(size=64) }}<br/>
+          {% for error in leagueform.email.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ leagueform.status.label }} <br/>
+          {{ leagueform.status(size=64) }}<br/>
+          {% for error in leagueform.status.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </p>
+      
+      
+        <p>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endwith %}
+        </p>
+        <p>{{ form.submit() }}</p>
+      </form>
+
+
     <div class="w3-twothird">
+      <h5>My Leagues</h5>
+
+  <table class="w3-table w3-striped w3-white">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">League</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in myleagues_table%}
+      <tr>
+        <td>{{member.name}}</td>
+        <td>{{member.status}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  
       <h5>All Leagues</h5>
 
       <table class="w3-table w3-striped w3-white">
@@ -71,25 +135,7 @@
   </div>
 </div>
 
-<div class="w3-twothird">
-  <h5>My Leagues</h5>
-
-  <table class="w3-table w3-striped w3-white">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">user_id</th>
-        <th scope="col">status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for member in myleagues_table%}
-      <tr>
-        <td>{{member.user_id}}</td>
-        <td>{{member.status}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  
 
 
 

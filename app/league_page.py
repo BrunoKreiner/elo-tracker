@@ -29,17 +29,21 @@ class LeagueForm(FlaskForm):
 
     submit = SubmitField(_l('Add League'))
 
+class JoinLeagueForm(FlaskForm):
+
+    name = StringField(_l('name'), validators=[DataRequired()])
+    email = StringField(_l('email'), validators=[DataRequired()])
+    status = StringField(_l('status'), validators=[DataRequired()])
+
+    submit = SubmitField(_l('Joined a League'))
+
+
 @bp.route('/league_page', methods=['GET', 'POST'])
 def league_page():
     if not current_user.is_authenticated:
         return redirect(url_for('rankables.login'))
-    # get table displaying all leagues:
-    l_table = Leagues.get_all()
-
-    # get table displaying user leagues:
-    myleagues_table = Member_of.get_user_leagues(current_user.name)
-
-    # create a form to add a league.
+    
+        # create a form to add a league.
     form = LeagueForm()
     if form.validate_on_submit():
         # print('success')
@@ -49,6 +53,26 @@ def league_page():
             flash('Congratulations, you have added a new League!')
             print('yay!')
             return redirect(url_for('league_page.league_page'))
+    
+    # create a form to join a league.
+    leagueform = JoinLeagueForm()
+    if leagueform.validate_on_submit():
+        # print('success')
+        if Member_of.addMember(
+        leagueform.name.data,
+        leagueform.email.data,
+        leagueform.status.data):
+            flash('Congratulations, you have joined a new League!')
+            print('yay!')
+            return redirect(url_for('league_page.league_page'))
+    
+    
+    # get table displaying all leagues:
+    l_table = Leagues.get_all()
+
+    # get table displaying user leagues:
+    myleagues_table = Member_of.get_user_leagues(current_user.email)
+    print("ola", myleagues_table[0])
 
     # populate the Member_of table with one more user after button push.
     # button = JoinButton() # is there a button class?
@@ -65,7 +89,7 @@ def league_page():
 
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
-                           league_table=l_table, myleagues_table=myleagues_table, form=form)
+                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform)
 
 
 ButtonPressed = 0        

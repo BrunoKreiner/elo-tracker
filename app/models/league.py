@@ -15,7 +15,6 @@ FROM League
 ''')
         return [Leagues(*row) for row in rows]
 
-    # add a new league.
    # add a new league.
     @staticmethod
     def addLeague(name, president): # what were the try-except blocks for?
