@@ -2,6 +2,24 @@
 
 {% block content %}
 
+<head>
+  <style>
+  body {background-color: powderblue;}
+  h5   {color: darkmagenta;}
+  p    {color: darkmagenta;}
+  .column {
+  float: left;
+  width: 50%;
+}
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+    </style>
+</head>
 
 <div class="w3-main" style="margin-left:300px;"></div>
 
@@ -11,7 +29,7 @@
 
 <div class="w3-panel" style="padding-top:22px">
   <div class="w3-row-padding" style="margin:0 -16px">
-    <div class="w3-third">
+    <div class="column w3-third">
 
       <h5>Join a League</h5>
 
@@ -65,62 +83,65 @@
         </p>
         <p>{{ leagueform.submit() }}</p>
       </form>
+    
+    <h5>My Leagues</h5>
+
+    <table class="w3-table w3-striped w3-white">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">League</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in myleagues_table%}
+        <tr>
+          <td>{{member.name}}</td>
+          <td>{{member.status}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
 
 
-    <div class="w3-twothird">
-      <h5>My Leagues</h5>
 
-  <table class="w3-table w3-striped w3-white">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">League</th>
-        <th scope="col">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for member in myleagues_table%}
-      <tr>
-        <td>{{member.name}}</td>
-        <td>{{member.status}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="column w3-third">
 
-  <h5>Create A New League</h5>
+    <h5>Create A New League</h5>
 
-      <form action="" method="post">
-        {{ form.hidden_tag() }}
-       
-        <p>League
-          {{ form.name.label }}<br/>
-          {{ form.name(size=32) }}<br/>
-          {% for error in form.name.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.president.label }} <br/>
-          {{ form.president(size=64) }}<br/>
-          {% for error in form.president.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
-      
-        <p>
-          {% with messages = get_flashed_messages() %}
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+        
+          <p>League
+            {{ form.name.label }}<br/>
+            {{ form.name(size=32) }}<br/>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
-          </ul>
-          {% endif %}
-          {% endwith %}
-        </p>
-        <p>{{ form.submit() }}</p>
-      </form>
-  
+          </p>
+          <p>
+            {{ form.president.label }} <br/>
+            {{ form.president(size=64) }}<br/>
+            {% for error in form.president.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+        
+          <p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+          </p>
+          <p>{{ form.submit() }}</p>
+        </form>
+    
       <h5>All Leagues</h5>
 
       <table class="w3-table w3-striped w3-white">
@@ -144,8 +165,6 @@
     </div>
   </div>
 </div>
-
-  
 
 
 
