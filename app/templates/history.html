@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
 <div class="w3-main" style="margin-left:300px;;"></div>
 
@@ -50,17 +55,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for match in my_matches%}
-      <tr>
-        <!--  <th scope="row">{{match.id}}</th>  --> 
-        <td>{{match.activity}}</td>
-        <td>{{match.id}}</td>
-        <td>{{match.user2_id}}</td>
-        <td>{{match.user1_score}}</td>
-        <td>{{match.user2_score}}</td>
-        <td>{{match.datetime}}</td>
-      </tr>
-      {% endfor %}
+      
     </tbody>
     </table>
 
@@ -68,12 +63,23 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
+<script>
     $(document).ready(function () {
-      $('#data').DataTable();
+      $('#data').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '/data',
+        columns: [
+          {data: 'activity'},
+          {data: 'match ID', searchable: false}
+        ],
+      });
     });
   </script>
 {% endblock %}
+
+<script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+
 
 <script>
   function myFunction() {

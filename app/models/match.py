@@ -14,6 +14,12 @@ class Match:
         self.user2_score = user2_score
         self.datetime = datetime
 
+    def to_dict(self):
+        return {
+            'activity': self.activity,
+            'match ID': self.id
+        }
+
     @staticmethod
     def get(id):
         rows = app.db.execute('''
@@ -35,6 +41,17 @@ FROM Matches
         return [Match(*row) for row in rows]
 
     @staticmethod
+    def get_all_offset(start, lim, available=True):
+        rows = app.db.execute('''
+SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+FROM Matches
+LIMIT :lim
+OFFSET :start
+''',
+                              lim=lim, start=start)
+        return [Match(*row) for row in rows]
+
+    @staticmethod
     def get_user_activities(user_id, curr_datetime):
         rows = app.db.execute('''
 SELECT DISTINCT activity
@@ -45,7 +62,7 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
         return [row[0] for row in rows]
 
     @staticmethod
-    def get_user_history(user_id, activity, start_time, end_time, curr_datetime):
+    def get_user_history_full(user_id, activity, start_time, end_time, curr_datetime):
         rows = []
 
         if activity is None and start_time is None:
@@ -56,6 +73,83 @@ WHERE user1_ID = :user_id AND date_time < :curr_datetime
     WHERE user1_ID = :user_id AND date_time < :curr_datetime
     ''',
                                 user_id=user_id, curr_datetime=curr_datetime)
+            matches_user2 = app.db.execute('''
+    SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
+    FROM Matches
+    WHERE user2_ID = :user_id AND date_time < :curr_datetime
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime)
+            rows += matches_user1 + matches_user2
+        elif start_time is None:
+            print('yes')
+            matches_user1 = app.db.execute('''
+    SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+    FROM Matches
+    WHERE user1_ID = :user_id AND date_time < :curr_datetime AND activity = :activity
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, activity=activity)
+            matches_user2 = app.db.execute('''
+    SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
+    FROM Matches
+    WHERE user2_ID = :user_id AND date_time < :curr_datetime AND activity = :activity
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, activity=activity)
+            rows += matches_user1 + matches_user2
+
+        elif activity is None:
+            matches_user1 = app.db.execute('''
+    SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+    FROM Matches
+    WHERE user1_ID = :user_id AND date_time < :curr_datetime
+    AND date_time > :start_time AND date_time < :end_time
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, start_time=start_time, end_time=end_time)
+            matches_user2 = app.db.execute('''
+    SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
+    FROM Matches
+    WHERE user2_ID = :user_id AND date_time < :curr_datetime 
+    AND date_time > :start_time AND date_time < :end_time
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, start_time=start_time, end_time=end_time)
+            rows += matches_user1 + matches_user2
+        else:
+            matches_user1 = app.db.execute('''
+    SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+    FROM Matches
+    WHERE user1_ID = :user_id AND date_time < :curr_datetime
+    AND date_time > :start_time AND date_time < :end_time
+    AND activity = :activity
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, start_time=start_time, end_time=end_time, activity=activity)
+            matches_user2 = app.db.execute('''
+    SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
+    FROM Matches
+    WHERE user2_ID = :user_id AND date_time < :curr_datetime 
+    AND date_time > :start_time AND date_time < :end_time
+    AND activity = :activity
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, start_time=start_time, end_time=end_time, activity=activity)
+            rows += matches_user1 + matches_user2
+        #rows = matches_user1 + matches_user2
+        print(rows)
+        rows.sort(key=sortingFunc)
+        rows = [Match(*row) for row in rows]
+        return rows
+
+    @staticmethod
+    def get_user_history(user_id, activity, start_time, end_time, curr_datetime, start_page=0, offset_lim=3):
+        rows = []
+
+        if activity is None and start_time is None:
+            print('yes')
+            matches_user1 = app.db.execute('''
+    SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+    FROM Matches
+    WHERE user1_ID = :user_id AND date_time < :curr_datetime
+    LIMIT :limit
+    OFFSET :start_page
+    ''',
+                                user_id=user_id, curr_datetime=curr_datetime, limit=offset_lim, start_page=start_page)
             matches_user2 = app.db.execute('''
     SELECT activity, matchID, user2_ID, user1_ID, user2_score, user1_score, date_time
     FROM Matches
