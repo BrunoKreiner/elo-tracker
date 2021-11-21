@@ -47,8 +47,7 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">Activity</th>
-        <th scope="col">Match ID</th>
-        <th scope="col">Opponent ID</th>
+        <th scope="col">Opponent Name</th>
         <th scope="col">Your Score</th>
         <th scope="col">Their Score</th>
         <th scope="col">Datetime</th>
@@ -62,16 +61,36 @@
 
 {% endblock %}
 
+
+
 {% block scripts %}
+<input type="hidden"  id="filter-activity" value="{{ filterActivity }}">
+<input type="hidden"  id="startdate" value="{{ start_date }}">
+<input type="hidden"  id="enddate" value="{{ end_date }}">
 <script>
+  var filter_activity = document.querySelector('#filter-activity').value;
+  var start_date = document.querySelector('#startdate').value;
+  var end_date = document.querySelector('#enddate').value;
     $(document).ready(function () {
       $('#data').DataTable({
+        searching: false,
         processing: true,
         serverSide: true,
-        ajax: '/data',
+        ajax: {
+          'type': 'POST',
+          'url': '/data',
+          'data': {
+            filterActivity: filter_activity,
+            startDate: start_date,
+            endDate: end_date
+          },
+        },
         columns: [
           {data: 'activity'},
-          {data: 'match ID', searchable: false}
+          {data: 'user2_name'},
+          {data: 'user1_score'},
+          {data: 'user2_score'},
+          {data: 'date_time'}
         ],
       });
     });
