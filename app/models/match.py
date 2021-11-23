@@ -512,7 +512,7 @@ RETURNING matchID
                                   datetime=datetime,
                                   accepted=accepted)
             matchID = rows[0][0]
-            """
+            
             if user1_score is not None:
                 if(not does_play(activity, user1_id)):
                     plays_activity(activity, user1_id)
@@ -523,7 +523,7 @@ RETURNING matchID
                 SELECT user_ID, activity, elo
                 FROM ParticipatesIn
                                     '''))
-            """
+            
             return matchID
         except Exception as e:
             print(str(e))

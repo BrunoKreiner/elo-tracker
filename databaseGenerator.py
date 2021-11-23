@@ -61,12 +61,19 @@ def matchRow(i):
   users = random.sample(range(0, 9), 2)
 
   p = random.random()
-  if p < 0.5:
+  q = random.random()
+  accepted = False
+  score1 = None
+  score2 = None
+  if p < 0.9:
     score1 = random.randint(0, 21)
     score2 = random.randint(0, 21)
+    if q < 0.9:
+      accepted = True
+
 
   #return [activities[random.randint(0, 9)], i, users[0],  users[1],  random.randint(0, 21),  random.randint(0, 21), timestamp, True]
-  return [activities[random.randint(0, 9)], i, users[0],  users[1],  None,  None, timestamp, False]
+  return [activities[random.randint(0, 9)], i, users[0],  users[1],  score1,  score2, timestamp, accepted]
 
 
 writeToFile("Matches", generateRows(matchRow))
