@@ -13,6 +13,9 @@
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -66,7 +69,10 @@
         <a href="{{ url_for('events_page.events_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-trophy fa-fw"></i> Events</a>
         <a href="{{ url_for('activity_page.activity_page') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-handshake-o fa-fw"></i> Activities</a>
         <a href="{{ url_for('history.history') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> My Match History</a>
+        <a href="{{ url_for('unconfirmedMatches.unconfirmedMatches') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-question"></i> Unconfirmed Matches</a>
+        <a href="{{ url_for('futureMatches.futureMatches') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-calendar"></i> Future Matches</a>
         <a href="{{ url_for('players.players') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> View Players</a>
+      
         {% block msg %}
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('rankables.logout') }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sign-out fa-fw"></i> Log out</a><br><br>

@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_login import current_user
-from datetime import datetime
+from datetime import datetime, date
 
 
 from .models.product import Product

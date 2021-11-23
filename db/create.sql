@@ -28,7 +28,8 @@ CREATE TABLE Matches (
     user2_ID INT NOT NULL,
     user1_score INT,
     user2_score INT,
-    date_time TIMESTAMP NOT NULL
+    date_time DATE NOT NULL,
+    accepted BOOLEAN NOT NULL
     -- accepted
 );
 

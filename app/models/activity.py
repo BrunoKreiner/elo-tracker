@@ -36,5 +36,14 @@ RETURNING name
         name = rows[0][0] # why do we want to return the first name?
         return name
 
+    @staticmethod
+    def get_category(name):
+        rows = app.db.execute('''
+SELECT category
+FROM Activity
+WHERE name = :name
+''',
+                name=name)
+        return rows[0][0]
 
 
