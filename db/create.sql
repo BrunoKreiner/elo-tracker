@@ -49,7 +49,7 @@ CREATE TABLE Rankables (
 );
 
 CREATE TABLE Member_of (
-    name VARCHAR NOT NULL, -- review hw2 triggers.
+    name VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     status VARCHAR(255) NOT NULL,
     PRIMARY KEY (name, email),
