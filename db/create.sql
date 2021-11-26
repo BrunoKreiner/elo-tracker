@@ -53,8 +53,8 @@ CREATE TABLE Member_of (
     email VARCHAR NOT NULL,
     status VARCHAR(255) NOT NULL,
     PRIMARY KEY (name, email),
-    Foreign key(name) references League(name),
-    Foreign key(email) references Rankables(email),
+    -- Foreign key(name) references League(name), -- error in load.sql  Key (email)=(annie.wang@duke.edu) is not present in table "rankables".
+    -- Foreign key(email) references Rankables(email),
     CHECK (status IN ('member', 'coach', 'president'))
 );
 
