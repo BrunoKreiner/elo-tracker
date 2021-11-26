@@ -24,18 +24,19 @@ bp = Blueprint('league_page', __name__)
 
 class LeagueForm(FlaskForm):
     
-    name = StringField(_l('name'), validators=[DataRequired()])
-    president = StringField(_l('president'), validators=[DataRequired()])
+    league_name = StringField(_l('League Name'), validators=[DataRequired()])
+    your_name = StringField(_l('Your Name'), validators=[DataRequired()])
+    email = StringField(_l('Email'), validators=[DataRequired()])
 
     submit = SubmitField(_l('Add League'))
 
 class JoinLeagueForm(FlaskForm):
 
-    name = StringField(_l('name'), validators=[DataRequired()])
+    league = StringField(_l('name'), validators=[DataRequired()])
     email = StringField(_l('email'), validators=[DataRequired()])
     status = StringField(_l('status'), validators=[DataRequired()])
 
-    submit = SubmitField(_l('Joined a League'))
+    submit = SubmitField(_l('Join a League'))
 
 
 @bp.route('/league_page', methods=['GET', 'POST'])
@@ -43,26 +44,28 @@ def league_page():
     if not current_user.is_authenticated:
         return redirect(url_for('rankables.login'))
     
-        # create a form to add a league.
+    
     form = LeagueForm()
     if form.validate_on_submit():
         # print('success')
         if Leagues.addLeague(
-        form.name.data,
-        form.president.data):
-            flash('Congratulations, you have added a new League!')
-            print('yay!')
-            return redirect(url_for('league_page.league_page'))
-    
+        form.league_name.data,
+        form.your_name.data):
+            if Member_of.addMember(
+        form.league_name.data,
+        form.email.data,
+        'president'):
+                print('yay!')
+                return redirect(url_for('league_page.league_page'))
+        
     # create a form to join a league.
     leagueform = JoinLeagueForm()
     if leagueform.validate_on_submit():
         # print('success')
         if Member_of.addMember(
-        leagueform.name.data,
+        leagueform.league.data,
         leagueform.email.data,
         leagueform.status.data):
-            flash('Congratulations, you have joined a new League!')
             print('yay!')
             return redirect(url_for('league_page.league_page'))
     
@@ -70,9 +73,13 @@ def league_page():
     # get table displaying all leagues:
     l_table = Leagues.get_all()
 
-    # get table displaying user leagues:
+    # get table displaying user leagues: (why arent these two methods working anymore?) create.sql load
     myleagues_table = Member_of.get_user_leagues(current_user.email)
-    print("ola", myleagues_table[0])
+
+    # table of all valid statuses.
+    all_statuses = Member_of.get_valid_status()
+
+
 
     # populate the Member_of table with one more user after button push.
     # button = JoinButton() # is there a button class?
@@ -89,13 +96,6 @@ def league_page():
 
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
-                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform)
+                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform, all_statuses=all_statuses)
 
 
-ButtonPressed = 0        
-@bp.route('/league_page', methods=["GET", "POST"])
-def button():
-    if request.method == "POST":
-        return render_template("league_page.html", ButtonPressed = ButtonPressed)
-        # I think you want to increment, that case ButtonPressed will be plus 1.
-    return render_template("league_page.html", ButtonPressed = ButtonPressed)

@@ -2,21 +2,35 @@
 
 {% block content %}
 
+<head>
+  <style>
+  body {background-color: powderblue;}
+  h5   {color: rgba(73, 20, 158, 0.794);}
+  p    {color: rgba(73, 20, 158, 0.794);}
+  .column {
+  float: left;
+  width: 50%;
+}
+</style>
+</head>
+
 <div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container w3-center" style="padding-top:50px">
   <h2><b><i class="fa fa-handshake-o"></i> Activities</b></h2>
 </header>
 
+
 <div class="w3-panel" style="padding-top:22px">
   <div class="w3-row-padding" style="margin:0 -16px">
     <div class="w3-third">
-      <h5>Add New Activity</h5>
+
+      <h5>Create New Activity</h5>
       
 
       <form action="" method="post">
         {{ form.hidden_tag() }}
-        <p>
+        <p>Activity
           {{ form.name.label }}<br/>
           {{ form.name(size=32) }}<br/>
           {% for error in form.name.errors %}
@@ -24,13 +38,15 @@
           {% endfor %}
         </p>
 
-        <p>
-          {{ form.category.label }}<br/>
-          {{ form.category(size=32) }}<br/>
-          {% for error in form.category.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
+        <p>Select Playable Category
+          <select class="filterCategory" id="category" name="category">
+            <option value="all">All</option>
+            {% for cat in category%}
+            <p> {{cat}} </p>
+              <option value={{cat}}>{{cat}}</option>
+            {% endfor %}
+          </select>
+          </p>
   
         <p>
           {% with messages = get_flashed_messages() %}
@@ -49,42 +65,53 @@
     </div>
 
     <div class="w3-twothird">
+
+    <h5>My Activities</h5>
+
+    <table class="w3-table w3-striped w3-white">
+      <thead class="thead-dark">
+        <tr>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in my_activities_table%}
+        <tr>
+          <th scope="row">{{i}}</th>
+        </tr>
+        {% endfor %}
+      </tbody>
+    
+    
+    </table>
+
       <h5>Current Activities</h5>
-      <table class="w3-table w3-striped w3-white">
+      <table id="data2"  class="w3-table w3-striped w3-white">
         <thead class="thead-dark">
           <tr>
+            <th scope="col">Activity</th>
+            <th scope="col">Category</th>
           </tr>
         </thead>
         <tbody>
-          {% for a in activity_table[:10] %}
+          {% for a in activity_table %}
           <tr>
-            <th scope="row">{{a.name}}</th>
-            <th scope="row">{{a.category}}</th>
+            <td>{{a.name}}</td>
+            <td>{{a.category}}</td>
           </tr>
           {% endfor %}
         </tbody>
-
-
-      </table>
-
-      <h5>My Activities</h5>
-      <table class="w3-table w3-striped w3-white">
-        <thead class="thead-dark">
-          <tr>
-          </tr>
-        </thead>
-        <tbody>
-          {% for i in my_activities_table%}
-          <tr>
-            <th scope="row">{{i}}</th>
-          </tr>
-          {% endfor %}
-        </tbody>
-
-
-      </table>
+        </table>
+      
     </div>
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data2').DataTable();
+  });
+</script>
 {% endblock %}
