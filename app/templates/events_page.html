@@ -85,7 +85,8 @@
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
               <th scope="col">Date</th>   
-              <th scope="col">ELO Range</th>              
+              <th scope="col">ELO Range</th>         
+              <th scope="col">Toggle Admission</th>         
             </tr>
           </thead>
           <tbody>
@@ -94,7 +95,12 @@
                 <td>{{event.name}}</td>
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
-                <td>{{event.minELO}} - {{event.maxELO}}</td>
+
+            <td>{{event.minELO}} - {{event.maxELO}}</td>
+            
+            <td><input type = "button" value = "Join Event" onclick = "toggleEvents()"> </td>
+              <!--<button onclick = "" type="button" class="w3-hover-text-white">Join Event!</button></td>-->
+
 
             </tr>
             {% endfor %}
