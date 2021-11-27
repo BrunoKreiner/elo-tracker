@@ -25,6 +25,15 @@ WHERE email = :email
 ''', email = email)
         return [row for row in rows]
 
+    @staticmethod # get the leagues the logged in user is a member of.
+    def get_num_user_leagues(email):
+        rows = app.db.execute('''
+SELECT COUNT(*)
+FROM Member_of
+WHERE email = :email
+''', email = email)
+        return rows[0][0]
+
     # add a new Member_of.
     @staticmethod
     def addMember(name, email, status): 

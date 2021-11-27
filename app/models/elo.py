@@ -9,7 +9,10 @@ def get_current(id, activity):
     FROM ParticipatesIn
     WHERE :id = user_ID AND :activity = activity
                             ''', id = id, activity = activity)
+    print(activity)
+    print(current)
     return current[0][0]
+    
 
 #    current = app.db.execute('''
 #    SELECT elo
@@ -47,6 +50,15 @@ def get_average(id):
         average = "1000"
     return average
 
+def get_num_activities(id):
+    # Implementation tbd
+    num = app.db.execute('''
+        SELECT COUNT(*)
+        FROM ParticipatesIn
+        WHERE :id = user_ID
+                                ''', id = id)
+    return num[0][0]
+
 def get_all_averages():
     averages = app.db.execute('''
     SELECT user_ID, AVG(elo) AS avg
@@ -77,6 +89,21 @@ def get_max(id):
     except (exc.SQLAlchemyError, TypeError) as e:
         maximum = "1000"
     return maximum
+
+def get_activity_by_elo(id, elo):
+    try:
+        activity = app.db.execute('''
+        SELECT activity
+        FROM ParticipatesIn
+        WHERE :id = user_ID AND :elo=elo
+                                ''', id = id, elo=elo)
+        if not activity:
+            activity = "No matches played"
+        else:
+            activity = activity[0][0]
+    except (exc.SQLAlchemyError, TypeError) as e:
+        activity = "No matches played"
+    return activity
 
 def get_min(id):
     try:
