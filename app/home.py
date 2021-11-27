@@ -3,7 +3,7 @@ from flask_login import current_user
 from datetime import datetime
 
 
-from .models.elo import elo_ref
+#from .models.elo import elo_ref
 from .models.elo import *
 from .models.match import Match
 

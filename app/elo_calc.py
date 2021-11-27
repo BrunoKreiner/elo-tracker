@@ -3,7 +3,7 @@ import math as m
 import time as t
 import random as r
 from .models import elo
-# import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 d = 15
 

@@ -79,7 +79,7 @@
 
       <div class="w3-twothird">
         <h5>Upcoming Events</h5>
-        <table class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+        <table id = "data4" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
@@ -114,7 +114,7 @@
       
       <div class="w3-twothird">
         <h5>Past Events</h5>
-        <table class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+        <table id = "data5" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
@@ -141,4 +141,16 @@
 
 
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data4').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#data5').DataTable();
+  });
+</script>
 {% endblock %}

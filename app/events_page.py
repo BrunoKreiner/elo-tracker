@@ -25,6 +25,7 @@ class EventsForm(FlaskForm):
 
     submit = SubmitField(_l('Add Event'))
 
+## add a join events form here
 
 
 @bp.route('/events_page', methods = ['GET', 'POST'])

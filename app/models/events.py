@@ -56,7 +56,7 @@ ORDER BY date, name
         if minELO is None:
             minELO = 0 
         if maxELO is None:
-            maxELO = 3200
+            maxELO = 2000
         maxEventId = app.db.execute("""
 SELECT MAX(event_id)
 FROM Events
