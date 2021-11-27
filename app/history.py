@@ -2,9 +2,6 @@ from flask import render_template
 from flask_login import current_user
 from datetime import datetime, date
 
-
-from .models.product import Product
-from .models.purchase import Purchase
 from .models.match import Match
 
 

@@ -11,4 +11,5 @@
 \COPY ELOHistory FROM 'data/ELOHistory.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY Rankables FROM 'data/Rankables.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Notifications FROM 'data/Notifications.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.rankables_rankable_id_seq', 10, false)

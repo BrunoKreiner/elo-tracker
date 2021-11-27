@@ -14,17 +14,9 @@ def unconfirmedMatches():
     start_date = None
     end_date = None
         
-
-    # get all available products for sale:
     matches = Match.get_user_incomplete_matches(current_user.rankable_id, filtered_activity, start_date, end_date, now, 0, 100000, 'date_time', 'ASC')
     myActivities = Match.get_user_activities(current_user.rankable_id, now)
-    # find the products current user has bought:
-    #if current_user.is_authenticated:
-    #    purchases = Purchase.get_all_by_uid_since(
-    #        current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-    #else:
-    #    purchases = None
-    # render the page by adding information to the index.html file
+    
     print('filtered activity from unconfirmed_Matchesches is: ', filtered_activity)
     return render_template('unconfirmedMatches.html', my_matches=matches, my_activities=myActivities, filterActivity=filtered_activity,
                                             start_date=start_date, end_date=end_date) 
@@ -67,7 +59,7 @@ def edit(match_id):
         return redirect(url_for('rankables.login'))
     now = datetime.now()
 
-    # get all available products for sale:
+
     matches = Match.get_user_incomplete_matches(current_user.rankable_id, None, None, None, now, 0, 100000, 'date_time', 'ASC')
     
     return render_template('unconfirmedMatches.html', my_matches=matches) 
