@@ -19,7 +19,7 @@ def generateRows(rowFunction):
   return rows
 
 def activityRow(i): 
-  return ["fakeactivity{num}".format(num = i)] 
+  return ["fakeactivity{num}".format(num = i),"People"] 
 
 def eventRow(i):
   year = random.randint(2000, 2021)
@@ -28,7 +28,7 @@ def eventRow(i):
   randomDate = "{}-{:02d}-{:02d}".format(year, month, day)
   randomActivity = "fakeactivity{num}".format(num = i)
   randomEvent = "Fake Event {num}".format(num = i)
-  return [randomEvent, randomActivity, randomDate]
+  return [i, randomEvent, randomActivity, randomDate, random.randint(300, 1000), random.randint(500, 2000)]
 
 def leagueRow(i):
   return [i, "fake league{num}".format(num = i), "fake name{num}".format(num = i)]
@@ -36,8 +36,8 @@ def leagueRow(i):
 def participatesRow(i): 
   return [i, "fakeactivity{num}".format(num = i), random.randint(200, 2000)]
 
-def peopleRow(i): 
-  return [i, "fake name{num}".format(num = i), "password1"]
+def ELORow(i): 
+  return [random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
 
   
 def rankableRow(i): 
@@ -52,7 +52,10 @@ def matchRow(i):
   second = random.randint(0, 59)
 
   timestamp = "{}-{:02d}-{:02d} {}:{:02d}:{:02d}".format(year, month, day, hour, minute, second)
-  return ["fakeactivity{num}".format(num = i), i, random.randint(20, 4999),  random.randint(20, 4999),  random.randint(0, 21),  random.randint(0, 21), timestamp]
+  return ["fakeactivity{num}".format(num = i), i, 3,  random.randint(20, 4999),  random.randint(0, 21),  random.randint(0, 21), timestamp]
 
-
-writeToFile("Matches", generateRows(matchRow))
+writeToFile("Activity", generateRows(activityRow))
+#writeToFile("Matches", generateRows(matchRow))
+#writeToFile("ParticipatesIn", generateRows(participatesRow))
+#writeToFile("ELOHistory", generateRows(ELORow))
+#writeToFile("Events", generateRows(eventRow))
