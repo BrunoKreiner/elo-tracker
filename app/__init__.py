@@ -43,5 +43,8 @@ def create_app():
 
     from .events_page import bp as events_bp
     app.register_blueprint(events_bp)
+    
+    from .notifications import bp as notifications_bp
+    app.register_blueprint(notifications_bp)
 
     return app
