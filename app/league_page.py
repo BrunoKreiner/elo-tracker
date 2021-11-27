@@ -31,11 +31,11 @@ class LeagueForm(FlaskForm):
 
 class JoinLeagueForm(FlaskForm):
 
-    name = StringField(_l('name'), validators=[DataRequired()])
+    league = StringField(_l('name'), validators=[DataRequired()])
     email = StringField(_l('email'), validators=[DataRequired()])
     status = StringField(_l('status'), validators=[DataRequired()])
 
-    submit = SubmitField(_l('Joined a League'))
+    submit = SubmitField(_l('Join a League'))
 
 
 @bp.route('/league_page', methods=['GET', 'POST'])
@@ -59,9 +59,10 @@ def league_page():
     if leagueform.validate_on_submit():
         # print('success')
         if Member_of.addMember(
-        leagueform.name.data,
+        leagueform.league.data,
         leagueform.email.data,
         leagueform.status.data):
+            flash('Congratulations, you have joined a new League!')
             flash('Congratulations, you have joined a new League!')
             print('yay!')
             return redirect(url_for('league_page.league_page'))
@@ -72,7 +73,9 @@ def league_page():
 
     # get table displaying user leagues:
     myleagues_table = Member_of.get_user_leagues(current_user.email)
-    print("ola", myleagues_table[0])
+    all_statuses = Member_of.get_valid_status()
+    print(all_statuses)
+
 
     # populate the Member_of table with one more user after button push.
     # button = JoinButton() # is there a button class?
@@ -89,7 +92,7 @@ def league_page():
 
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
-                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform)
+                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform, all_statuses=all_statuses)
 
 
 ButtonPressed = 0        

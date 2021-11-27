@@ -1,7 +1,6 @@
 from flask import current_app as app
 
 class Leagues:
-    
     def __init__(self, l_id, name, president):
         self.l_id = l_id
         self.name = name
