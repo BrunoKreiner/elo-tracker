@@ -72,7 +72,6 @@ def league_page():
 
     # get table displaying user leagues:
     myleagues_table = Member_of.get_user_leagues(current_user.email)
-    print("ola", myleagues_table[0])
 
     # populate the Member_of table with one more user after button push.
     # button = JoinButton() # is there a button class?

@@ -6,15 +6,21 @@
 <div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container w3-center" style="padding-top:50px">
-  <h2><b><i class="fa fa-eye"></i> View Players</b></h2>
+  <h2><b><i class="fa fa-eye"></i> Leaderboards</b></h2>
 </header>
 
 <div class="w3-container" style="padding-top:22px">
     <div class="w3-container w3-center" style="margin:2%;">
-        <input type="text" id="nameSearch" placeholder="Name" name="search">
-        <!--<button type="submit" onclick="searchName()"><i class="fa fa-search"></i></button>-->
-        <input type="text" id="categorySearch" placeholder="Category" name="search">
-        <button type="submit" onclick="searchAll()"><i class="fa fa-search"></i></button>
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <p style="font-size:medium;">
+            {{ form.activity(size=25,placeholder="Activity") }}
+            {% for error in form.activity.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
+        </form>
+        <p>Activity: {{activity}}</p>>
     </div>
     <table id="myTable" class="w3-table w3-striped w3-white">
         <thead class="thead-dark">
@@ -46,6 +52,14 @@
         </tbody>
       </table>
 </div>
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable();
+    });
+  </script>
+{% endblock %}
 
 <script>
     let searchString = "";

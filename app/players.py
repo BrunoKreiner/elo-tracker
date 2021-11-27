@@ -1,6 +1,10 @@
 from flask import render_template
 from flask_login import current_user
 import datetime
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask_babel import _, lazy_gettext as _l
 
 from .models.elo import *
 from .models.rankables import Rankables
@@ -9,11 +13,17 @@ from .models.rankables import Rankables
 from flask import Blueprint, redirect, url_for, request
 bp = Blueprint('players', __name__)
 
+class ActivityForm(FlaskForm):
+    activity = StringField(_l('Activity'), validators=[DataRequired()])
+    submit = SubmitField(_l('Confirm'))
+
 
 @bp.route('/players')
 def players():
     if not current_user.is_authenticated:
         return redirect(url_for('rankables.login'))
+    form = ActivityForm()
+    
     r_table = Rankables.get_all_visible()
     e_table = get_all_averages()
     uninitializedIDs = []

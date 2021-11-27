@@ -204,5 +204,21 @@ def get_history(activity, id):
                                 ''', id = id, activity = activity)
     return history
 
+def get_by_activity(activity):
+    try:
+        pair = app.db.execute('''
+        SELECT user_ID, elo
+        FROM ParticipatesIn
+        WHERE :activity = activity
+        ORDER BY elo DESC
+                                ''', activity = activity)
+
+        minimum = minimum[0][0]
+        if minimum == None:
+            minimum = "1000"
+    except (exc.SQLAlchemyError, TypeError) as e:
+        minimum = "1000"
+    return minimum
+
 # Make a function that returns all the current ELOs for the activity the user plays
 # Function that averages these, and maxes them
