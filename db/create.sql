@@ -144,6 +144,37 @@ CREATE TRIGGER Match_To_Approve
   AFTER INSERT ON Matches
   FOR EACH ROW
   EXECUTE PROCEDURE Match_To_Approve();
+
+
+CREATE FUNCTION ParticipatesInValidation() RETURNS TRIGGER AS $$
+
+DECLARE
+
+  temp_var INT;
+
+BEGIN
+  -- YOUR IMPLEMENTATION GOES HERE
+  select count(*) 
+  into temp_var
+  from ParticipatesIn 
+  where New.activity = ParticipatesIn.activity AND New.user1_ID = ParticipatesIn.user_ID;
+  
+  IF temp_var < 1 
+  THEN
+    INSERT INTO ParticipatesIn(user_ID, activity, elo)
+    VALUES(NEW.user1_ID, New.activity, 1000);
+    
+  
+  End if;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ParticipatesInValidation
+  BEFORE INSERT OR UPDATE ON Matches
+  FOR EACH ROW
+  EXECUTE PROCEDURE ParticipatesInValidation();
   
 
 -- trigger to enforce that a user cannot be the president of more than 3 leagues.

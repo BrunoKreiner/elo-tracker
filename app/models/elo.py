@@ -3,8 +3,22 @@ from .. import elo_calc as ec
 from sqlalchemy import exc
 from datetime import date
 
-def get_current(id, activity):
 
+    
+
+def get_activities(id):
+    current = app.db.execute('''
+    SELECT activity, elo
+    FROM ParticipatesIn
+    WHERE :id = user_ID 
+                            ''', id = id)
+    
+    print(current)
+    if current == []: 
+        return []
+    return current
+
+def get_current(id, activity):
     current = app.db.execute('''
     SELECT elo
     FROM ParticipatesIn

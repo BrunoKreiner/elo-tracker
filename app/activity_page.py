@@ -1,9 +1,12 @@
 from flask import render_template
 from flask_login import current_user
 from datetime import datetime
+
+from app.models.elo import get_current
 from .models.league import Leagues
 from .models.match import Match
 from .models.activity import Activity
+from .models.elo import get_activities
 
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
@@ -38,7 +41,10 @@ def activity_page():
     a_table = Activity.get_all()
 
     # get table displaying all of my activities in previous matches I have played:
-    a2_table = Match.get_user_activities(current_user.rankable_id, now)
+    a2_table = get_activities(current_user.rankable_id)
+    print(a2_table)
+    
+ 
     category = Activity.get_valid_category()
     # print(category)
 

@@ -68,7 +68,7 @@
 
     <h5>My Activities</h5>
 
-    <table class="w3-table w3-striped w3-white">
+    <table id = "data3" class="w3-table w3-striped w3-white">
       <thead class="thead-dark">
         <tr>
         </tr>
@@ -76,7 +76,8 @@
       <tbody>
         {% for i in my_activities_table%}
         <tr>
-          <th scope="row">{{i}}</th>
+          <td> {{i[0]}} </td>
+          <td> {{i[1]}} </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -113,5 +114,10 @@
   $(document).ready(function () {
     $('#data2').DataTable();
   });
+
+  $(document).ready(function () {
+    $('#data3').DataTable();
+  });
 </script>
 {% endblock %}
+
