@@ -2,74 +2,72 @@
 
 {% block content %}
 
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container w3-center" style="padding-top:50px">
-  <h2><b><i class="fa fa-eye"></i> View Players</b></h2>
+  <h2><b><i class="fa fa-eye"></i> Leaderboards</b></h2>
 </header>
 
 <div class="w3-container" style="padding-top:22px">
     <div class="w3-container w3-center" style="margin:2%;">
-        <input type="text" id="nameSearch" placeholder="Name" name="search">
-        <!--<button type="submit" onclick="searchName()"><i class="fa fa-search"></i></button>-->
-        <input type="text" id="categorySearch" placeholder="Category" name="search">
-        <button type="submit" onclick="searchAll()"><i class="fa fa-search"></i></button>
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <p style="font-size:medium;">
+            {{ form.activity(size=25,placeholder="Activity") }}
+            {% for error in form.activity.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
+        </form>
+        {% block msg3 %}
+          {%if not activity==None:%}
+            <h3 style="margin-top:50px;">Leaderboard for {{activity}}</h3>
+
     </div>
-    <table id="myTable" class="w3-table w3-striped w3-white">
+    <table id="myTable" class="table table-hover">
         <thead class="thead-dark">
           <tr>
+            <th scope="col">Rank</th>
             <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Average Elo</th>
-            <th scope="col">About</th>
-            
+            <th scope="col">Elo</th>  
+            <th scope="col">Profile</th>      
           </tr>
         </thead>
         <tbody>
-          {% for player in rankables%}
+          {% for entry in tableEntries%}
             <tr>
-                <th scope="row">{{player.name}}</th>
-                <td>{{player.category}}</td>
-                {% if player.rankable_id in uninitializedIDs %}
-                  <td>1000</td>
-                {% endif %}
-                {% for row in elos %}
-                  {% if row[0]==player.rankable_id %}
-                    <td>{{row[1]}}</td>
-                  {% endif %}
-                {% endfor %}
-                <td>{{player.about}}</td>
-                
+                <th scope="row">{{entry[0]}}</th>
+                <td>{{entry[1]}}</td>
+                <td>{{entry[2]}}</td>
+                <td>
+                  <form action="/players/{{entry[3]}}" method="POST">
+                    <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
+                  </form>
+                </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+      {%endif%}
+      {% endblock %}
 </div>
 
-<script>
-    let searchString = "";
-    let categoryString = "";
-    function searchAll() {
-        searchString=document.getElementById("nameSearch").value.toUpperCase();
-      categoryString=document.getElementById("categorySearch").value.toUpperCase();
-      table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            th = tr[i].getElementsByTagName("th")[0];
-            if (td && th) {
-            txtValue = td.textContent || td.innerText;
-            txtValue2 = th.textContent || th.innerText;
-            console.log(txtValue);
-            if (txtValue.toUpperCase().indexOf(categoryString) > -1 && txtValue2.toUpperCase().indexOf(searchString) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-            }       
-        }
-    }
-</script>
+
+
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        searching:false,
+        retrieve: true
+      });
+    });
+  </script>
+{% endblock %}
+
+
 
 {% endblock %}
