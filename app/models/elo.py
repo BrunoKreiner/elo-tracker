@@ -121,6 +121,30 @@ def get_min(id):
         minimum = "1000"
     return minimum
 
+def check_elo_change(user_id, activity):
+    description = "Your elo for {activity} has changed by {elo} points!"
+    maxElo = app.db.execute('''
+                          SELECT Max(Elo) FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = :user_id
+  ORDER BY id 
+  DESC LIMIT 2) AS foo ''',
+                                user_id = user_id)[0][0]
+    minElo = app.db.execute('''
+                          SELECT Min(Elo) FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = :user_id
+  ORDER BY id 
+  DESC LIMIT 2) AS foo ''',
+                                user_id = user_id)[0][0]
+    if maxElo - minElo > 200: 
+        app.db.execute('''
+                       INSERT INTO Notifications(user_id, descript)
+VALUES(:user_id, :description)
+returning user_id ''', user_id = user_id,
+                                    description = description.format(activity = activity, elo = maxElo - minElo))
+    
+    
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
     print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
@@ -133,7 +157,8 @@ def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
 SELECT MAX(id) FROM ELOHistory;
 """
                                   )[0][0]
-    print(maxID)
+    
+    
     p1_game = app.db.execute('''
     INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
     VALUES(:id, :p1_id, :activity, :p1_elo, :g_id)
@@ -144,6 +169,8 @@ SELECT MAX(id) FROM ELOHistory;
                                 activity = activity,
                                 p1_elo = p1_elo,
                                 g_id = g_id)
+    check_elo_change(p1_id, activity)
+   
     p2_game = app.db.execute('''
     INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
     VALUES(:id, :p2_id, :activity, :p2_elo, :g_id)
@@ -154,6 +181,7 @@ SELECT MAX(id) FROM ELOHistory;
                                 activity = activity,
                                 p2_elo = p2_elo,
                                 g_id = g_id)
+    check_elo_change(p2_id, activity)
     p1_update = app.db.execute('''
     UPDATE ParticipatesIn
     SET elo = :p1_elo

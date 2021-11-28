@@ -66,7 +66,7 @@ CREATE TABLE ELOHistory (
     activity VARCHAR(255) NOT NULL,
     elo INT NOT NULL,
     matchID INT,
-    PRIMARY KEY (user_id, activity),
+
     Foreign key(user_id) references Rankables(rankable_id),
     Foreign key(activity) references Activity(name) -- this foreign key constraint works!
 );
@@ -131,18 +131,33 @@ CREATE FUNCTION elo_notification() RETURNS TRIGGER AS $$
 
 DECLARE
 
-  temp_var INT;
+  maxElo INT;
+  minElo INT;
+  userID INT;
 
 BEGIN
   -- YOUR IMPLEMENTATION GOES HERE
-  select count(*) 
-  into temp_var
-  from League 
-  where League.president = New.president;
+  SELECT user_id into userID FROM ELOHistory ORDER BY id DESC LIMIT 1;  
+
+  SELECT Max(elo) 
+  into maxElo 
+  FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = userID
+  ORDER BY id 
+  DESC LIMIT 2) AS foo;
+
+  SELECT Min(elo) 
+  into minElo 
+  FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = userID
+  ORDER BY id 
+  DESC LIMIT 2) AS foo;
   
-  IF temp_var > 3
+  IF maxElo - minElo > 50
   THEN
-    Raise Exception '% is already the president of 3 leagues, hence, cannot be president of another.', New.president;
+    Raise Exception '% is already the president of 3 leagues, hence, cannot be president of another.';
   
   End if;
   
@@ -150,7 +165,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER No_More_President
-  BEFORE INSERT OR UPDATE ON League
+CREATE TRIGGER Elo_Notification
+  AFTER INSERT OR UPDATE ON ELOHistory
   FOR EACH ROW
-  EXECUTE PROCEDURE No_More_President();
+  EXECUTE PROCEDURE elo_notification();

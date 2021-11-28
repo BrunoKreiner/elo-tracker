@@ -519,10 +519,7 @@ RETURNING matchID
                 if(not does_play(activity, user2_id)):
                     plays_activity(activity, user2_id)
                 play_game(activity, matchID, user1_id, user2_id, user1_score, user2_score)
-                print(app.db.execute('''
-                SELECT user_ID, activity, elo
-                FROM ParticipatesIn
-                                    '''))
+            
             
             return matchID
         except Exception as e:
