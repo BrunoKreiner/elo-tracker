@@ -82,6 +82,7 @@ CREATE TABLE ParticipatesIn (
 CREATE TABLE Notifications (
     user_ID INT NOT NULL,
     descript VARCHAR NOT NULL,
+    date_time DATE NOT NULL,
     FOREIGN KEY(user_ID) references Rankables(rankable_id)
 );
 
@@ -124,4 +125,17 @@ CREATE TRIGGER No_More_President
   FOR EACH ROW
   EXECUTE PROCEDURE No_More_President();
 
+CREATE FUNCTION Match_To_Approve() RETURNS TRIGGER AS $$
 
+BEGIN
+  INSERT INTO Notifications(user_ID, descript, date_time)
+  VALUES(NEW.user2_ID, CONCAT("You have a pending match in ", NEW.activity, " with user ", NEW.user1_ID), GETDATE());
+  RETURNING user_ID
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER Match_To_Approve
+  AFTER INSERT ON Matches
+  FOR EACH ROW
+  EXECUTE PROCEDURE Match_To_Approve
+  
