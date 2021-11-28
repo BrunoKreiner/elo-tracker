@@ -11,6 +11,7 @@ def get_current(id, activity):
                             ''', id = id, activity = activity)
     print(activity)
     print(current)
+    
     return current[0][0]
     
 
@@ -127,20 +128,28 @@ def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     p1_elo, p2_elo = ec.game(activity, p1_id, p1_score, p2_id, p2_score)
     print("Player one elo: {:} \nPlayer two elo: {:}".format(p1_elo, p2_elo))
     print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
+    
+    maxID = app.db.execute("""
+SELECT MAX(id) FROM ELOHistory;
+"""
+                                  )[0][0]
+    print(maxID)
     p1_game = app.db.execute('''
-    INSERT INTO ELOHistory(user_ID, activity, elo, matchID)
-    VALUES(:p1_id, :activity, :p1_elo, :g_id)
+    INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
+    VALUES(:id, :p1_id, :activity, :p1_elo, :g_id)
     RETURNING elo
                                 ''',
+                                id = maxID + 1,
                                 p1_id = p1_id,
                                 activity = activity,
                                 p1_elo = p1_elo,
                                 g_id = g_id)
     p2_game = app.db.execute('''
-    INSERT INTO ELOHistory(user_ID, activity, elo, matchID)
-    VALUES(:p2_id, :activity, :p2_elo, :g_id)
+    INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
+    VALUES(:id, :p2_id, :activity, :p2_elo, :g_id)
     RETURNING elo
                                 ''',
+                                id = maxID +2,
                                 p2_id = p2_id,
                                 activity = activity,
                                 p2_elo = p2_elo,

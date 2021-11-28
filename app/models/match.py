@@ -603,7 +603,7 @@ RETURNING *
 
     @staticmethod
     def accept(match_id):
-        app.db.execute('''
+        r = app.db.execute('''
             UPDATE Matches
             SET accepted = TRUE
             WHERE matchID = :match_id
@@ -611,7 +611,9 @@ RETURNING *
             ''',
                     match_id = match_id
         )
-
+        print(r[0][0], r[0][1], r[0][2], r[0][3], r[0][4], r[0][5])
+        play_game(r[0][0], r[0][1], r[0][2], r[0][3], r[0][4], r[0][5])
+        print(r)
         return
 
     @staticmethod

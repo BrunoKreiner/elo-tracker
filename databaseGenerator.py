@@ -37,7 +37,7 @@ def participatesRow(i):
   return [i, "fakeactivity{num}".format(num = i), random.randint(200, 2000)]
 
 def ELORow(i): 
-  return [random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
+  return [i,random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
 
   
 def rankableRow(i): 
@@ -75,8 +75,8 @@ def matchRow(i):
   #return [activities[random.randint(0, 9)], i, users[0],  users[1],  random.randint(0, 21),  random.randint(0, 21), timestamp, True]
   return [activities[random.randint(0, 9)], i, users[0],  users[1],  score1,  score2, timestamp, accepted]
 
-writeToFile("Activity", generateRows(activityRow))
+#writeToFile("Activity", generateRows(activityRow))
 #writeToFile("Matches", generateRows(matchRow))
 #writeToFile("ParticipatesIn", generateRows(participatesRow))
-#writeToFile("ELOHistory", generateRows(ELORow))
+writeToFile("ELOHistory", generateRows(ELORow))
 #writeToFile("Events", generateRows(eventRow))
