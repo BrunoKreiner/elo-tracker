@@ -6,6 +6,7 @@
   <h2><b><i class="fa fa-gamepad"></i> Add a Match</b></h2>
 </header>
 
+<div style="margin:45px">
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p>
@@ -16,9 +17,9 @@
     {% endfor %}
   </p>
   <p>
-    {{ form.user2_id.label }} <br/>
-    {{ form.user2_id(size=64) }}<br/>
-    {% for error in form.user2_id.errors %}
+    {{ form.user2_email.label }} <br/>
+    {{ form.user2_email(size=64) }}<br/>
+    {% for error in form.user2_email.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
@@ -56,5 +57,5 @@
   </p>
   <p>{{ form.submit() }}</p>
 </form>
-
+</div>
 {% endblock %}

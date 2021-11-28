@@ -1,25 +1,47 @@
 from flask import render_template, redirect, url_for, flash, request
+from datetime import date
 from datetime import datetime
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Required
+from wtforms.fields.html5 import DateField
 from flask_babel import _, lazy_gettext as _l
 
 from .models.match import Match
+from .models.rankables import Rankables
+from .models.activity import Activity
 
 from flask import Blueprint
 bp = Blueprint('addMatches', __name__)
 
+def validate_activity_category(self, activity):
+        excluded_chars = " *?!'^+%&/()=}][{$#"
+
+        user2_email = self.user2_email.data
+        user2_id = Rankables.get_id_from_email(user2_email)
+        user1_id = current_user.rankable_id
+
+        user1_category = Rankables.get_category(user1_id)
+        user2_category = Rankables.get_category(user2_id)
+        activity_category = Activity.get_category(self.activity.data)
+
+        if (user1_category != activity_category) or (user2_category != activity_category):
+            raise ValidationError(
+                    f"Users must be same category as activity")
+
 class MatchForm(FlaskForm):
-    activity = StringField(_l('Activity'), validators=[DataRequired()])
-    user2_id = StringField(_l('Opponent\'s User ID'), validators=[DataRequired()])
+    activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
+    user2_email = StringField(_l('Opponent\'s email'), validators=[DataRequired(), Email()])
     user1_score = StringField(_l('Your Score'))
     user2_score = StringField(_l('Their Score'))
-    datetime = StringField(_l('DateTime'), validators=[DataRequired()])
+    datetime = DateField('DateTime', default=datetime.today, validators=[Required()])
+    #datetime = StringField(_l('DateTime'), validators=[DataRequired()])
     
     submit = SubmitField(_l('Add Match'))
+
+    
 
 
 @bp.route('/addMatches', methods=['GET', 'POST'])
@@ -30,31 +52,37 @@ def addMatches():
     if form.validate_on_submit():
         now = datetime.now()
         try:
-            datetime.strptime(str(form.datetime.data), '%m-%d-%Y %H:%M:%S')
+            datetime.strptime(str(form.datetime.data), '%Y-%m-%d')
             print("This is the correct date string format.")
         except ValueError:
-            print("This is the incorrect date string format. It should be MM-DD-YYYY H:M:S")
+            print("This is the incorrect date string format. It should be YYYY-MM-DD")
 
-        form_datetime = datetime.strptime(str(form.datetime.data), '%m-%d-%Y %H:%M:%S')
-        if (form_datetime > now):
+        user2_email = form.user2_email.data
+        user2_id = Rankables.get_id_from_email(user2_email)
+        print('other user id is', user2_id)
+        user1_id = current_user.rankable_id
+
+
+        form_date = datetime.strptime(str(form.datetime.data), '%Y-%m-%d')
+        if (form_date > now):
             print('user1_score is: ', form.user1_score.data)
             print('user2_score is: ', form.user2_score.data)
 
             if Match.addMatch(form.activity.data,
                          current_user.rankable_id,
-                         form.user2_id.data,
+                         user2_id,
                          None,
                          None,
-                         form.datetime.data):
+                         form.datetime.data, False):
                 flash('Congratulations, you have scheduled a future match!')
                 print('yay!')
 
-        elif Match.addMatch(form.activity.data,
+        elif (form.user1_score.data is not None) and ((form.user2_score.data is not None)) and Match.addMatch(form.activity.data,
                          current_user.rankable_id,
-                         form.user2_id.data,
+                         user2_id,
                          form.user1_score.data,
                          form.user2_score.data,
-                         form.datetime.data):
+                         form.datetime.data, False):
             flash('Congratulations, you have added a match!')
             print('yay!')
             #return redirect(url_for('addMatches.addMatches'))

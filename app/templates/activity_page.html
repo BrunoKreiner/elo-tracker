@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
 <head>
   <style>
   body {background-color: powderblue;}
@@ -68,24 +71,25 @@
 
     <h5>My Activities</h5>
 
-    <table class="w3-table w3-striped w3-white">
+    <table id ="data1" class="w3-table w3-striped w3-white">
       <thead class="thead-dark">
         <tr>
+          <th scope="col">Activity</th>
+          <th scope="col">ELO</th>
         </tr>
       </thead>
       <tbody>
         {% for i in my_activities_table%}
         <tr>
-          <th scope="row">{{i}}</th>
+          <td> {{i[0]}} </td>
+          <td> {{i[1]}} </td>
         </tr>
         {% endfor %}
       </tbody>
-    
-    
-    </table>
+      </table>
 
       <h5>Current Activities</h5>
-      <table id="data2"  class="w3-table w3-striped w3-white">
+      <table id="data3"  class="w3-table w3-striped w3-white">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Activity</th>
@@ -111,7 +115,15 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    $('#data2').DataTable();
+    $('#data3').DataTable({
+      "paging": true
+    }
+    );
+    $('#data1').DataTable({
+      "paging": true
+    }
+    );
   });
 </script>
 {% endblock %}
+

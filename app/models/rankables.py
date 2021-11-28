@@ -169,3 +169,23 @@ SELECT rankable_id, email, name, category, about
 FROM Rankables
 ''')
         return [Rankables(*row) for row in rows]
+
+    @staticmethod
+    def get_id_from_email(email):
+        rows = app.db.execute('''
+SELECT rankable_id
+FROM Rankables
+WHERE email = :email
+''',
+            email=email)
+        return rows[0][0]
+
+    @staticmethod
+    def get_category(id):
+        rows = app.db.execute('''
+SELECT category
+FROM Rankables
+WHERE rankable_id = :id
+''',
+            id=id)
+        return rows[0][0]
