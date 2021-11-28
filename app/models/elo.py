@@ -129,18 +129,20 @@ def check_elo_change(user_id, activity):
   FROM ELOHistory 
   WHERE user_id = :user_id
   ORDER BY id 
-  DESC LIMIT 2) AS foo ''',
+  DESC LIMIT 3) AS foo ''',
                                 user_id = user_id)[0][0]
     minElo = app.db.execute('''
                           SELECT Min(Elo) FROM (SELECT *
   FROM ELOHistory 
   WHERE user_id = :user_id
   ORDER BY id 
-  DESC LIMIT 2) AS foo ''',
+  DESC LIMIT 3) AS foo ''',
                                 user_id = user_id)[0][0]
+    print(maxElo, minElo)
     if maxElo - minElo > 150: 
+        print("this should have happened")
         app.db.execute('''
-                       INSERT INTO Notifications(user_id, descript)
+                       INSERT INTO Notifications(user_id, descript, date_time)
 VALUES(:user_id, :description, :timestamp)
 returning user_id ''', user_id = user_id,
                                     description = description.format(activity = activity, elo = maxElo - minElo),
