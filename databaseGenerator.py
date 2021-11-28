@@ -3,6 +3,7 @@ import csv
 import random
 
 path = pathlib.Path('db/data/')
+hash = "pbkdf2:sha256:260000$MOIs1KeH1QXaKRfI$b15f8d6e19a23a46afe367488e2f4aa460994d4ab0a6273cc88ae48537beb3c5"
 
 def writeToFile(filename, rows):
   
@@ -39,9 +40,11 @@ def participatesRow(i):
 def ELORow(i): 
   return [i,random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
 
+def memberRow(i):
+  return ["fakeleague{num}".format(num =i), "fakeemail{num}@email.com".format(num = i), "member"]
   
 def rankableRow(i): 
-  return [i, "People", "fake name{num}".format(num = i)]
+  return [i, "fakeemail{num}@email.com".format(num = i), hash, "fake name{num}".format(num = i), "People", "About" ]
 
 def matchRow(i): 
   year = random.randint(2000, 2020)
@@ -78,5 +81,6 @@ def matchRow(i):
 #writeToFile("Activity", generateRows(activityRow))
 #writeToFile("Matches", generateRows(matchRow))
 #writeToFile("ParticipatesIn", generateRows(participatesRow))
-writeToFile("ELOHistory", generateRows(ELORow))
-#writeToFile("Events", generateRows(eventRow))
+#writeToFile("ELOHistory", generateRows(ELORow))
+#writeToFile("Rankables", generateRows(rankableRow))
+writeToFile("Member_of", generateRows(memberRow))
