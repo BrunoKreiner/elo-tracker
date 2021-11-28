@@ -2,9 +2,10 @@ from flask import current_app as app
 from .elo import *
 
 class Notifications:
-    def __init__(self, user_id, description):
+    def __init__(self, user_id, description, datetime):
         self.user_id = user_id
         self.description = description 
+        self.datetime = datetime
 
   
 
@@ -14,6 +15,7 @@ class Notifications:
 SELECT *
 FROM Notifications
 WHERE user_ID = :id
+ORDER BY date_time
 ''',
                               id=id)
         rows = [Notifications(*row) for row in rows]

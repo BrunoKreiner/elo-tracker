@@ -1,6 +1,7 @@
 from flask import current_app as app
 from .. import elo_calc as ec
 from sqlalchemy import exc
+from datetime import date
 
 def get_current(id, activity):
 
@@ -137,12 +138,13 @@ def check_elo_change(user_id, activity):
   ORDER BY id 
   DESC LIMIT 2) AS foo ''',
                                 user_id = user_id)[0][0]
-    if maxElo - minElo > 200: 
+    if maxElo - minElo > 150: 
         app.db.execute('''
                        INSERT INTO Notifications(user_id, descript)
-VALUES(:user_id, :description)
+VALUES(:user_id, :description, :timestamp)
 returning user_id ''', user_id = user_id,
-                                    description = description.format(activity = activity, elo = maxElo - minElo))
+                                    description = description.format(activity = activity, elo = maxElo - minElo),
+                                    timestamp = date.today())
     
     
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):

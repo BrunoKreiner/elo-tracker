@@ -83,6 +83,7 @@ CREATE TABLE ParticipatesIn (
 CREATE TABLE Notifications (
     user_ID INT NOT NULL,
     descript VARCHAR NOT NULL,
+    date_time DATE NOT NULL,
     FOREIGN KEY(user_ID) references Rankables(rankable_id)
 );
 
@@ -126,46 +127,63 @@ CREATE TRIGGER No_More_President
   EXECUTE PROCEDURE No_More_President();
 
 
--- trigger to enforce that a user cannot be the president of more than 3 leagues.
-CREATE FUNCTION elo_notification() RETURNS TRIGGER AS $$
 
-DECLARE
-
-  maxElo INT;
-  minElo INT;
-  userID INT;
+  
+CREATE FUNCTION Match_To_Approve() RETURNS TRIGGER AS $$
+-- DECLARE @begin_text TEXT = "You have a pending match in ";
+-- DECLARE @end_text TEXT = " with user ";
 
 BEGIN
-  -- YOUR IMPLEMENTATION GOES HERE
-  SELECT user_id into userID FROM ELOHistory ORDER BY id DESC LIMIT 1;  
-
-  SELECT Max(elo) 
-  into maxElo 
-  FROM (SELECT *
-  FROM ELOHistory 
-  WHERE user_id = userID
-  ORDER BY id 
-  DESC LIMIT 2) AS foo;
-
-  SELECT Min(elo) 
-  into minElo 
-  FROM (SELECT *
-  FROM ELOHistory 
-  WHERE user_id = userID
-  ORDER BY id 
-  DESC LIMIT 2) AS foo;
-  
-  IF maxElo - minElo > 50
-  THEN
-    Raise Exception '% is already the president of 3 leagues, hence, cannot be president of another.';
-  
-  End if;
-  
+  INSERT INTO Notifications(user_ID, descript, date_time)
+  VALUES(NEW.user2_ID, CONCAT('You have a pending match in ', NEW.activity, ' with user ', NEW.user1_ID), CURRENT_TIMESTAMP);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER Elo_Notification
-  AFTER INSERT OR UPDATE ON ELOHistory
+CREATE TRIGGER Match_To_Approve
+  AFTER INSERT ON Matches
   FOR EACH ROW
-  EXECUTE PROCEDURE elo_notification();
+  EXECUTE PROCEDURE Match_To_Approve();
+  
+
+-- trigger to enforce that a user cannot be the president of more than 3 leagues.
+-- CREATE FUNCTION elo_notification() RETURNS TRIGGER AS $$
+
+-- DECLARE
+
+--   maxElo INT;
+--   minElo INT;
+--   userID INT;
+
+-- BEGIN
+--   -- YOUR IMPLEMENTATION GOES HERE
+--   SELECT user_id into userID FROM ELOHistory ORDER BY id DESC LIMIT 1;  
+
+--   SELECT Max(elo) 
+--   into maxElo 
+--   FROM (SELECT *
+--   FROM ELOHistory 
+--   WHERE user_id = userID
+--   ORDER BY id 
+--   DESC LIMIT 2) AS foo;
+
+--   SELECT Min(elo) 
+--   into minElo 
+--   FROM (SELECT *
+--   FROM ELOHistory 
+--   WHERE user_id = userID
+--   ORDER BY id 
+--   DESC LIMIT 2) AS foo;
+  
+--   IF maxElo - minElo > 50
+--   THEN
+    
+  
+--   End if;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER Elo_Notification
+--   AFTER INSERT OR UPDATE ON ELOHistory
+--   FOR EACH ROW
+--   EXECUTE PROCEDURE elo_notification();
