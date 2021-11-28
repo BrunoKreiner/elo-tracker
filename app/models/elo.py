@@ -169,8 +169,6 @@ def get_player_history(id, activity):
                                     ''', 
                                     id = id, 
                                     activity = activity)
-    print("hi")
-    print(sorted_history)
     if not sorted_history:
         print("Player {:} has not played {:}".format(id, activity))
         return

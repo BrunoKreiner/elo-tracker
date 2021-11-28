@@ -50,6 +50,7 @@ def home():
     print(topPlayers)
     playerInfo=[]#playerInfo: (name, xyCoords)
     showLine=[True, True, True, True, True, True]
+    print(topPlayers)
 
     #push your own history
 
@@ -67,24 +68,25 @@ def home():
         newPoints=[]
     playerInfo.append(newPoints)
     
-    print(playerInfo)
+    print(topPlayers)
 
     #fill playerInfo with top players
-    for player in topPlayers:
-        #if not current_user.rankable_id==player[0]:
-            playerInfo.append(Rankables.get_name(player[0]))
-            newPoints = []
-            try:
-                for point in get_player_history(player[0],activity):
-                    newPoint = []
-                    newPoints.append(str(point[0]))
-                    newPoints.append(point[1])
-            except (exc.SQLAlchemyError, TypeError) as e:
-                #dummy point will not be displayed
-                newPoints=[]
-            playerInfo.append(newPoints)
-        #else:
-        #    youInTopFive=1
+    if topPlayers:
+        for player in topPlayers:
+            #if not current_user.rankable_id==player[0]:
+                playerInfo.append(Rankables.get_name(player[0]))
+                newPoints = []
+                try:
+                    for point in get_player_history(player[0],activity):
+                        newPoint = []
+                        newPoints.append(str(point[0]))
+                        newPoints.append(point[1])
+                except (exc.SQLAlchemyError, TypeError) as e:
+                    #dummy point will not be displayed
+                    newPoints=[]
+                playerInfo.append(newPoints)
+            #else:
+            #    youInTopFive=1
     
     print(playerInfo)
     print(youInTopFive)
@@ -96,7 +98,7 @@ def home():
             showLine[x]=False
             playerInfo.append("N/A")
             playerInfo.append([])
-
+    print(playerInfo)
 
     print(showLine)
 
