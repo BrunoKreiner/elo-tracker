@@ -8,26 +8,70 @@
   <h2><b><i class="fa fa-dashboard"></i> My Dashboard</b></h2>
 </header>
 
+<div class="w3-container w3-hover-text-light-grey w3-teal w3-center" style="border-radius:25px;height:230px;margin-left:3%;margin-right:3%;margin-top:3%;width:44%;padding:2%;float:left;">
+  <h2 style="margin:15px;">Elo Stats</h2>
+  {% block msg9 %}
+    {% if maxEloActivity=='No matches played' %}
+      <h5 style="margin:15px;">
+        No matches played
+      </h5>
+    {% else %}
+      <h5 style="margin:15px;">
+        Max Elo: <strong class="w3-text-yellow">{{maxElo}}</strong> in {{maxEloActivity}}
+      </h5>
+      <h5 style="margin:15px;">
+        Min Elo: <strong class="w3-text-yellow">{{minElo}}</strong> in {{minEloActivity}}
+      </h5>
+      <h5 style="margin:15px;">
+        Avg Elo: <strong class="w3-text-yellow">{{averageElo}}</strong> over all activities
+      </h5>
+    {% endif %}
+  {% endblock %}
+
+</div>
+
+<div class="w3-container w3-center w3-teal" style="border-radius:25px;height:230px;margin-left:3%;margin-right:3%;margin-top:3%;width:44%;padding:2%;float:left;">
+  <h2 style="margin:15px;">Elo Lookup</h2>
+  <p>
+    <!---<input type="text" id="activitySearch" placeholder="Activity"style="border-radius:10px;">
+    <button type="submit" style="border-radius:10px;"><i class="fa fa-search"></i></button>--->
+    <h4 style="margin:20px;">
+      Elo:  <strong class="w3-text-yellow">{{eloLookup}}</strong>
+    </h4>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p style="font-size:medium;">
+        {{ form.activity(size=25,placeholder="Activity") }}
+        {% for error in form.activity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
+    </form>
+  </p>
+</div>
+
+
+
 <div class="w3-container" style="padding-top:22px">
   <div class="w3-row-padding w3-margin-bottom" style="margin-top:3%;">
     <div class="w3-quarter">
       <div class="w3-container w3-red w3-padding-16" style="border-radius:25px;">
         <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>{{averageElo}}</h3>
+          <h3>{{numLeagues}}</h3>
         </div>
         <div class="w3-clear"></div>
-        <h4>Average Elo</h4>
+        <h4># Leagues Joined</h4>
       </div>
     </div>
     <div class="w3-quarter">
       <div class="w3-container w3-green w3-padding-16" style="border-radius:25px;">
         <div class="w3-left"><i class="fa fa-line-chart w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>{{maxElo}}</h3>
+          <h3>{{numActivities}}</h3>
         </div>
         <div class="w3-clear"></div>
-        <h4>Max Elo</h4>
+        <h4>Activities Played</h4>
       </div>
     </div>
     <div class="w3-quarter">

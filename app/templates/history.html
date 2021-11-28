@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
 <div class="w3-main" style="margin-left:300px;;"></div>
 
@@ -8,7 +13,7 @@
   <h2><b><i class="fa fa-history"></i> My Match History</b></h2>
 </header>
 
-<div class="table-filter" style="padding-top:22px">
+<div class="table-filter" style="padding-top:22px;margin-left:45px">
   <div class="row">
     <div class="col-sm-3">
         <div class="filter-group">
@@ -38,42 +43,63 @@
   </div>
 </div>
 
+<div style="margin:45px">
   <table id="data"  class="w3-table w3-striped w3-white">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Activity</th>
-        <th scope="col">Match ID</th>
-        <th scope="col">Opponent ID</th>
+        <th scope="col">Opponent Name</th>
         <th scope="col">Your Score</th>
         <th scope="col">Their Score</th>
         <th scope="col">Datetime</th>
       </tr>
     </thead>
     <tbody>
-      {% for match in my_matches%}
-      <tr>
-        <!--  <th scope="row">{{match.id}}</th>  --> 
-        <td>{{match.activity}}</td>
-        <td>{{match.id}}</td>
-        <td>{{match.user2_id}}</td>
-        <td>{{match.user1_score}}</td>
-        <td>{{match.user2_score}}</td>
-        <td>{{match.datetime}}</td>
-      </tr>
-      {% endfor %}
+      
     </tbody>
     </table>
-
+</div>
 
 {% endblock %}
 
+
+
 {% block scripts %}
-  <script>
+<input type="hidden"  id="filter-activity" value="{{ filterActivity }}">
+<input type="hidden"  id="startdate" value="{{ start_date }}">
+<input type="hidden"  id="enddate" value="{{ end_date }}">
+<script>
+  var filter_activity = document.querySelector('#filter-activity').value;
+  var start_date = document.querySelector('#startdate').value;
+  var end_date = document.querySelector('#enddate').value;
     $(document).ready(function () {
-      $('#data').DataTable();
+      $('#data').DataTable({
+        searching: false,
+        processing: true,
+        serverSide: true,
+        ajax: {
+          'type': 'POST',
+          'url': '/data',
+          'data': {
+            filterActivity: filter_activity,
+            startDate: start_date,
+            endDate: end_date
+          },
+        },
+        columns: [
+          {data: 'activity'},
+          {data: 'user2_name', orderable: false},
+          {data: 'user1_score'},
+          {data: 'user2_score'},
+          {data: 'date_time'}
+        ],
+      });
     });
   </script>
 {% endblock %}
+
+<script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+
 
 <script>
   function myFunction() {

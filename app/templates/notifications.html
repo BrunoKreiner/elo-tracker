@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+  .modal-header, h4, .close {
+    background-color: #5cb85c;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+  }
+  .modal-footer {
+    background-color: #f9f9f9;
+  }
+  </style>
+  <style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: "Raleway", sans-serif
+    }
+  </style>
+
+<style>
+  .nav-link {
+      color: green;
+  }
+
+  .nav-link>a:hover {
+      color: green;
+  }
+
+  /*code to change background color*/
+  .nav>.active>a {
+      background-color: #C0C0C0;
+      color: green;
+  }
+</style>
+
+
+<div class="w3-main" style="margin-left:300px;;"></div>
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h2><b>My Notifications</b></h2>
+  
+</header>
+
+<div class="bs-example col-md-12">
+  <br>
+  <table class="table table-hover">
+     
+      <tbody>
+      {% for notification in notifications %}
+          <tr>
+              <td>{{ notification.description }}</td>   
+              <td align = "right ">{{ notification.datetime }}</td>         
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+
+
+
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("mylist");
+    filter = input.value;
+    table = document.getElementById("data");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>

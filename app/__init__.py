@@ -29,6 +29,19 @@ def create_app():
 
     from .history import bp as history_bp
     app.register_blueprint(history_bp)
+
+    from .unconfirmed_Matches import bp as unconfirmedMatches_bp
+    app.register_blueprint(unconfirmedMatches_bp)
+
+    from .pending import bp as pending_bp
+    app.register_blueprint(pending_bp)
+
+    from .waiting import bp as waiting_bp
+    app.register_blueprint(waiting_bp)
+
+    from .futureMatches import bp as futureMatches_bp
+    app.register_blueprint(futureMatches_bp)
+
     from .league_page import bp as league_page_bp
     app.register_blueprint(league_page_bp)
 
@@ -43,5 +56,8 @@ def create_app():
 
     from .events_page import bp as events_bp
     app.register_blueprint(events_bp)
+    
+    from .notifications import bp as notifications_bp
+    app.register_blueprint(notifications_bp)
 
     return app
