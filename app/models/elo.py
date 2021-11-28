@@ -120,6 +120,20 @@ def get_min(id):
         minimum = "1000"
     return minimum
 
+def get_top_players(activity, k):
+    # Will return player ID's
+    # 0 index is best player
+    # If k > # of players, return smaller array
+    return np.zeros(k)
+
+def get_player_history(id, activity):
+    # Will return sorted array
+    # datetime : ELO
+    # Sorted by datetime
+    # 0 index is least recent time
+    # If player does not do activity, will return None
+    return []
+
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
     print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
