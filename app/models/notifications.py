@@ -15,7 +15,7 @@ class Notifications:
 SELECT *
 FROM Notifications
 WHERE user_ID = :id
-ORDER BY date_time
+ORDER BY  date_time  DESC
 ''',
                               id=id)
         rows = [Notifications(*row) for row in rows]

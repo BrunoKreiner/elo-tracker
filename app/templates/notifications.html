@@ -65,7 +65,8 @@
       <tbody>
       {% for notification in notifications %}
           <tr>
-              <td>{{ notification.description }}</td>           
+              <td>{{ notification.description }}</td>   
+              <td align = "right ">{{ notification.datetime }}</td>         
           </tr>
       {% endfor %}
       </tbody>
