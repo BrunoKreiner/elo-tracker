@@ -30,6 +30,7 @@ def home():
 
     averageElo = get_average(current_user.rankable_id)
     maxElo = get_max(current_user.rankable_id)
+    print(maxElo)
     maxEloActivity = get_activity_by_elo(current_user.rankable_id,maxElo)
     minElo=get_min(current_user.rankable_id)
     minEloActivity=get_activity_by_elo(current_user.rankable_id,minElo)
