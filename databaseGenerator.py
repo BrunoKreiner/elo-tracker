@@ -37,25 +37,46 @@ def participatesRow(i):
   return [i, "fakeactivity{num}".format(num = i), random.randint(200, 2000)]
 
 def ELORow(i): 
-  return [random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
+  return [i,random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
 
   
 def rankableRow(i): 
   return [i, "People", "fake name{num}".format(num = i)]
 
 def matchRow(i): 
-  year = random.randint(2000, 2021)
+  year = random.randint(2000, 2020)
   month = random.randint(1,12)
   day = random.randint(1, 28)
-  hour = random.randint(1, 12)
-  minute = random.randint(0, 59)
-  second = random.randint(0, 59)
 
-  timestamp = "{}-{:02d}-{:02d} {}:{:02d}:{:02d}".format(year, month, day, hour, minute, second)
-  return ["fakeactivity{num}".format(num = i), i, 3,  random.randint(20, 4999),  random.randint(0, 21),  random.randint(0, 21), timestamp]
+  activities = ['spikeball', 'soccer', 'frisbee',
+'chess',
+'foosball',
+'volleyball',
+'basketball',
+'tennis',
+'smash',
+'mariokart']
 
-writeToFile("Activity", generateRows(activityRow))
+  timestamp = "{}-{:02d}-{:02d}".format(year, month, day)
+  users = random.sample(range(0, 9), 2)
+
+  p = random.random()
+  q = random.random()
+  accepted = False
+  score1 = None
+  score2 = None
+  if p < 0.9:
+    score1 = random.randint(0, 21)
+    score2 = random.randint(0, 21)
+    if q < 0.9:
+      accepted = True
+
+
+  #return [activities[random.randint(0, 9)], i, users[0],  users[1],  random.randint(0, 21),  random.randint(0, 21), timestamp, True]
+  return [activities[random.randint(0, 9)], i, users[0],  users[1],  score1,  score2, timestamp, accepted]
+
+#writeToFile("Activity", generateRows(activityRow))
 #writeToFile("Matches", generateRows(matchRow))
 #writeToFile("ParticipatesIn", generateRows(participatesRow))
-#writeToFile("ELOHistory", generateRows(ELORow))
+writeToFile("ELOHistory", generateRows(ELORow))
 #writeToFile("Events", generateRows(eventRow))

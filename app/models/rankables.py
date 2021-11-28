@@ -213,3 +213,11 @@ FROM Rankables
         if len(about)==0:
             raise KeyError('tried to access about for an id that does not exist')
         return about[0][0]
+    def get_id_from_email(email):
+        rows = app.db.execute('''
+SELECT rankable_id
+FROM Rankables
+WHERE email = :email
+''',
+            email=email)
+        return rows[0][0]

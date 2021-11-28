@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+  .modal-header, h4, .close {
+    background-color: #5cb85c;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+  }
+  .modal-footer {
+    background-color: #f9f9f9;
+  }
+  </style>
+  <style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: "Raleway", sans-serif
+    }
+  </style>
+
+
+<div class="w3-main" style="margin-left:300px;;"></div>
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h2><b>Unconfirmed Matches</b></h2>
+  <nav class="nav">
+    <a class="nav-link stay" href="/unconfirmedMatches">Incomplete</a>
+    <a class="nav-link pending" href="/pending">Pending</a>
+    <a class="nav-link waiting" href="/waiting">Waiting</a>
+  </nav>
+</header>
+
+<div class="bs-example col-md-12">
+  <br>
+  <table class="table table-hover">
+      <thead>
+          <tr>
+            <th scope="col">Activity</th>
+            <th scope="col">Opponent Name</th>
+            <th scope="col">Your Score</th>
+            <th scope="col">Their Score</th>
+            <th scope="col">Datetime</th>
+            <th>Accept</th>
+            <th>Delete</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for match in my_matches %}
+          <tr>
+              <td>{{ match.activity }}</td>
+              <td>{{ match.user2_name }}</td>
+              <td>{{ match.user1_score }}</td>
+              <td>{{ match.user2_score }}</td>
+              <td>{{ match.datetime }}</td>
+              <td><button id="acceptbutton{{match.id}}" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#accept{{ match.id }}">Accept</button></td>
+              <td><button id="deleteButton{{match.id}}" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#delete{{ match.id }}">Delete</button></td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+
+{% for match in my_matches %}
+ <!-- Modal -->
+  <div class="modal fade" id="accept{{ match.id }}" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Accept Match</h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to accept this match?
+          <form action="/accept/{{ match.id }}" method="post">
+            <button name="forwardBtn" type="submit">Accept</button>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endfor %}
+
+{% for match in my_matches %}
+ <!-- Modal -->
+ <div class="modal fade" id="delete{{ match.id }}" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Match</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this match?
+        <form action="/waiting_delete/{{ match.id }}" method="post">
+          <button name="forwardBtn" type="submit">Delete</button>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+
+{% for match in my_matches %}
+
+<script>
+  $(document).ready(function(){
+    $("#button{{match.id}}").click(function(){
+      $("#myOutput{{ match.id }}").modal();
+    });
+  });
+  </script>
+
+{% endfor %}
+<script>
+  function deleteMatch(id) {
+
+  }
+</script>
+
+
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("mylist");
+    filter = input.value;
+    table = document.getElementById("data");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>

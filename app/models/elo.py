@@ -2,9 +2,24 @@ from flask import current_app as app
 from .. import elo_calc as ec
 from sqlalchemy import exc
 import numpy as np
+from datetime import date
+
+
+    
+
+def get_activities(id):
+    current = app.db.execute('''
+    SELECT activity, elo
+    FROM ParticipatesIn
+    WHERE :id = user_ID 
+                            ''', id = id)
+    
+    print(current)
+    if current == []: 
+        return []
+    return current
 
 def get_current(id, activity):
-
     current = app.db.execute('''
     SELECT elo
     FROM ParticipatesIn
@@ -12,6 +27,7 @@ def get_current(id, activity):
                             ''', id = id, activity = activity)
     print(activity)
     print(current)
+    
     return current[0][0]
     
 
@@ -151,12 +167,40 @@ def get_player_history(id, activity):
                                     ''', 
                                     id = id, 
                                     activity = activity)
+    print("hi")
     print(sorted_history)
     if not sorted_history:
         print("Player {:} has not played {:}".format(id, activity))
         return
     return sorted_history
 
+def check_elo_change(user_id, activity):
+    description = "Your elo for {activity} has changed by {elo} points!"
+    maxElo = app.db.execute('''
+                          SELECT Max(Elo) FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = :user_id
+  ORDER BY id 
+  DESC LIMIT 3) AS foo ''',
+                                user_id = user_id)[0][0]
+    minElo = app.db.execute('''
+                          SELECT Min(Elo) FROM (SELECT *
+  FROM ELOHistory 
+  WHERE user_id = :user_id
+  ORDER BY id 
+  DESC LIMIT 3) AS foo ''',
+                                user_id = user_id)[0][0]
+    print(maxElo, minElo)
+    if maxElo - minElo > 150: 
+        print("this should have happened")
+        app.db.execute('''
+                       INSERT INTO Notifications(user_id, descript, date_time)
+VALUES(:user_id, :description, :timestamp)
+returning user_id ''', user_id = user_id,
+                                    description = description.format(activity = activity, elo = maxElo - minElo),
+                                    timestamp = date.today())
+    
+    
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
     print("Player one scored: {:} \nPlayer two scored: {:}".format(p1_score, p2_score))
@@ -164,24 +208,36 @@ def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     p1_elo, p2_elo = ec.game(activity, p1_id, p1_score, p2_id, p2_score)
     print("Player one elo: {:} \nPlayer two elo: {:}".format(p1_elo, p2_elo))
     print("Player one id: {:} \nPlayer two id: {:}".format(p1_id, p2_id))
+    
+    maxID = app.db.execute("""
+SELECT MAX(id) FROM ELOHistory;
+"""
+                                  )[0][0]
+    
+    
     p1_game = app.db.execute('''
-    INSERT INTO ELOHistory(user_ID, activity, elo, matchID)
-    VALUES(:p1_id, :activity, :p1_elo, :g_id)
+    INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
+    VALUES(:id, :p1_id, :activity, :p1_elo, :g_id)
     RETURNING elo
                                 ''',
+                                id = maxID + 1,
                                 p1_id = p1_id,
                                 activity = activity,
                                 p1_elo = p1_elo,
                                 g_id = g_id)
+    check_elo_change(p1_id, activity)
+   
     p2_game = app.db.execute('''
-    INSERT INTO ELOHistory(user_ID, activity, elo, matchID)
-    VALUES(:p2_id, :activity, :p2_elo, :g_id)
+    INSERT INTO ELOHistory(id, user_ID, activity, elo, matchID)
+    VALUES(:id, :p2_id, :activity, :p2_elo, :g_id)
     RETURNING elo
                                 ''',
+                                id = maxID +2,
                                 p2_id = p2_id,
                                 activity = activity,
                                 p2_elo = p2_elo,
                                 g_id = g_id)
+    check_elo_change(p2_id, activity)
     p1_update = app.db.execute('''
     UPDATE ParticipatesIn
     SET elo = :p1_elo
