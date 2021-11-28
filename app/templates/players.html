@@ -20,70 +20,53 @@
             {% endfor %}
           {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
         </form>
-        <p>Activity: {{activity}}</p>>
+        {% block msg3 %}
+          {%if not activity==None:%}
+            <h3 style="margin-top:50px;">Leaderboard for {{activity}}</h3>
+
     </div>
-    <table id="myTable" class="w3-table w3-striped w3-white">
+    <table id="myTable" class="table table-hover">
         <thead class="thead-dark">
           <tr>
+            <th scope="col">Rank</th>
             <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Average Elo</th>
-            <th scope="col">About</th>
-            
+            <th scope="col">Elo</th>  
+            <th scope="col">Profile</th>      
           </tr>
         </thead>
         <tbody>
-          {% for player in rankables%}
+          {% for entry in tableEntries%}
             <tr>
-                <th scope="row">{{player.name}}</th>
-                <td>{{player.category}}</td>
-                {% if player.rankable_id in uninitializedIDs %}
-                  <td>1000</td>
-                {% endif %}
-                {% for row in elos %}
-                  {% if row[0]==player.rankable_id %}
-                    <td>{{row[1]}}</td>
-                  {% endif %}
-                {% endfor %}
-                <td>{{player.about}}</td>
-                
+                <th scope="row">{{entry[0]}}</th>
+                <td>{{entry[1]}}</td>
+                <td>{{entry[2]}}</td>
+                <td>
+                  <form action="/players/{{entry[3]}}" method="POST">
+                    <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
+                  </form>
+                </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+      {%endif%}
+      {% endblock %}
 </div>
+
+
+
 
 {% block scripts %}
   <script>
     $(document).ready(function () {
-      $('#myTable').DataTable();
+      $('#myTable').DataTable({
+        searching:false,
+        retrieve: true
+      });
     });
   </script>
 {% endblock %}
 
-<script>
-    let searchString = "";
-    let categoryString = "";
-    function searchAll() {
-        searchString=document.getElementById("nameSearch").value.toUpperCase();
-      categoryString=document.getElementById("categorySearch").value.toUpperCase();
-      table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            th = tr[i].getElementsByTagName("th")[0];
-            if (td && th) {
-            txtValue = td.textContent || td.innerText;
-            txtValue2 = th.textContent || th.innerText;
-            console.log(txtValue);
-            if (txtValue.toUpperCase().indexOf(categoryString) > -1 && txtValue2.toUpperCase().indexOf(searchString) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-            }       
-        }
-    }
-</script>
+
 
 {% endblock %}
