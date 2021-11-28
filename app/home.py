@@ -45,9 +45,15 @@ def home():
     print(topPlayers)
     playerInfo=[]#playerInfo: (name, xyCoords)
     for player in topPlayers:
-        playerInfo.append(Rankables.get_name(player))
-        playerInfo.append(get_player_history(player,"spikeball"))
+        playerInfo.append(Rankables.get_name(player[0]))
+        newPoints = []
+        for point in get_player_history(player[0],"spikeball"):
+            newPoint = []
+            newPoints.append(str(point[0]))
+            newPoints.append(point[1])
+        playerInfo.append(newPoints)
     
+    print(playerInfo)
 
     if form.validate_on_submit():
         try:

@@ -125,7 +125,16 @@ def get_top_players(activity, k):
     # Will return player ID's
     # 0 index is best player
     # If k > # of players, return smaller array
-    return np.zeros(k)
+    sorted_players = app.db.execute('''
+                                    SELECT user_ID
+                                    FROM ParticipatesIn
+                                    WHERE :activity = activity
+                                    ORDER BY elo DESC NULLS LAST, user_ID
+                                    ''', activity = activity)
+    if not sorted_players:
+        print("No players for {:}".format(activity))
+        return None
+    return sorted_players[:k]
 
 def get_player_history(id, activity):
     # Will return sorted array
@@ -133,7 +142,18 @@ def get_player_history(id, activity):
     # Sorted by datetime
     # 0 index is least recent time
     # If player does not do activity, will return None
-    return [[1,2][3,4]]
+    sorted_history = app.db.execute('''
+                                    SELECT Matches.date_time, ELOHistory.elo
+                                    FROM ELOHistory LEFT OUTER JOIN Matches ON ELOHistory.matchID = Matches.matchID
+                                    WHERE :id = ELOHistory.user_ID AND :activity = ELOHistory.activity AND :activity = Matches.activity
+                                    ORDER BY Matches.date_time ASC NULLS LAST, elo
+                                    ''', 
+                                    id = id, 
+                                    activity = activity)
+    if not sorted_history:
+        print("Player {:} has not played {:}".format(id, activity))
+        return
+    return sorted_history
 
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
