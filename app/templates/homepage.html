@@ -6,7 +6,7 @@
 <div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container w3-center" style="padding-top:50px">
-  <meta id="my-data" data-name="{{matchesPlayed}}">
+  <meta id="my-data" data-name="{{graphInfo}}">
   <h2><b><i class="fa fa-dashboard"></i> My Dashboard</b></h2>
 </header>
 
@@ -103,30 +103,59 @@
       <canvas id="myChart"></canvas>
 
       <script type="text/javascript">
-        var xValues = $('#my-data').data();
-        console.log(xValues);
-        //var xValues = [50,60,70,80,90,100,110,120,130,140,150];
-        var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+        var graphData = $('#my-data').data().name;
+        console.log(graphData);
+        var xValues1 = graphData[1]
+        var xValues2 = graphData[4]
+        var xValues3 = graphData[7]
+        var xValues4 = graphData[10]
+        var xValues5 = graphData[13]
+        var yValues1 = graphData[2]
+        var yValues2 = graphData[5]
+        var yValues3 = graphData[8]
+        var yValues4 = graphData[11]
+        var yValues5 = graphData[14]
+        var name1 = graphData[0]
+        var name2 = graphData[3]
+        var name3 = graphData[6]
+        var name4 = graphData[9]
+        var name5 = graphData[12]
         
-        new Chart("myChart", {
-          type: "line",
-          data: {
-            labels: xValues,
-            datasets: [{
-              fill: false,
-              lineTension: 0,
-              backgroundColor: "rgba(0,0,255,1.0)",
-              borderColor: "rgba(0,0,255,0.1)",
-              data: yValues
-            }]
-          },
-          options: {
-            legend: {display: false},
-            scales: {
-              yAxes: [{ticks: {min: 6, max:16}}],
-            }
+        var xyValues = [
+        {x:50, y:7},
+        {x:60, y:8},
+        {x:70, y:8},
+        {x:80, y:9},
+        {x:90, y:9},
+        {x:100, y:9},
+        {x:110, y:10},
+        {x:120, y:11},
+        {x:130, y:14},
+        {x:140, y:14},
+        {x:150, y:15}
+      ];
+
+      new Chart("myChart", {
+        type: "scatter",
+        data: {
+          datasets: [{
+            pointRadius: 4,
+            pointBackgroundColor: "rgb(0,0,255)",
+            data: xyValues
+          },{
+            pointRadius: 4,
+            pointBackgroundColor: "rgb(0,255,0)",
+            data: xyValues
+          }]
+        },
+        options: {
+          legend: {display: true},
+          scales: {
+            xAxes: [{ticks: {min: 40, max:160}}],
+            yAxes: [{ticks: {min: 6, max:16}}],
           }
-        });
+        }
+      });
         </script>
     
   </div>

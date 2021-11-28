@@ -11,6 +11,7 @@ from flask_babel import _, lazy_gettext as _l
 from .models.elo import *
 from .models.match import Match
 from .models.member_of import Member_of
+from .models.rankables import Rankables
 
 
 
@@ -40,14 +41,22 @@ def home():
     matchesWon = Match.get_user_num_won(current_user.rankable_id, now)
     matchesPlayed = Match.get_user_num_played(current_user.rankable_id, now)
     eloLookup="N/A"
+    topPlayers=get_top_players("spikeball", 10)
+    print(topPlayers)
+    playerInfo=[]#playerInfo: (name, xyCoords)
+    for player in topPlayers:
+        playerInfo.append(Rankables.get_name(player))
+        playerInfo.append(get_player_history(player,"spikeball"))
+    
+
     if form.validate_on_submit():
         try:
             eloLookup=get_current(current_user.rankable_id, form.activity.data)
         except (exc.SQLAlchemyError, IndexError) as e:
             eloLookup="N/A"
         return render_template('homepage.html',
-                           form = form, averageElo=averageElo, numActivities=numActivities, numLeagues = numLeagues, eloLookup=eloLookup, minElo=minElo, minEloActivity=minEloActivity, maxElo=maxElo, maxEloActivity = maxEloActivity, matchesWon = matchesWon, matchesPlayed = matchesPlayed)
+                           form = form, graphInfo=playerInfo, averageElo=averageElo, numActivities=numActivities, numLeagues = numLeagues, eloLookup=eloLookup, minElo=minElo, minEloActivity=minEloActivity, maxElo=maxElo, maxEloActivity = maxEloActivity, matchesWon = matchesWon, matchesPlayed = matchesPlayed)
     # render the page by adding information to the index.html file
     return render_template('homepage.html',
-                           form = form, averageElo=averageElo, numActivities=numActivities, numLeagues = numLeagues, eloLookup="N/A", minElo=minElo, minEloActivity=minEloActivity, maxElo=maxElo, maxEloActivity = maxEloActivity, matchesWon = matchesWon, matchesPlayed = matchesPlayed)
+                           form = form, graphInfo=playerInfo, averageElo=averageElo, numActivities=numActivities, numLeagues = numLeagues, eloLookup="N/A", minElo=minElo, minEloActivity=minEloActivity, maxElo=maxElo, maxEloActivity = maxEloActivity, matchesWon = matchesWon, matchesPlayed = matchesPlayed)
 

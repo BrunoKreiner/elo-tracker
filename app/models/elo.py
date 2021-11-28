@@ -1,6 +1,7 @@
 from flask import current_app as app
 from .. import elo_calc as ec
 from sqlalchemy import exc
+import numpy as np
 
 def get_current(id, activity):
 
@@ -132,7 +133,7 @@ def get_player_history(id, activity):
     # Sorted by datetime
     # 0 index is least recent time
     # If player does not do activity, will return None
-    return []
+    return [[1,2][3,4]]
 
 def play_game(activity, g_id, p1_id, p2_id, p1_score, p2_score):
     # Returns (p1_elo, p2_elo) from after the game is played
