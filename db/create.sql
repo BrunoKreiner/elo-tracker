@@ -132,7 +132,7 @@ CREATE FUNCTION Match_To_Approve() RETURNS TRIGGER AS $$
 
 BEGIN
   INSERT INTO Notifications(user_ID, descript, date_time)
-  VALUES(NEW.user2_ID, CONCAT('You have a pending match in ', NEW.activity, ' with user ', NEW.user1_ID), CURRENT_TIMESTAMP);
+  VALUES(NEW.user2_ID, CONCAT('You have a pending match in ', NEW.activity, ' with user ', (SELECT name FROM Rankables WHERE NEW.user1_ID = rankable_id)), CURRENT_TIMESTAMP);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
