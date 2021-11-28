@@ -5,6 +5,7 @@ import random
 path = pathlib.Path('db/data/')
 hash = "pbkdf2:sha256:260000$MOIs1KeH1QXaKRfI$b15f8d6e19a23a46afe367488e2f4aa460994d4ab0a6273cc88ae48537beb3c5"
 
+eloRows = []
 def writeToFile(filename, rows):
   
   fpath = (path / filename).with_suffix('.csv')
@@ -37,8 +38,8 @@ def leagueRow(i):
 def participatesRow(i): 
   return [i, "fakeactivity{num}".format(num = i), random.randint(200, 2000)]
 
-def ELORow(i): 
-  return [i,random.randint(0, 9), "fakeactivity{num}".format(num = i), random.randint(200, 2000), i + 20]
+def ELORow(i, userID, activity, matchID): 
+  return [i, userID, activity, random.randint(200, 2000), matchID]
 
 def memberRow(i):
   return ["fakeleague{num}".format(num =i), "fakeemail{num}@email.com".format(num = i), "member"]
@@ -47,6 +48,7 @@ def rankableRow(i):
   return [i, "fakeemail{num}@email.com".format(num = i), hash, "fake name{num}".format(num = i), "People", "About" ]
 
 def matchRow(i): 
+  global eloRows
   year = random.randint(2000, 2020)
   month = random.randint(1,12)
   day = random.randint(1, 28)
@@ -73,14 +75,18 @@ def matchRow(i):
     score2 = random.randint(0, 21)
     if q < 0.9:
       accepted = True
-
-
+  
+  randomActivity = activities[random.randint(0, 9)]
+  eloRows.append(ELORow(i, users[0], randomActivity, i))
   #return [activities[random.randint(0, 9)], i, users[0],  users[1],  random.randint(0, 21),  random.randint(0, 21), timestamp, True]
-  return [activities[random.randint(0, 9)], i, users[0],  users[1],  score1,  score2, timestamp, accepted]
+  return [randomActivity, i, users[0],  users[1],  score1,  score2, timestamp, accepted]
 
+print("test")
+writeToFile("Matches", generateRows(matchRow)) 
+writeToFile("ELOHistory", eloRows)
 #writeToFile("Activity", generateRows(activityRow))
-#writeToFile("Matches", generateRows(matchRow))
+
 #writeToFile("ParticipatesIn", generateRows(participatesRow))
 #writeToFile("ELOHistory", generateRows(ELORow))
 #writeToFile("Rankables", generateRows(rankableRow))
-writeToFile("Member_of", generateRows(memberRow))
+#writeToFile("Member_of", generateRows(memberRow))
