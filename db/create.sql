@@ -61,6 +61,7 @@ CREATE TABLE Member_of (
 
 
 CREATE TABLE ELOHistory (
+    id INT NOT NULL,
     user_id INT NOT NULL,
     activity VARCHAR(255) NOT NULL,
     elo INT NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE ParticipatesIn (
     activity VARCHAR(255) NOT NULL,
     elo INT NOT NULL,
     PRIMARY KEY (user_ID, activity),
-    Foreign key(user_ID) references Rankables(rankable_id),
+    --Foreign key(user_ID) references Rankables(rankable_id),
     Foreign key(activity) references Activity(name)
 );
 
@@ -125,3 +126,31 @@ CREATE TRIGGER No_More_President
   EXECUTE PROCEDURE No_More_President();
 
 
+-- trigger to enforce that a user cannot be the president of more than 3 leagues.
+CREATE FUNCTION elo_notification() RETURNS TRIGGER AS $$
+
+DECLARE
+
+  temp_var INT;
+
+BEGIN
+  -- YOUR IMPLEMENTATION GOES HERE
+  select count(*) 
+  into temp_var
+  from League 
+  where League.president = New.president;
+  
+  IF temp_var > 3
+  THEN
+    Raise Exception '% is already the president of 3 leagues, hence, cannot be president of another.', New.president;
+  
+  End if;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER No_More_President
+  BEFORE INSERT OR UPDATE ON League
+  FOR EACH ROW
+  EXECUTE PROCEDURE No_More_President();
