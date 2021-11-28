@@ -159,6 +159,8 @@ def get_player_history(id, activity):
     # Sorted by datetime
     # 0 index is least recent time
     # If player does not do activity, will return None
+    print(id)
+    print(activity)
     sorted_history = app.db.execute('''
                                     SELECT Matches.date_time, ELOHistory.elo
                                     FROM ELOHistory LEFT OUTER JOIN Matches ON ELOHistory.matchID = Matches.matchID
