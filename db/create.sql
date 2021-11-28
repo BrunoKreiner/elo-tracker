@@ -29,7 +29,8 @@ CREATE TABLE Matches (
     user1_score INT,
     user2_score INT,
     date_time DATE NOT NULL,
-    accepted BOOLEAN NOT NULL
+    accepted BOOLEAN NOT NULL,
+    Foreign key(activity) references Activity(name)
     -- accepted
 );
 
