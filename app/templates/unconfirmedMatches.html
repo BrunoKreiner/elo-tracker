@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -64,7 +65,7 @@
 
 <div class="bs-example col-md-12">
   <br>
-  <table class="table table-hover">
+  <table id="data3" class="table table-hover">
       <thead>
           <tr>
             <th scope="col">Activity</th>
@@ -194,3 +195,14 @@
     }
   }
   </script>
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data3').DataTable({
+      "paging": true
+    }
+    );
+  });
+</script>
+{% endblock %}
