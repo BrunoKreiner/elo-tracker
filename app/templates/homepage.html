@@ -99,6 +99,16 @@
 
 
   <div class="w3-container w3-center w3-light-grey" style="width:91%;margin-left:4.5%;margin-bottom:3%;margin-top:3%;float:left;">
+    <h2 style="margin-bottom:2%;">My elo vs. top elos for {{chartTitle}}</h2>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p style="font-size:medium;">
+        {{ form.activity(size=25,placeholder="Activity") }}
+        {% for error in form.activity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
+    </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
       <canvas id="myChart"></canvas>
@@ -111,6 +121,7 @@
         var formattedData3 = [];
         var formattedData4 = [];
         var formattedData5 = [];
+        var formattedData6 = [];
         
         for(let i=0;i<graphData[1].length;i=i+2) {
           formattedData1.push({x:  new Date(graphData[1][i]), y: graphData[1][i+1]});
@@ -127,6 +138,9 @@
         for(let i=0;i<graphData[9].length;i=i+2) {
           formattedData5.push({x:  new Date(graphData[9][i]), y: graphData[9][i+1]});
         }
+        for(let i=0;i<graphData[11].length;i=i+2) {
+          formattedData6.push({x:  new Date(graphData[11][i]), y: graphData[11][i+1]});
+        }
 
         console.log(formattedData1)
         
@@ -140,35 +154,42 @@
             pointBackgroundColor: "blue",
             data: formattedData1,
             borderColor: 'blue',
-            showLine:true
+            showLine:!!'{{showLine[0]}}'
           },{
             label:graphData[2],
             pointRadius: 4,
             pointBackgroundColor: "green",
             data: formattedData2,
             borderColor: 'green',
-            showLine:true
+            showLine:!!'{{showLine[1]}}'
           },{
             label:graphData[4],
             pointRadius: 4,
-            pointBackgroundColor: "red",
+            pointBackgroundColor: "yellow",
             data: formattedData3,
-            borderColor: 'red',
-            showLine:true
+            borderColor: 'yellow',
+            showLine:!!'{{showLine[2]}}'
           },{
             label:graphData[6],
             pointRadius: 4,
             pointBackgroundColor: "purple",
             data: formattedData4,
             borderColor: 'purple',
-            showLine:true
+            showLine:!!'{{showLine[3]}}'
           },{
             label:graphData[8],
             pointRadius: 4,
             pointBackgroundColor: "orange",
             data: formattedData5,
             borderColor: 'orange',
-            showLine:true
+            showLine:!!'{{showLine[4]}}'
+          },{
+            label:graphData[10],
+            pointRadius: 4,
+            pointBackgroundColor: "red",
+            data: formattedData5,
+            borderColor: 'red',
+            showLine:!!'{{showLine[5]}}'
           }]
         },
         options: {

@@ -131,6 +131,7 @@ def get_top_players(activity, k):
                                     WHERE :activity = activity
                                     ORDER BY elo DESC NULLS LAST, user_ID
                                     ''', activity = activity)
+
     if not sorted_players:
         print("No players for {:}".format(activity))
         return None
@@ -150,6 +151,7 @@ def get_player_history(id, activity):
                                     ''', 
                                     id = id, 
                                     activity = activity)
+    print(sorted_history)
     if not sorted_history:
         print("Player {:} has not played {:}".format(id, activity))
         return
