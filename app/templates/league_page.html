@@ -97,6 +97,25 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <h5>LEADERBOARD</h5>
+
+    <table id="data2" class="w3-table w3-striped w3-white">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">League</th>
+          <th scope="col">Avg ELO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for league in league_table%}
+        <tr>
+          <td>{{league.name}}</td>
+          <td>{{league.president}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
     </div>
 
 
@@ -172,6 +191,9 @@
 
 {% block scripts %}
 <script>
+  $(document).ready(function () {
+    $('#data2').DataTable();
+  });
   $(document).ready(function () {
     $('#data3').DataTable();
   });
