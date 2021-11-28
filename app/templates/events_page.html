@@ -4,6 +4,45 @@
 
 <div class="w3-main" style="margin-left:300px;"></div>
 
+<a href="#" data-toggle="modal" data-target='trial' class="btn btn-success"><i class="fa fa-expand"></i> View Event </a>
+
+
+
+<div class="modal fade" id="trial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"> <i class="fa fa-edit"></i> View Event Information </h4>
+          </div>
+          <div class="modal-body">
+              <form  method="post" action="/edit_profile">
+                 <p>
+                   If title and details aren't clear, make clear.
+                   <br>
+                   Then, have ability to view the matches of this event. Easier if a match had an associated 'Event', which checked with a trigger if
+                   the rankables were a part of a given event.
+                   <br>
+                   The ability to see the sorted rankable winners based off the info we currently have (so sum of victories is what matters here).
+                   <br>
+                   The ability to see the awards handed out.
+                   <br>
+                   A
+                 </p>
+                
+            
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Cancel</button>
+                  <button type="submit" name="action" class="btn btn-primary" style="width:100px"><i class="fa fa-check"></i> Submit</button>
+              </div>
+          </form>
+
+</div>
+</div>
+</div>
+</div>
+
 
 <header class="w3-container w3-center" style="padding-top:50px">
   <h2><b><i class="fa fa-trophy"></i> Events</b></h2>
@@ -120,18 +159,68 @@
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
               <th scope="col">Date</th>  
-              <th scope="col">ELO Range</th>              
+              <th scope="col">ELO Range</th>  
             </tr>
           </thead>
           <tbody>
             {% for event in events_past_table%}
             <tr>
+              <td>{{event.event_id}}</td>
                 <td>{{event.name}}</td>
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
+                <td><a href="#" data-toggle="modal" data-target='#edit{{ event.event_id }}' class="btn btn-success"><i class="fa fa-expand"></i> View Event </a></td>
+
             </tr>
+
+
+            <div class="modal fade" id="edit{{ event.event_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"> <i class="fa fa-edit"></i> View Event Information </h4>
+                      </div>
+                      <div class="modal-body">
+                          <form  method="post" action="/edit_profile">
+                             <p>
+                               If title and details aren't clear, make clear.
+                               <br>
+                               Then, have ability to view the matches of this event. Easier if a match had an associated 'Event', which checked with a trigger if
+                               the rankables were a part of a given event.
+                               <br>
+                               The ability to see the sorted rankable winners based off the info we currently have (so sum of victories is what matters here).
+                               <br>
+                               The ability to see the awards handed out.
+                               <br>
+                               A
+                             </p>
+                            
+                            <!--<div class="form-group">
+                              <input type="text" class="form-control" value="{{ event.id }}" name="staffid" required>
+                             </div>
+                             <div class="form-group">
+                              <input type="text" class="form-control" value="{{ event.id }}"  name="role" required>
+                             </div>
+                             <div class="form-group">
+                              <input type="text" class="form-control" value="{{ event.id }}"  name="designation" required>
+                             </div>-->
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Cancel</button>
+                              <button type="submit" name="action" class="btn btn-primary" style="width:100px"><i class="fa fa-check"></i> Submit</button>
+                          </div>
+                      </form>
+
+           </div>
+        </div>
+</div>
+</div>
+
+
             {% endfor %}
+            <script> $('#edit').modal(show); </script>
           </tbody>
         </table>
       </div>
@@ -144,6 +233,8 @@
 {% endblock %}
 
 {% block scripts %}
+
+
 <script>
   $(document).ready(function () {
     $('#data4').DataTable();
