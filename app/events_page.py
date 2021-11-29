@@ -27,7 +27,6 @@ class EventsForm(FlaskForm):
     maxELO = IntegerField(_l('maxELO'), default = 2000)
     category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')], default = 'People', validators = [Required()])
 
-
     submit = SubmitField(_l('Add Event'))
 
 ## add a join events form here
@@ -91,3 +90,29 @@ def events_page():
 @bp.route('/events_page', methods=["GET", "POST"])
 def button():
     return render_template("events_page.html")
+
+
+@bp.route('/events_page/<event_id>', methods = ['GET', 'POST'])
+def event_view(event_id):
+     myEvent = Events.getEvent(event_id)
+     myName = myEvent[1].upper()
+     myType = myEvent[2].capitalize()
+     myDate = myEvent[3]
+     myMinElo = myEvent[4]
+     myMaxElo = myEvent[5]
+     myCategory = myEvent[6].capitalize()
+     myMatches = Match.get_all_in_event(event_id)
+
+
+     return render_template('event_view_page.html', 
+     myName = myName,
+     myType = myType,
+     myDate = myDate,
+     myMinElo = myMinElo,
+     myMaxElo = myMaxElo,
+     myCategory = myCategory,
+     myMatches = myMatches
+     )
+
+
+

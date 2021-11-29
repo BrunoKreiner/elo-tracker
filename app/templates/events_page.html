@@ -112,6 +112,7 @@
   {% endwith %}
 </p>
 
+
       <div class="w3-twothird">
         <h3>Upcoming Events</h3>
         <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
@@ -163,82 +164,16 @@
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
                 <td>{{event.category}}</td>
 
-                <td>
-              <button type = "button"  data-toggle="modal" data-target="#edit{{ event.event_id }}" class="btn btn-primary">
-              <i class="fa fa-expand"></i>
-              View Event 
-              </button>
+              <!-- Button to Trigger the Website-->
+
+              <td>
+                <form action="/events_page/{{event.event_id}}" method="POST">
+                  <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
+                </form>
+              </td>
+
               </td>
             </tr>
-
-
-            <div class="modal fade" id="edit{{ event.event_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
-
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title"> <i class="fa fa-edit"></i> View Event Information </h4>
-                      </div>
-                      <div class="modal-body">
-                          <form  method="get" action="/edit_profile">
-                            <h3>{{event.name}}</h3>
-                            <h4>Type: {{event.type}}</h4>
-                            <h4>End Date: {{event.date}}</h4>
-                            <h4>ELO Range: {{event.minELO}} - {{event.maxELO}} </h4>
-                            <h4>Category: {{event.category}} </h4>
-
-                            - - - - - - 
-                            Template to view the other tables
-                            <br>
-                            Then, have ability to view the matches of this event. 
-<!--
-    user1_ID INT NOT NULL,
-    user2_ID INT NOT NULL,
-    user1_score INT,
-    user2_score INT,
-    date_time DATE NOT NULL,
-    accepted BOOLEAN NOT NULL
-
-
-                              <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th scope="col">Player 1</th>      
-                                    <th scope="col">Player 2</th>          
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    {% for validMatch in matches_all_table%}
-                                  <tr>
-                                      <td>{{validMatch.user1Name}}</td>
-                                      <td>{{validMatch.user2Name}}</td>
-                                  </tr>
-                                 
-                                </tbody>
-                              </table>
-                            {% endfor %}
--->
-                              
-                            <br>
-                            The ability to see the sorted rankable winners based off the info we currently have (so sum of victories is what matters here).
-                            <br>
-                            The ability to see the awards handed out.
-                            <br>
-                        </div>
-                      
-
-                        
-                            
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-default btn-secondary" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Exit</button>
-                          </div>
-                      </form>
-
-           </div>
-        </div>
-</div>
-</div>
 
             {% endfor %}
             
@@ -250,6 +185,8 @@
           </tbody>
         </table>
       </div>
+
+    <br>
 
   </div>
 

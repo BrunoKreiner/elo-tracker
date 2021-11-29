@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h1><b><i class="fa fa-trophy"></i> {{myName}} </b></h1>
+</header>
+
+  <div class="w3-panel"  style="padding-top:22px">
+  <h2><strong>Type:</strong> {{myType}}</h2>
+  <h2><strong>End Date:</strong> {{myDate}}</h2>
+  <h2><strong>Elo Range:</strong> {{myMinElo}} - {{myMaxElo}}</h2>
+  <h2><strong>Category:</strong> {{myCategory}}</h2>
+  
+
+  <h3>Matches in this Event</h4>
+  <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+       <caption> List of Matches</caption>
+     <thead class="thead-dark">
+       <tr>
+         <th scope="col">Event Name</th>                    
+       </tr>
+     </thead>
+     <tbody>
+       {% for match in myMatches%}
+       <tr>
+         <td>{{match.matchID}}</td>
+         </tr>
+         {% endfor %}
+
+     </tbody>
+   </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data1').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#data1').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#data1').DataTable();
+  });
+
+
+  
+  // $(document).ready(function () {
+  //   $('#data1').DataTable();
+  //   $('#data2').DataTable();
+  // });
+  
+</script>
+{% endblock %}
