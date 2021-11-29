@@ -12,7 +12,7 @@ class Activity:
 SELECT distinct category
 FROM Activity
 ''')
-        return [row[0] for row in rows] # what does the * mean? How do we change an activity object into the string value it contains?
+        return [row[0] for row in rows]
 
 
     @staticmethod
