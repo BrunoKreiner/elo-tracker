@@ -41,13 +41,13 @@ def events_page():
         minELOAmt = form.minELO.data
         maxELOAmt = form.maxELO.data
         if (minELOAmt >  maxELOAmt):
-            flash('Your minELO needs to be less than your maxELO')
+            flash('Failure: Your minELO needs to be less than your maxELO')
             return redirect(url_for('events_page.events_page'))
         if ((minELOAmt < 0) or (maxELOAmt < 0)):
-            flash('ELO needs to be above 0')
+            flash('Failure: ELO needs to be above 0')
             return redirect(url_for('events_page.events_page')) 
         if ((minELOAmt > 2000) or (maxELOAmt > 2000)):
-            flash('ELO needs to be below 2000')
+            flash('Failure: ELO needs to be below 2000')
             return redirect(url_for('events_page.events_page'))         
         if Events.addEvent(
         form.name.data,

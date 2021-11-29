@@ -7,119 +7,102 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
 
-<div class="w3-main" style="margin-left:300px;"></div>
-
-<a href="#" data-toggle="modal" data-target='#trial'><i class="fa fa-expand"></i> View Event </a>
-
-
-
-<div class="modal fade" id="trial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title"> <i class="fa fa-edit"></i> View Event Information </h4>
-          </div>
-          <div class="modal-body">
-              <form  method="post" action="/edit_profile">
-                 <p>
-                   If title and details aren't clear, make clear.
-                   <br>
-                   Then, have ability to view the matches of this event. Easier if a match had an associated 'Event', which checked with a trigger if
-                   the rankables were a part of a given event.
-                   <br>
-                   The ability to see the sorted rankable winners based off the info we currently have (so sum of victories is what matters here).
-                   <br>
-                   The ability to see the awards handed out.
-                   <br>
-                   A
-                 </p>
-                
-            
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Cancel</button>
-                  <button type="submit" name="action" class="btn btn-primary" style="width:100px"><i class="fa fa-check"></i> Submit</button>
-              </div>
-          </form>
-
-</div>
-</div>
-</div>
-</div>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
 
 <header class="w3-container w3-center" style="padding-top:50px">
   <h2><b><i class="fa fa-trophy"></i> Events</b></h2>
 </header>
 
-  <div class="w3-panel" style="padding-top:22px">
-    <!--<input type = "button" value = "Create a New Event" onclick = "toggleEvents()">-->
-    <div class="w3-row-padding" style="margin:0 -16px">
-      <div class="w3-third">
-        <h5>Create a New Event</h5>
+  <div class="w3-panel  style="padding-top:22px">
 
+    <button type = "button" data-toggle="modal" data-target="#addEvent" class="btn btn-success w3-left" >
+      <i class="fa fa-plus-circle"></i>
+      Add Event 
+      </button>
 
-        <form action="" method="post">
-          {{ form.hidden_tag() }}
-          <p>
-            Event Name<br/>
-            {{ form.name(size=48) }}<br/>
-            {% for error in form.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
-            Event Type <br/>
-            {{ form.type(size=32) }}<br/>
-            {% for error in form.type.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
-            Date <br/>
-            {{ form.date(size=32) }}<br/>
-            {% for error in form.date.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+      <br>
+      <br>
+      <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> <i class="fa fa-plus-circle"></i> Add Event </h4>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <p>
+                      Event Name<br/>
+                      {{ form.name(size=48) }}<br/>
+                      {% for error in form.name.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                    <p>
+                      Event Type <br/>
+                      {{ form.type(size=32) }}<br/>
+                      {% for error in form.type.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                    <p>
+                      Date <br/>
+                      {{ form.date(size=32) }}<br/>
+                      {% for error in form.date.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+          
+                    <p>
+                      MinElo <br/>
+                      {{ form.minELO(size=16) }}<br/>
+                      {% for error in form.minELO.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+          
+                    <p>
+                      MaxElo <br/>
+                      {{ form.maxELO(size=16) }}<br/>
+                      {% for error in form.maxELO.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  
+                    <p>
+                      {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                      <ul>
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                      {% endwith %}
+                    </p>
+          
+                    <p>{{ form.submit() }}</p>
+                  </form>
 
-          <p>
-            MinElo <br/>
-            {{ form.minELO(size=16) }}<br/>
-            {% for error in form.minELO.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+     </div>
+  </div>
+</div>
+</div>
 
-          <p>
-            MaxElo <br/>
-            {{ form.maxELO(size=16) }}<br/>
-            {% for error in form.maxELO.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-        
-          <p>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-              {% for message in messages %}
-              {{ message }}
-              {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-          </p>
-
-          <p>{{ form.submit() }}</p>
-        </form>
-
-
-      </div>
-    </div>
-
-
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
 
       <div class="w3-twothird">
         <h5>Upcoming Events</h5>
@@ -174,13 +157,18 @@
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
-                <td><a href="#" data-toggle="modal" data-target='#edit{{ event.event_id }}' class="btn btn-success"><i class="fa fa-expand"></i> View Event </a></td>
+                <td>
+              <button type = "button"  data-toggle="modal" data-target="#edit{{ event.event_id }}" class="btn btn-success">
+              <i class="fa fa-expand"></i>
+              View Event 
+              </button>
+              </td>
 
             </tr>
 
 
-            <div class="modal fade" id="edit{{ event.event_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<!--
+            <div class="modal fade" id="edit{{ event.event_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+
               <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -189,8 +177,17 @@
                       </div>
                       <div class="modal-body">
                           <form  method="post" action="/edit_profile">
-                             <p>
-                               If title and details aren't clear, make clear.
+                            <h3>{{event.name}}</h3>
+                            <h4>Type: {{event.type}}</h4>
+                            <h4>Date: {{event.date}}</h4>
+                            <h4>ELO Range: {{event.minELO}} - {{event.maxELO}} </h4>
+
+                             <!--event_id INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+                              name VARCHAR(255) NOT NULL,
+                              type VARCHAR(255) NOT NULL,
+                              date TIMESTAMP NOT NULL,
+                              minELO INT,
+                              maxELO INT-->
                                <br>
                                Then, have ability to view the matches of this event. Easier if a match had an associated 'Event', which checked with a trigger if
                                the rankables were a part of a given event.
@@ -199,31 +196,25 @@
                                <br>
                                The ability to see the awards handed out.
                                <br>
-                               A
-                             </p>
                             
-                            <div class="form-group">
-                              <input type="text" class="form-control" value="{{ event.id }}" name="staffid" required>
-                             </div>
-                             <div class="form-group">
-                              <input type="text" class="form-control" value="{{ event.id }}"  name="role" required>
-                             </div>
-                             <div class="form-group">
-                              <input type="text" class="form-control" value="{{ event.id }}"  name="designation" required>
-                             </div>
                           <div class="modal-footer">
-                              <button type="button" class="btn btn-default btn-danger" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Cancel</button>
+                              <button type="button" class="btn btn-default btn-secondary" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i>Exit</button>
                               <button type="submit" name="action" class="btn btn-primary" style="width:100px"><i class="fa fa-check"></i> Submit</button>
                           </div>
                       </form>
 
            </div>
         </div>
-</div>-->
+</div>
 </div>
 
             {% endfor %}
-            <script> $('#edit').modal(show); </script>
+            
+            <script> 
+            $('#edit').modal(show); 
+            </script>
+
+
           </tbody>
         </table>
       </div>
