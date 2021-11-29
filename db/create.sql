@@ -105,6 +105,12 @@ CREATE TABLE MatchInEvent (
     FOREIGN KEY(event_id) references Events(event_id)
 );
 
+-- trigger to enforce that for MatchInEvent, the match and the event are of the same activity/type
+
+-- trigger to enforce that for MatchInEvent, the category of the users matches the category of the event
+
+-- trigger to enforce that for MatchInEvent, the elo scores of the players (when added) are within the range
+
 
 
 -- trigger to enforce that a user cannot be the president of more than 3 leagues.
