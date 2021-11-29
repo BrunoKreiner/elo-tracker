@@ -33,8 +33,27 @@
 <div class="w3-panel" style="padding-top:22px">
   <div class="w3-row-padding" style="margin:0 -16px">
     <div class="column w3-third">
+    
+    <h5>My Leagues</h5>
 
-      <h5>Join a League</h5>
+    <table id="data1" class="w3-table w3-striped w3-white">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">League</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in myleagues_table%}
+        <tr>
+          <td>{{member.name}}</td>
+          <td>{{member.status}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h5>Join a League</h5>
 
       <form action="" method="post">
         {{ leagueform.hidden_tag() }}
@@ -78,49 +97,7 @@
         </p>
         <p>{{ leagueform.submit() }}</p>
       </form>
-    
-    <h5>My Leagues</h5>
 
-    <table id="data1" class="w3-table w3-striped w3-white">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">League</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for member in myleagues_table%}
-        <tr>
-          <td>{{member.name}}</td>
-          <td>{{member.status}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <h5>LEADERBOARD</h5>
-
-    <table id="data2" class="w3-table w3-striped w3-white">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">League</th>
-          <th scope="col">Avg ELO</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for league in league_table%}
-        <tr>
-          <td>{{league.name}}</td>
-          <td>{{league.president}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      </table>
-    </div>
-
-
-
-    <div class="column w3-third">
 
     <h5>Create A New League</h5>
 
@@ -162,6 +139,33 @@
           </p>
           <p>{{ form.submit() }}</p>
         </form>
+
+    </div>
+
+
+
+    <div class="column w3-third">
+
+      <h5>LEADERBOARD</h5>
+
+      <table class="w3-table w3-striped w3-white">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">League</th>
+            <th scope="col">Avg ELO</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for league in leaderboard[:10]%}
+          <tr>
+            <td>{{league[0]}}</td>
+            <td>{{league[1]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+
+    
     
       <h5>All Leagues</h5>
 

@@ -92,6 +92,41 @@ def get_all_averages():
 # def get_all_current(id):
 #     return 0
 
+def get_average(id):
+    # Implementation tbd
+    try:
+        average = app.db.execute('''
+        SELECT AVG(elo)
+        FROM ParticipatesIn
+        WHERE :id = user_ID
+                                ''', id = id)
+        average = round(average[0][0])
+    except (exc.SQLAlchemyError, TypeError) as e:
+        average = "1000"
+    return average
+
+
+# def get_league_averages
+
+
+def get_league_averages():
+    league_avgs = app.db.execute('''
+    SELECT Member_of.name, AVG(ParticipatesIn.elo) AS avg
+    FROM ParticipatesIn 
+    JOIN Rankables ON ParticipatesIn.user_ID = Rankables.rankable_id
+    JOIN Member_of ON Rankables.email = Member_of.email
+    GROUP BY Member_of.name
+                            ''')
+
+    formatted_result = []
+    for pair in league_avgs:
+        formatted_result.append((pair[0], int(pair[1])))
+    
+    formatted_result.sort(key=lambda x:x[1], reverse=True)
+
+    return [i for i in formatted_result]
+
+
 def get_max(id):
     try:
         maximum = app.db.execute('''

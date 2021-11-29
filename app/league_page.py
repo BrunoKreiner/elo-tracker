@@ -15,6 +15,8 @@ from flask_babel import _, lazy_gettext as _l
 
 from .models.match import Match
 from .models.member_of import Member_of
+from .models.elo import get_league_averages
+
 
 from flask import Blueprint
 
@@ -80,7 +82,8 @@ def league_page():
     all_statuses = Member_of.get_valid_status()
 
     # get table displaying leaderboard of leagues:
-    leaderboard = Leagues.get_all()
+    
+    leaderboard = get_league_averages()
 
 
 
