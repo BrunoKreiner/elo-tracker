@@ -17,7 +17,11 @@ from flask import Blueprint
 bp = Blueprint('addMatches', __name__)
 
 def validate_activity_category(self, activity):
-        excluded_chars = " *?!'^+%&/()=}][{$#"
+        rows = Activity.get(self.activity.data)
+
+        if len(rows) == 0:
+            raise ValidationError(
+                    f"Activity does not exist")
 
         user2_email = self.user2_email.data
         user2_id = Rankables.get_id_from_email(user2_email)
@@ -31,9 +35,18 @@ def validate_activity_category(self, activity):
             raise ValidationError(
                     f"Users must be same category as activity")
 
+def validate_notself(self, user2_email):
+
+        user2_email = self.user2_email.data
+        user2_id = Rankables.get_id_from_email(user2_email)
+        user1_id = current_user.rankable_id
+        if (user1_id == user2_id):
+            raise ValidationError(
+                    f"Cannot add a match against yourself")
+
 class MatchForm(FlaskForm):
     activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
-    user2_email = StringField(_l('Opponent\'s email'), validators=[DataRequired(), Email()])
+    user2_email = StringField(_l('Opponent\'s email'), validators=[DataRequired(), Email(), validate_notself])
     user1_score = StringField(_l('Your Score'))
     user2_score = StringField(_l('Their Score'))
     datetime = DateField('DateTime', default=datetime.today, validators=[Required()])
