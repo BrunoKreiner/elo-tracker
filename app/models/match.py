@@ -639,13 +639,14 @@ RETURNING *
     @staticmethod
     def get_all_in_event(event_id):
         rows = app.db.execute('''
-SELECT Matches.matchID, Matches.user1_ID, Matches.user2_ID, Matches.user1_score, Matches.user2_score, Matches.date_time, Matches.activity
+SELECT Matches.activity, Matches.matchID, Matches.user1_ID, Matches.user2_ID, Matches.user1_score, Matches.user2_score, Matches.date_time, Matches.accepted
 FROM (
     SELECT match_id
     FROM MatchInEvent
     WHERE event_id = :event_id
 ) AS T, Matches
 WHERE Matches.matchID = T.match_id
+ORDER BY date_time
 ''', event_id = event_id
                               )
         return [Match(*row) for row in rows]
