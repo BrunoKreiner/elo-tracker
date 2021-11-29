@@ -636,3 +636,16 @@ RETURNING *
         rows = [Match(*row) for row in rows]
         return rows
 
+    @staticmethod
+    def get_all_in_event(event_id):
+        rows = app.db.execute('''
+SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
+FROM (
+    SELECT match_id
+    FROM MatchInEvent
+    WHERE event_id = :event_id
+) AS T
+WHERE matchID = T.match_id
+''', event_id = event_id
+                              )
+        return [Match(*row) for row in rows]

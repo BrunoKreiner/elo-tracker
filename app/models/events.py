@@ -3,21 +3,21 @@ from datetime import datetime
 
 
 class Events:    
-    def __init__(self, event_id, name, type,date, minELO, maxELO):
+    def __init__(self, event_id, name, type,date, minELO, maxELO, category):
         self.event_id = event_id
         self.name= name
         self.type =type
         self.date =date
         self.minELO = minELO
         self.maxELO = maxELO
-
+        self.category = category
 
 
 # method to get every single event
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT event_id, name, type,date, minELO, maxELO
+SELECT event_id, name, type, date, minELO, maxELO,category
 FROM Events
 ''')
         return [Events(*row) for row in rows]
@@ -28,7 +28,7 @@ FROM Events
         currentDateTime = datetime.now()
 
         rows = app.db.execute('''
-SELECT event_id, name, type,date, minELO, maxELO
+SELECT event_id, name, type,date, minELO, maxELO,category
 FROM Events
 WHERE date < (:currentDateTime)
 ORDER BY date DESC, name
@@ -42,7 +42,7 @@ ORDER BY date DESC, name
         currentDateTime = datetime.now()
 
         rows = app.db.execute('''
-SELECT event_id, name, type,date,minELO, maxELO
+SELECT event_id, name, type,date,minELO, maxELO,category
 FROM Events
 WHERE date > (:currentDateTime)
 ORDER BY date, name
@@ -52,7 +52,7 @@ ORDER BY date, name
 
     # method to add a new league.
     @staticmethod
-    def addEvent(name, type, date,minELO, maxELO):
+    def addEvent(name, type, date,minELO, maxELO,category):
         if minELO is None:
             minELO = 0 
         if maxELO is None:
@@ -67,9 +67,8 @@ FROM Events
 
 
         rows = app.db.execute("""
-INSERT INTO Events(event_id
-, name, type, date, minELO, maxELO)
-VALUES(:event_id, :name, :type, :date, :minELO, :maxELO)
+INSERT INTO Events(event_id, name, type, date, minELO, maxELO,category)
+VALUES(:event_id, :name, :type, :date, :minELO, :maxELO, :category)
 RETURNING event_id
 """, 
 event_id= maxEventId + 1, 
@@ -77,9 +76,11 @@ name=name,
 type=type, 
 date = date, 
 minELO = minELO,
- maxELO = maxELO)
+ maxELO = maxELO,
+ category = category)
         event_id = rows[0][0] 
         return event_id
+
 
 
 
