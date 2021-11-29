@@ -5,6 +5,16 @@ class Activity:
         self.name = name
         self.category = category
 
+    @staticmethod
+    def get(name):
+        rows = app.db.execute('''
+SELECT *
+FROM Activity
+WHERE name = :name
+''',
+            name=name)
+        return [Activity(*row) for row in rows]
+
 
     @staticmethod
     def get_valid_category():
