@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <div class="w3-main" style="margin-left:300px;"></div>
 
 <header class="w3-container w3-center" style="padding-top:50px">
@@ -96,8 +98,101 @@
     </div>
   </div>
 
-  <div class="w3-container w3-center w3-light-grey" style="width:91%;height:200px;margin-left:4.5%;margin-bottom:3%;margin-top:3%;border-radius:25px;border: 4px solid deeppink;float:left;">
-    <h2>[Bonus feature visualization will go in this box]</h2>
+
+  <div class="w3-container w3-center w3-light-grey" style="width:91%;margin-left:4.5%;margin-bottom:3%;margin-top:3%;float:left;">
+    <h2 style="margin-bottom:2%;">My Elo vs. Top Elos for {{chartTitle}}</h2>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p style="font-size:medium;">
+        {{ form.activity(size=25,placeholder="Activity") }}
+        {% for error in form.activity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      {{ form.submit(class_="w3-light-grey w3-hover-text-dark-grey") }}</p>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+      <canvas id="myChart"></canvas>
+      {% block javascript %}
+      <script type="text/javascript">//"[andrew,[datetime,8],katherine,[datetime]]"
+        var graphData = JSON.parse('{{ graphInfo | tojson }}');
+        console.log(graphData)
+        var formattedData1 = [];
+        var formattedData2 = [];
+        var formattedData3 = [];
+        var formattedData4 = [];
+        
+        for(let i=0;i<graphData[1].length;i=i+2) {
+          formattedData1.push({x:  new Date(graphData[1][i]), y: graphData[1][i+1]});
+        }
+        for(let i=0;i<graphData[3].length;i=i+2) {
+          formattedData2.push({x:  new Date(graphData[3][i]), y: graphData[3][i+1]});
+        }
+        for(let i=0;i<graphData[5].length;i=i+2) {
+          formattedData3.push({x:  new Date(graphData[5][i]), y: graphData[5][i+1]});
+        }
+        for(let i=0;i<graphData[7].length;i=i+2) {
+          formattedData4.push({x:  new Date(graphData[7][i]), y: graphData[7][i+1]});
+        }
+
+        console.log(formattedData1)
+        
+        if (formattedData1[0]){
+          var maxX = formattedData1[formattedData1.length -1]['x'];
+      }
+
+      new Chart("myChart", {
+        type: "scatter",
+        data: {
+          datasets: [{
+            label:graphData[0],
+            pointRadius: 5,
+            pointBackgroundColor: "white",
+            data: formattedData1,
+            borderColor: 'blue',
+            borderWidth: 6,
+            showLine:!!'{{showLine[0]}}'
+          },{
+            label:graphData[2],
+            pointRadius: 4,
+            pointBackgroundColor: "goldenrod",
+            data: formattedData2,
+            borderColor: 'goldenrod',
+            borderWidth: 2,
+            showLine:!!'{{showLine[1]}}'
+          },{
+            label:graphData[4],
+            pointRadius: 4,
+            pointBackgroundColor: "salmon",
+            data: formattedData3,
+            borderColor: 'salmon',
+            borderWidth: 2,
+            showLine:!!'{{showLine[2]}}'
+          },{
+            label:graphData[6],
+            pointRadius: 4,
+            pointBackgroundColor: "lightseagreen",
+            data: formattedData4,
+            borderColor: 'lightseagreen',
+            borderWidth: 2,
+            showLine:!!'{{showLine[3]}}'
+          }]
+        },
+        options: {
+          legend: {display: true,labels:{fontSize:15}},
+          
+          scales: {
+            //xAxes: [{ticks: {callback: (value) => {return new Date(value).toLocaleDateString("fa-IR", {month: "short",year: "numeric"});}}}],
+            xAxes: [{scaleLabel: {display: true,labelString: 'Time',fontSize:25}, type: "time", time: {
+                min: moment('2019-01-01'),
+                max: maxX
+            }}],
+            yAxes: [{ticks: {min: 0, max:2000, fontSize:15}, scaleLabel: {display: true,labelString: 'Elo',fontSize:25}}]
+          }
+        }
+      });
+        </script>
+    {%endblock%}
   </div>
 
   <div class="w3-container w3-hover-text-light-grey w3-deep-purple w3-center" style="border-radius:25px;height:240px;margin:3%;width:44%;padding:2%;float:left;">
@@ -139,5 +234,6 @@
     </p></a>
   </div>
 </div>
+
 
 {% endblock %}

@@ -15,6 +15,8 @@ from flask_babel import _, lazy_gettext as _l
 
 from .models.match import Match
 from .models.member_of import Member_of
+from .models.elo import get_league_averages
+
 
 from flask import Blueprint
 
@@ -79,6 +81,10 @@ def league_page():
     # table of all valid statuses.
     all_statuses = Member_of.get_valid_status()
 
+    # get table displaying leaderboard of leagues:
+    
+    leaderboard = get_league_averages()
+
 
 
     # populate the Member_of table with one more user after button push.
@@ -96,6 +102,6 @@ def league_page():
 
     # render the page by adding information to the index.html file
     return render_template('league_page.html',
-                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform, all_statuses=all_statuses)
+                           league_table=l_table, myleagues_table=myleagues_table, form=form, leagueform=leagueform, all_statuses=all_statuses, leaderboard=leaderboard)
 
 

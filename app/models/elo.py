@@ -1,6 +1,7 @@
 from flask import current_app as app
 from .. import elo_calc as ec
 from sqlalchemy import exc
+import numpy as np
 from datetime import date
 
 
@@ -92,6 +93,41 @@ def get_all_averages():
 # def get_all_current(id):
 #     return 0
 
+def get_average(id):
+    # Implementation tbd
+    try:
+        average = app.db.execute('''
+        SELECT AVG(elo)
+        FROM ParticipatesIn
+        WHERE :id = user_ID
+                                ''', id = id)
+        average = round(average[0][0])
+    except (exc.SQLAlchemyError, TypeError) as e:
+        average = "1000"
+    return average
+
+
+# def get_league_averages
+
+
+def get_league_averages():
+    league_avgs = app.db.execute('''
+    SELECT Member_of.name, AVG(ParticipatesIn.elo) AS avg
+    FROM ParticipatesIn 
+    JOIN Rankables ON ParticipatesIn.user_ID = Rankables.rankable_id
+    JOIN Member_of ON Rankables.email = Member_of.email
+    GROUP BY Member_of.name
+                            ''')
+
+    formatted_result = []
+    for pair in league_avgs:
+        formatted_result.append((pair[0], int(pair[1])))
+    
+    formatted_result.sort(key=lambda x:x[1], reverse=True)
+
+    return [i for i in formatted_result]
+
+
 def get_max(id):
     try:
         maximum = app.db.execute('''
@@ -135,6 +171,43 @@ def get_min(id):
     except (exc.SQLAlchemyError, TypeError) as e:
         minimum = "1000"
     return minimum
+
+def get_top_players(activity, k):
+    # Will return player ID's
+    # 0 index is best player
+    # If k > # of players, return smaller array
+    sorted_players = app.db.execute('''
+                                    SELECT user_ID
+                                    FROM ParticipatesIn
+                                    WHERE :activity = activity
+                                    ORDER BY elo DESC NULLS LAST, user_ID
+                                    ''', activity = activity)
+
+    if not sorted_players:
+        print("No players for {:}".format(activity))
+        return None
+    return sorted_players[:k]
+
+def get_player_history(id, activity):
+    # Will return sorted array
+    # datetime : ELO
+    # Sorted by datetime
+    # 0 index is least recent time
+    # If player does not do activity, will return None
+    print(id)
+    print(activity)
+    sorted_history = app.db.execute('''
+                                    SELECT Matches.date_time, ELOHistory.elo
+                                    FROM ELOHistory LEFT OUTER JOIN Matches ON ELOHistory.matchID = Matches.matchID
+                                    WHERE :id = ELOHistory.user_ID AND :activity = ELOHistory.activity AND :activity = Matches.activity
+                                    ORDER BY Matches.date_time ASC NULLS LAST, elo
+                                    ''', 
+                                    id = id, 
+                                    activity = activity)
+    if not sorted_history:
+        print("Player {:} has not played {:}".format(id, activity))
+        return
+    return sorted_history
 
 def check_elo_change(user_id, activity):
     description = "Your elo for {activity} has changed by {elo} points!"
@@ -258,6 +331,16 @@ def get_history(activity, id):
     WHERE :id = ELOHistory.user_ID AND :activity = ELOHistory.activity
                                 ''', id = id, activity = activity)
     return history
+
+def get_by_activity(activity):
+    pairs = app.db.execute('''
+    SELECT user_ID, elo
+    FROM ParticipatesIn
+    WHERE :activity = activity
+    ORDER BY elo DESC
+                            ''', activity = activity)
+
+    return pairs
 
 # Make a function that returns all the current ELOs for the activity the user plays
 # Function that averages these, and maxes them

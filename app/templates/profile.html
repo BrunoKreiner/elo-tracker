@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<div class="w3-main" style="margin-left:300px;"></div>
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h1><b> <i class="fa fa-user-circle"></i> View Profile</b></h1>
+</header>
+
+
+
+<div class="w3-container w3-third" style="margin-top:3%;">
+    <div class="w3-padding-16 w3-green w3-center" style="height:250px;border-radius:25px;margin-left:5%;">
+        <i class="fa fa-user-circle" style="margin-top:30px; font-size:80px;"></i>
+        <h1 style="margin-right:30px;margin-bottom:30px;margin-left:30px;font-size:40px;">{{name}} </h1>
+    </div>
+  </div>
+
+<div class="w3-container w3-twothird" style="margin-top:3%;">
+    <div class="w3-padding-16 w3-hover-border-orange w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-green w3-pale-green w3-center" style="height:250px;border-radius:25px;margin-right:5%;">
+        <h2  class ="w3-text-black" style="margin:30px;">Intro</h2>
+        <h5>{{about}}</h5>
+        <h5>Email: {{email}}</h5>
+        <h5>Category: {{category}}</h5>
+    </div>
+</div>
+<div class="w3-container w3-twothird" style="margin-top:3%;">
+    <div class="w3-padding-16 w3-hover-border-orange w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-green w3-pale-green w3-center" style="height:250px;border-radius:25px;margin-left:3%;">
+        <h2  class ="w3-text-black" style="margin:30px;">Elo Stats</h2>
+        <h5>Max Elo: <strong class="w3-text-orange">{{maxElo}}</strong> in {{maxEloActivity}}</h5>
+        <h5>Min Elo: <strong class="w3-text-orange">{{minElo}}</strong> in {{minEloActivity}}</h5>
+        <h5>Avg Elo: <strong class="w3-text-orange">{{averageElo}}</strong> over all activities played</h5>
+    </div>
+</div>
+<div class="w3-container w3-third" style="margin-top:3%;">
+    <div class="w3-padding-16 w3-hover-border-orange w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-border-green w3-pale-green w3-center" style="height:250px;border-radius:25px;margin-right:9%;">
+        <h2 class ="w3-text-black" style="margin:30px;">Match Stats</h2>
+        <h5>Matches Won: <strong class="w3-text-orange">{{matchesWon}}</strong></h5>
+        <h5>Matches Played: <strong class="w3-text-orange">{{matchesPlayed}}</strong></h5>
+        <h5>Activities Played: <strong class="w3-text-orange">{{numActivities}}</strong></h5>
+    </div>
+</div>
+
+<div class="w3-container" style="margin-top:1%;margin-right:4%; float:right;">
+    <div class="w3-padding-16 w3-center">
+        <a href="{{ url_for('players.players') }}" class ="w3-center"><button class="w3-orange w3-button w3-center" style="font-size: 20px; border-radius:15px;height:50px;width:240px;">
+            Back to Leaderboards
+        </button></a>
+    </div>
+</div>
+
+
+
+{% endblock %}
