@@ -104,14 +104,6 @@ def event_view(event_id):
      myCategory = myEvent[6].capitalize()
      myMatches = Match.get_relevant_from_event(event_id)
      myTopThree = Match.get_all_in_event(event_id)
-     #myTopThree = findNames(myTopThree)
-     
-     
-     # create a pseudotable
-     # myUser1Names = getMyUserNames(myMatches, 1)
-     # myUser2Names = getMyUserNames(myMatches, 2)
-     # myUser1Scores = getMyUser1Scores(myMatches)
-     # myUser2Scores = getMyUser2Scores(myMatches)
 
 
      return render_template('event_view_page.html', 
@@ -124,5 +116,3 @@ def event_view(event_id):
      myMatches = myMatches,
      myTopThree = myTopThree
      )
-
-

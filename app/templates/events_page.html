@@ -134,7 +134,7 @@
                 <td>{{event.date}}</td>
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
                 <td>{{event.category}}</td>
-            </tr>
+           </tr>
             {% endfor %}
           </tbody>
         </table>
@@ -147,7 +147,9 @@
               <th scope="col">Type</th>           
               <th scope="col">End Date</th>  
               <th scope="col">ELO Range</th>  
-              <th scope="col">Category</th>                       
+              <th scope="col">Category</th> 
+              <th scope="col">Explore</th> 
+       
             </tr>
           </thead>
           <tbody>
@@ -159,12 +161,12 @@
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
                 <td>{{event.category}}</td>
 
-              <!-- Button to Trigger the Website-->
-              <td>
-                <form action="/events_page/{{event.event_id}}" method="POST">
-                  <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
-                </form>
-              </td>
+                <td>
+                  <form action="/events_page/{{event.event_id}}" method="POST">
+                    <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
+                  </form>
+                </td>
+             
             </tr>
             {% endfor %}
           </tbody>
