@@ -93,9 +93,11 @@
     <h4>Category</h4>
   </div>
 </div>
-  <hr>
-  <hr>
 </div>
+<hr>
+<hr>
+
+ <div >
   <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
        <caption> List of Matches</caption>
      <thead class="thead-dark">
@@ -108,8 +110,6 @@
        {% for match in myMatches%}
        <tr>
 
-
-        
         {% if match.user1_score > match.user2_score %}
 
         <td style = "background-color: gold"> <strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
@@ -135,6 +135,23 @@
 
      </tbody>
    </table>
+  </div>
+
+
+
+<div>
+
+Put the top 3 players and their number of wins down here
+
+
+
+
+
+</div>
+
+
+
+
 
 
   </div>
@@ -151,11 +168,11 @@
   });
 
   $(document).ready(function () {
-    $('#data1').DataTable();
+    $('#data2').DataTable();
   });
 
   $(document).ready(function () {
-    $('#data1').DataTable();
+    $('#data3').DataTable();
   });
 
 

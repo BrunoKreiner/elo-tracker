@@ -681,11 +681,5 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
 
             ) AS D
         ON Rankables.rankable_id = D.user2_ID)
-
-
-
-
-
-
 ''', event_id = event_id)
         return rows

@@ -11,11 +11,12 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
 
+<div class="w3-panel"  style="padding-top:22px">
+
 <header class="w3-container w3-center" style="padding-top:50px">
   <h2><b><i class="fa fa-trophy"></i> Events</b></h2>
 </header>
 
-  <div class="w3-panel  style="padding-top:22px">
 
     <button type = "button" data-toggle="modal" data-target="#addEvent" class="btn w3-left btn-primary btn-lg" >
       <i class="fa fa-plus-circle"></i>
@@ -24,6 +25,7 @@
 
       <br>
       <br>
+
       <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -112,10 +114,9 @@
   {% endwith %}
 </p>
 
-
       <div class="w3-twothird">
         <h3>Upcoming Events</h3>
-        <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+        <table id ="data2" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
@@ -131,21 +132,15 @@
                 <td>{{event.name}}</td>
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
-            <td>{{event.minELO}} - {{event.maxELO}}</td>
+                <td>{{event.minELO}} - {{event.maxELO}}</td>
                 <td>{{event.category}}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
-      </div>
-     
-
-
-
-      
-      <div class="w3-twothird">
+    
         <h3>Past Events</h3>
-        <table id ="data2" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+        <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
@@ -165,23 +160,18 @@
                 <td>{{event.category}}</td>
 
               <!-- Button to Trigger the Website-->
-
               <td>
                 <form action="/events_page/{{event.event_id}}" method="POST">
                   <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
                 </form>
               </td>
-
-              </td>
             </tr>
-
             {% endfor %}
-            
           </tbody>
         </table>
       </div>
 
-    <br>
+
 
   </div>
 

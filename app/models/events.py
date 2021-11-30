@@ -90,3 +90,37 @@ FROM Events
 WHERE event_id = (:event_id)
 ''', event_id = event_id)
         return rows[0]
+
+
+# method to get a given whole Event by name
+    @staticmethod
+    def getFromName(event_name):
+        rows = app.db.execute('''
+SELECT event_id,name,type,to_char(date,'Month DD, YYYY'),minELO,maxELO,category
+FROM Events
+WHERE name = :event_name
+''', event_name = event_name)
+        return [Events(*row) for row in rows]
+
+
+
+
+# method to get a given the top 3 players in an Event by ID
+    @staticmethod
+    def get_top_three_players(event_id):
+        rows = app.db.execute('''
+
+SELECT T.match_id AS matchID, Matches.user1_ID AS user1_ID, Matches.user2_ID AS user2_ID, Matches.user1_score AS user1_score, Matches.user2_score AS user2_score, Matches.date_time AS date_time
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true
+
+
+
+
+''', event_id = event_id)
+        return rows
