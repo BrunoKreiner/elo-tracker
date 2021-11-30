@@ -220,4 +220,7 @@ FROM Rankables
 WHERE email = :email
 ''',
             email=email)
-        return rows[0][0]
+        if len(rows) > 0:
+            return rows[0][0]
+        else:
+            return None
