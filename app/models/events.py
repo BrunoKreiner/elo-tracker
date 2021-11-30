@@ -85,7 +85,7 @@ minELO = minELO,
     @staticmethod
     def getEvent(event_id):
         rows = app.db.execute('''
-SELECT event_id,name,type,date,minELO,maxELO,category
+SELECT event_id,name,type,to_char(date,'Month DD, YYYY'),minELO,maxELO,category
 FROM Events
 WHERE event_id = (:event_id)
 ''', event_id = event_id)

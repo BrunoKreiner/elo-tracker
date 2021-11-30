@@ -32,7 +32,7 @@
 
     <div class="w3-quarter">
       <div class="w3-container w3-green w3-padding-16" style="border-radius:25px;">
-        <div class="w3-left"><i class="fa fa-calendar w3-xxxlarge"></i></div>
+        <div class="w3-left"><i class="fa fa-calendar w3-xxlarge"></i></div>
         <div class="w3-right">
           <h3>{{myDate}}</h3>
         </div>
@@ -93,45 +93,48 @@
     <h4>Category</h4>
   </div>
 </div>
-  
+  <hr>
+  <hr>
 </div>
-
-
-  <h3>Matches in this Event</h4>
   <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
        <caption> List of Matches</caption>
      <thead class="thead-dark">
        <tr>
          <th scope="col">User1</th> 
          <th scope="col">User2</th>     
-         <th scope="col">User1 Score</th> 
-         <th scope="col">User2 Score</th>                                     
        </tr>
      </thead>
      <tbody>
        {% for match in myMatches%}
        <tr>
-         <td>{{match.user1_ID}}</td>
-         <td>{{match.user2_ID}}</td>
-         <td>{{match.user1_score}}</td>
-         <td>{{match.user2_score}}</td>
+
+
+        
+        {% if match.user1_score > match.user2_score %}
+
+        <td style = "background-color: gold"> <strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: silver"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+        {% elif match.user1_score == match.user2_score %}
+
+        <td style = "background-color: gray"><strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: gray"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+        
+        {% else %}
+      
+        <td style = "background-color: silver"><strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: gold"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+      
+        {% endif %}
+
 
          </tr>
          {% endfor %}
 
      </tbody>
    </table>
-
-
-
-
-
-
-
-
-
-
-
 
 
   </div>

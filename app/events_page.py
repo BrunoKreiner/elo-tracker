@@ -102,10 +102,11 @@ def event_view(event_id):
      myMinElo = myEvent[4]
      myMaxElo = myEvent[5]
      myCategory = myEvent[6].capitalize()
-     myMatches = Match.get_all_in_event(event_id)
+     myMatches = Match.get_relevant_from_event(event_id)
+     
      
      #create a pseudotable
-   #  myUser1Names = getMyUserNames(myMatches, 1)
+    # myUser1Names = getMyUserNames(myMatches, 1)
     # myUser2Names = getMyUserNames(myMatches, 2)
     # myUser1Scores = getMyUser1Scores(myMatches)
      #myUser2Scores = getMyUser2Scores(myMatches)
@@ -120,16 +121,6 @@ def event_view(event_id):
      myCategory = myCategory,
      myMatches = myMatches
      )
-
-def getMyUserNames(myMatches, myIndex):
-    arr = [0 for j in range(len(myMatches))]
-    x = 0
-    for row in myMatches:
-        print(row)
-        arr[x] = Rankables.get_name(row.myIndex)
-        x += 1
-    return arr
-
 
 
 

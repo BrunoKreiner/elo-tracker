@@ -639,14 +639,53 @@ RETURNING *
     @staticmethod
     def get_all_in_event(event_id):
         rows = app.db.execute('''
-SELECT Matches.activity, Matches.matchID, Matches.user1_ID, Matches.user2_ID, Matches.user1_score, Matches.user2_score, Matches.date_time, Matches.accepted
+SELECT Matches.activity, T.match_id AS match_id, Matches.user1_ID, Matches.user2_ID, Matches.user1_score, Matches.user2_score, Matches.date_time, Matches.accepted
 FROM (
     SELECT match_id
     FROM MatchInEvent
     WHERE event_id = :event_id
 ) AS T, Matches
 WHERE Matches.matchID = T.match_id
-ORDER BY date_time
 ''', event_id = event_id
                               )
-        return [Match(*row) for row in rows]
+        return rows
+
+
+
+    @staticmethod
+    def get_relevant_from_event(event_id):
+        rows = app.db.execute('''
+
+SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables.name AS name2, D.user1_score AS user1_score, D.user2_score AS user2_score, D.date_time AS date_time
+        FROM
+        (
+            Rankables INNER JOIN
+                (
+               
+        SELECT M.activity AS activity, M.matchID AS matchID, Rankables.name AS name1, M.user2_ID AS user2_ID, M.user1_score AS user1_score, M.user2_score AS user2_score, M.date_time AS date_time
+        FROM
+        (
+            Rankables INNER JOIN
+                (
+                SELECT Matches.activity AS activity, T.match_id AS matchID, Matches.user1_ID AS user1_ID, Matches.user2_ID AS user2_ID, Matches.user1_score AS user1_score, Matches.user2_score AS user2_score, Matches.date_time AS date_time
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true
+            ) AS M
+        ON Rankables.rankable_id = M.user1_ID)
+
+
+            ) AS D
+        ON Rankables.rankable_id = D.user2_ID)
+
+
+
+
+
+
+''', event_id = event_id)
+        return rows
