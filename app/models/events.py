@@ -144,7 +144,8 @@ WHERE Matches.matchID = T.match_id
     @staticmethod
     def get_relevant_from_event(event_id):
         rows = app.db.execute('''
-
+          
+       
 SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables.name AS name2, D.user1_score AS user1_score, D.user2_score AS user2_score, D.date_time AS date_time
         FROM
         (
@@ -170,27 +171,64 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
 
             ) AS D
         ON Rankables.rankable_id = D.user2_ID)
+
+
 ''', event_id = event_id)
+        return rows
+        
+
+
+    @staticmethod
+    def getMaxUser1FromEvent(event_id, max):
+        rows = app.db.execute('''
+          SELECT Rankables.name AS name, PART1.user1_score AS user_score
+        FROM
+        (
+            Rankables INNER JOIN
+            
+                (SELECT Matches.user1_ID AS user1_ID, Matches.user1_score AS user1_score
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true) PART1
+            ON Rankables.rankable_id = PART1.user1_ID AND PART1.user1_score = :max)
+        
+
+''', event_id = event_id, max = max)
         return rows
 
 
     @staticmethod
-    def getTopFromEvent(event_id):
+    def getMaxUser2FromEvent(event_id, max):
         rows = app.db.execute('''
-
-
-SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables.name AS name2, D.user1_score AS user1_score, D.user2_score AS user2_score, D.date_time AS date_time, S
+          SELECT Rankables.name AS name, PART1.user2_score AS user_score
         FROM
         (
             Rankables INNER JOIN
-                (
-               
-        SELECT M.activity AS activity, M.matchID AS matchID, Rankables.name AS name1, M.user2_ID AS user2_ID, M.user1_score AS user1_score, M.user2_score AS user2_score, M.date_time AS date_time
-        FROM
-        (
-            Rankables INNER JOIN
-                (
-                SELECT Matches.activity AS activity, T.match_id AS matchID, Matches.user1_ID AS user1_ID, Matches.user2_ID AS user2_ID, Matches.user1_score AS user1_score, Matches.user2_score AS user2_score, Matches.date_time AS date_time
+            
+                (SELECT Matches.user2_ID AS user2_ID, Matches.user2_score AS user2_score
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true) PART1
+            ON Rankables.rankable_id = PART1.user2_ID AND PART1.user2_score = :max)
+
+''', event_id = event_id, max = max)
+        return rows
+
+
+
+
+    @staticmethod
+    def getMax1(event_id):
+        return app.db.execute('''
+SELECT MAX(Matches.user1_score) AS user1_score
                 FROM(
                     SELECT match_id
                     FROM MatchInEvent
@@ -198,11 +236,32 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
             AND Matches.accepted = true
-            ) AS M
-        ON Rankables.rankable_id = M.user1_ID)
+''', event_id = event_id)[0][0]
 
 
-            ) AS D
-        ON Rankables.rankable_id = D.user2_ID)
-''', event_id = event_id)
-        return rows
+    @staticmethod
+    def getMax2(event_id):
+        return app.db.execute('''
+SELECT MAX(Matches.user2_score) AS user2_score
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true
+''', event_id = event_id)[0][0]
+
+
+    @staticmethod
+    def getNumberOfMatches(event_id):
+        return app.db.execute('''
+SELECT COUNT(Matches.user1_score) AS myCount
+                FROM(
+                    SELECT match_id
+                    FROM MatchInEvent
+                    WHERE event_id = :event_id
+                ) AS T, Matches
+            WHERE Matches.matchID = T.match_id
+            AND Matches.accepted = true
+''', event_id = event_id)[0][0]

@@ -72,7 +72,7 @@ class MatchForm(FlaskForm):
     user1_score = StringField(_l('Your Score'))
     user2_score = StringField(_l('Their Score'))
     datetime = DateField('DateTime', default=datetime.today, validators=[Required()])
-    event = StringField(_l('Event'), validators = [validate_event_category])
+    event = StringField(_l('Event (optional)'), validators = [validate_event_category])
     
     submit = SubmitField(_l('Add Match'))
 
