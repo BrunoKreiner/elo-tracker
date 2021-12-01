@@ -108,10 +108,25 @@ def event_view(event_id):
      myMaxElo = myEvent[5]
      myCategory = myEvent[6].capitalize()
      myMatches = Events.get_relevant_from_event(event_id)
-     #myMostMatchesPlayed = Events.getTopFromEvent(event_id)
+     myMatchCount = Events.getNumberOfMatches(event_id)
+
+     myMax1 = Events.getMax1(event_id)
+     myMax2 = Events.getMax2(event_id)
+
+     if myMax1 > myMax2:
+         maxScorerUsers = Events.getMaxUser1FromEvent(event_id, myMax1)
+         myMax = myMax1
+     elif myMax1 < myMax2:
+         maxScorerUsers = Events.getMaxUser2FromEvent(event_id, myMax2)
+         myMax = myMax2
+     else:
+         myMax = myMax1
+         myMaxUser1 = Events.getMaxUser1FromEvent(event_id, myMax1)
+         myMaxUser2 = Events.getMaxUser2FromEvent(event_id, myMax2)
+         maxScorerUsers = myMaxUser1.append(myMaxUser2)
+
     
-
-
+     sizeOfList = len(maxScorerUsers)
      return render_template('event_view_page.html', 
      myName = myName,
      myType = myType,
@@ -120,4 +135,8 @@ def event_view(event_id):
      myMaxElo = myMaxElo,
      myCategory = myCategory,
      myMatches = myMatches,
+     myMax = myMax,
+     maxScorerUsers = maxScorerUsers,
+     sizeOfList = sizeOfList,
+     myMatchCount = myMatchCount
      )

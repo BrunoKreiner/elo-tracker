@@ -99,7 +99,7 @@
 
  <div >
   <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
-       <caption> List of Matches</caption>
+       <caption> <h3>List of Matches</h3></caption>
      <thead class="thead-dark">
        <tr>
          <th scope="col">User1</th> 
@@ -136,21 +136,70 @@
      </tbody>
    </table>
   </div>
-
-
-
 <div>
 
-Put the top 3 players and their number of wins down here
+
+
+  {% block msg1 %}
+
+
+<h2>Event Statistics</h2>
+
+
+<div class="w3-quarter">
+  <div class="w3-container w3-indigo w3-padding-16" style="border-radius:25px;">
+    <div class="w3-center"><i class="fa fa-diamond w3-xxxlarge"></i></div>
+
+    <div class="w3-right">
+      <h3>Highest Score:{{myMax}}</h3>
+  {% if sizeOfList == 1 %}
+  <h3>User:</h3>
+  {% else %}
+  <h3>Users:</h3>
+  {% endif %}
+
+{% for scorer in maxScorerUsers%}
+{% if sizeOfList < 9 %}
+<h4>{{scorer.name}}</h4>
+{% else %}
 
 
 
+ <div >
+  <table id ="data3" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+     <thead class="thead-dark">
+       <tr>
+         <th scope="col">Users</th> 
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+        <td>{{scorer.name}}</td>
+         </tr>
+     </tbody>
+   </table>
+  </div>
+
+{% endif %}
+  {% endfor %}
+    </div>
+</div>
+{% endblock %}
 
 
 </div>
 
 
-
+<div class="w3-quarter">
+  <div class="w3-container w3-pink w3-padding-16" style="border-radius:25px;">
+    <div class="w3-left"><i class="fa fa-gear w3-xxlarge"></i></div>
+    <div class="w3-right">
+      <h2>{{myMatchCount}}</h2>
+    </div>
+    <div class="w3-clear"></div>
+    <h3>Total Number of Matches</h3>
+  </div>
+</div>
 
 
 
@@ -172,7 +221,7 @@ Put the top 3 players and their number of wins down here
   });
 
   $(document).ready(function () {
-    $('#data').DataTable();
+    $('#data3').DataTable();
   });
 
 
