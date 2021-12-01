@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Required
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Required, StopValidation
 from wtforms.fields.html5 import DateField
 from flask_babel import _, lazy_gettext as _l
 
@@ -31,6 +31,9 @@ def validate_activity_category(self, activity):
         user2_id = Rankables.get_id_from_email(user2_email)
         user1_id = current_user.rankable_id
 
+        if user2_id is None:
+            raise StopValidation()
+
         user1_category = Rankables.get_category(user1_id)
         user2_category = Rankables.get_category(user2_id)
         activity_category = Activity.get_category(self.activity.data)
@@ -53,14 +56,19 @@ def validate_event_category(self, event):
 def validate_notself(self, user2_email):
         user2_email = self.user2_email.data
         user2_id = Rankables.get_id_from_email(user2_email)
+
+        if user2_id is None:
+            raise StopValidation(
+                    f"User does not exist in system")
+
         user1_id = current_user.rankable_id
         if (user1_id == user2_id):
             raise ValidationError(
                     f"Cannot add a match against yourself")
 
 class MatchForm(FlaskForm):
-    activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
     user2_email = StringField(_l('Opponent\'s email'), validators=[DataRequired(), Email(), validate_notself])
+    activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
     user1_score = StringField(_l('Your Score'))
     user2_score = StringField(_l('Their Score'))
     datetime = DateField('DateTime', default=datetime.today, validators=[Required()])
