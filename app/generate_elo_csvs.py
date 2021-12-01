@@ -110,7 +110,7 @@ def keep_in_bounds(elo):
 
 if __name__ == "__main__":
     # Activity, match_ID, user1_id, user2_id, user1_score, user2_score, date_time, approved
-    df = pd.read_csv('../db/data/Matches.csv', header = None)
+    df = pd.read_csv('db/data/Matches.csv', header = None)
 
     for ind in df.index:
         # print("Playing game of {:} between {:} and {:} with a score of {:}:{:}".format(df.iloc[ind, 0], df.iloc[ind, 2], df.iloc[ind, 3], df.iloc[ind, 4], df.iloc[ind, 5]))
