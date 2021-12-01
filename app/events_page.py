@@ -59,6 +59,11 @@ def events_page():
 
         minELOAmt = form.minELO.data
         maxELOAmt = form.maxELO.data
+        myName = form.name.data
+        if (len(Events.getFromName(myName))> 0):
+            flash('Event Name is not Unique')
+            return redirect(url_for('events_page.events_page'))  
+
         if (minELOAmt >  maxELOAmt):
             flash('Failure: Your minELO needs to be less than your maxELO')
             return redirect(url_for('events_page.events_page'))
@@ -69,7 +74,7 @@ def events_page():
             flash('Failure: ELO needs to be below 2000')
             return redirect(url_for('events_page.events_page'))         
         if Events.addEvent(
-        form.name.data,
+        myName,
         form.type.data,
         form.date.data, 
         minELOAmt,
@@ -102,8 +107,9 @@ def event_view(event_id):
      myMinElo = myEvent[4]
      myMaxElo = myEvent[5]
      myCategory = myEvent[6].capitalize()
-     myMatches = Match.get_relevant_from_event(event_id)
-     myTopThree = Match.get_all_in_event(event_id)
+     myMatches = Events.get_relevant_from_event(event_id)
+     #myMostMatchesPlayed = Events.getTopFromEvent(event_id)
+    
 
 
      return render_template('event_view_page.html', 
@@ -114,5 +120,4 @@ def event_view(event_id):
      myMaxElo = myMaxElo,
      myCategory = myCategory,
      myMatches = myMatches,
-     myTopThree = myTopThree
      )
