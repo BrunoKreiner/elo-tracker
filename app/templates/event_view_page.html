@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+
+<header class="w3-container w3-center" style="padding-top:50px">
+  <h1><b><i class="fa fa-trophy"></i> {{myName}} </b></h1>
+</header>
+
+  <div class="w3-panel"  style="padding-top:22px">
+
+    <div class="w3-row-padding w3-margin-bottom" style="margin-top:3%;">
+
+    <div class="w3-quarter">
+      <div class="w3-container w3-red w3-padding-16" style="border-radius:25px;">
+        <div class="w3-left"><i class="fa fa-id-card w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{myType}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Type</h4>
+      </div>
+    </div>
+
+    <div class="w3-quarter">
+      <div class="w3-container w3-green w3-padding-16" style="border-radius:25px;">
+        <div class="w3-left"><i class="fa fa-calendar w3-xxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{myDate}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>End Date</h4>
+      </div>
+    </div>
+
+
+    <div class="w3-quarter">
+      <div class="w3-container w3-deep-orange w3-text-white w3-padding-16" style="border-radius:25px;">
+  {% block msg9 %}
+  {% if myMinElo == NULL and myMaxElo == NULL %}
+  <div class="w3-left"><i class="fa fa-check w3-xxxlarge"></i></div>
+  <div class="w3-right">
+    <h3><i class="fa fa-cross w3-xxxlarge"></h3>
+  </div>
+  <div class="w3-clear"></div>
+  <h4>No Elo Requirements/h4>
+</div>
+  {% elif myMinElo == NULL %}
+  <div class="w3-left"><i class="fa fa-check w3-xxxlarge"></i></div>
+  <div class="w3-right">
+    <h3>{{myMaxElo}}</h3>
+  </div>
+  <div class="w3-clear"></div>
+  <h4>Elo Max is </h4>
+</div>
+  {% elif myMaxElo == NULL %}
+  <div class="w3-left"><i class="fa fa-check w3-xxxlarge"></i></div>
+  <div class="w3-right">
+    <h3>{{myMinElo}}</h3>
+  </div>
+  <div class="w3-clear"></div>
+  <h4>Elo Min is </h4>
+</div>
+  {% else %}
+  <div class="w3-left"><i class="fa fa-hand-stop-o w3-xxxlarge"></i></div>
+  <div class="w3-right">
+    <h3>{{myMinElo}} - {{myMaxElo}}</h3>
+  </div>
+  <div class="w3-clear"></div>
+  <h4>Elo Range is </h4>
+</div>
+  {% endif %}
+{% endblock %}
+
+</div>
+
+
+<div class="w3-quarter">
+  <div class="w3-container w3-blue w3-padding-16" style="border-radius:25px;">
+    <div class="w3-left"><i class="fa fa-info w3-xxxlarge"></i></div>
+    <div class="w3-right">
+      <h3>{{myCategory}}</h3>
+    </div>
+    <div class="w3-clear"></div>
+    <h4>Category</h4>
+  </div>
+</div>
+</div>
+<hr>
+<hr>
+
+ <div >
+  <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+       <caption> List of Matches</caption>
+     <thead class="thead-dark">
+       <tr>
+         <th scope="col">User1</th> 
+         <th scope="col">User2</th>     
+       </tr>
+     </thead>
+     <tbody>
+       {% for match in myMatches%}
+       <tr>
+
+        {% if match.user1_score > match.user2_score %}
+
+        <td style = "background-color: gold"> <strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: silver"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+        {% elif match.user1_score == match.user2_score %}
+
+        <td style = "background-color: gray"><strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: gray"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+        
+        {% else %}
+      
+        <td style = "background-color: silver"><strong>{{match.name1}}</strong> : {{match.user1_score}}</td>
+        <td style = "background-color: gold"><strong>{{match.name2}}</strong> : {{match.user2_score}}</td>
+
+      
+        {% endif %}
+
+
+         </tr>
+         {% endfor %}
+
+     </tbody>
+   </table>
+  </div>
+
+
+
+<div>
+
+Put the top 3 players and their number of wins down here
+
+
+
+
+
+</div>
+
+
+
+
+
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data1').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#data2').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#data').DataTable();
+  });
+
+
+  
+  // $(document).ready(function () {
+  //   $('#data1').DataTable();
+  //   $('#data2').DataTable();
+  // });
+  
+</script>
+{% endblock %}

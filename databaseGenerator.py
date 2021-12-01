@@ -63,7 +63,7 @@ def matchRow(i):
 'mariokart']
 
   timestamp = "{}-{:02d}-{:02d}".format(year, month, day)
-  users = random.sample(range(0, 9), 2)
+  users = random.sample(range(0, 8), 2)
 
   p = random.random()
   q = random.random()
@@ -83,7 +83,7 @@ def matchRow(i):
 
 print("test")
 writeToFile("Matches", generateRows(matchRow)) 
-writeToFile("ELOHistory", eloRows)
+#writeToFile("ELOHistory", eloRows)
 #writeToFile("Activity", generateRows(activityRow))
 
 #writeToFile("ParticipatesIn", generateRows(participatesRow))

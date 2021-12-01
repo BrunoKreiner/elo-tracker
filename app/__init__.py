@@ -60,4 +60,5 @@ def create_app():
     from .notifications import bp as notifications_bp
     app.register_blueprint(notifications_bp)
 
+
     return app

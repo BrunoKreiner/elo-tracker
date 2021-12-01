@@ -5,13 +5,17 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Required
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Required, StopValidation
 from wtforms.fields.html5 import DateField
 from flask_babel import _, lazy_gettext as _l
 
 from .models.match import Match
 from .models.rankables import Rankables
 from .models.activity import Activity
+from .models.events import Events
+from .models.MatchInEvent import MatchInEvent
+
+
 
 from flask import Blueprint
 bp = Blueprint('addMatches', __name__)
@@ -27,6 +31,9 @@ def validate_activity_category(self, activity):
         user2_id = Rankables.get_id_from_email(user2_email)
         user1_id = current_user.rankable_id
 
+        if user2_id is None:
+            raise StopValidation()
+
         user1_category = Rankables.get_category(user1_id)
         user2_category = Rankables.get_category(user2_id)
         activity_category = Activity.get_category(self.activity.data)
@@ -35,22 +42,37 @@ def validate_activity_category(self, activity):
             raise ValidationError(
                     f"Users must be same category as activity")
 
-def validate_notself(self, user2_email):
 
+
+
+def validate_event_category(self, event): 
+    if (len(self.event.data) > 0):
+        rows = Events.getFromName(self.event.data)
+        if len(rows) != 1:
+            raise ValidationError(
+                    f"Event does not exist")
+
+
+def validate_notself(self, user2_email):
         user2_email = self.user2_email.data
         user2_id = Rankables.get_id_from_email(user2_email)
+
+        if user2_id is None:
+            raise StopValidation(
+                    f"User does not exist in system")
+
         user1_id = current_user.rankable_id
         if (user1_id == user2_id):
             raise ValidationError(
                     f"Cannot add a match against yourself")
 
 class MatchForm(FlaskForm):
-    activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
     user2_email = StringField(_l('Opponent\'s email'), validators=[DataRequired(), Email(), validate_notself])
+    activity = StringField(_l('Activity'), validators=[DataRequired(), validate_activity_category])
     user1_score = StringField(_l('Your Score'))
     user2_score = StringField(_l('Their Score'))
     datetime = DateField('DateTime', default=datetime.today, validators=[Required()])
-    #datetime = StringField(_l('DateTime'), validators=[DataRequired()])
+    event = StringField(_l('Event'), validators = [validate_event_category])
     
     submit = SubmitField(_l('Add Match'))
 
@@ -77,6 +99,8 @@ def addMatches():
 
 
         form_date = datetime.strptime(str(form.datetime.data), '%Y-%m-%d')
+
+    
         if (form_date > now):
             print('user1_score is: ', form.user1_score.data)
             print('user2_score is: ', form.user2_score.data)
@@ -99,4 +123,8 @@ def addMatches():
             flash('Congratulations, you have added a match!')
             print('yay!')
             #return redirect(url_for('addMatches.addMatches'))
+
+
+        if (len(form.event.data)>0) and MatchInEvent.addMatchAndEvent(form.event.data):
+            flash('Successfully connected Match and Event')
     return render_template('add_Matches.html', form=form)

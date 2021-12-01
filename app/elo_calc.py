@@ -3,7 +3,7 @@ import math as m
 import time as t
 import random as r
 from .models import elo
-# import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 d = 15
 
@@ -130,7 +130,7 @@ def did_win(p_id, g):
 def num_consecutive_times_a_beat_b_in_last_n_games(activity, a_id, b_id, n):
     count = 0
     for g in elo.get_last_games(activity, a_id, n):
-        if did_win(a_id, g) and (b_id == g[0] or b_id == g[4]):
+        if did_win(a_id, g) and (b_id == g[0] or b_id == g[1]):
             count += 1
         else:
             return count

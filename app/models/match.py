@@ -635,4 +635,3 @@ RETURNING *
 
         rows = [Match(*row) for row in rows]
         return rows
-

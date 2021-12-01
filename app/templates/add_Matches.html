@@ -44,6 +44,15 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+
+  <p>
+    {{ form.event.label }}<br/>
+    {{ form.event(size=64) }}<br/>
+    {% for error in form.event.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  
   <p>
     {% with messages = get_flashed_messages() %}
     {% if messages %}

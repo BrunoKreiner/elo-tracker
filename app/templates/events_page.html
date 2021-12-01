@@ -7,90 +7,123 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
 
-<div class="w3-main" style="margin-left:300px;"></div>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
+
+<div class="w3-panel"  style="padding-top:22px">
 
 <header class="w3-container w3-center" style="padding-top:50px">
   <h2><b><i class="fa fa-trophy"></i> Events</b></h2>
 </header>
 
-  <div class="w3-panel" style="padding-top:22px">
-    <!--<input type = "button" value = "Create a New Event" onclick = "toggleEvents()">-->
-    <div class="w3-row-padding" style="margin:0 -16px">
-      <div class="w3-third">
-        <h5>Create a New Event</h5>
 
+    <button type = "button" data-toggle="modal" data-target="#addEvent" class="btn w3-left btn-primary btn-lg" >
+      <i class="fa fa-plus-circle"></i>
+      Add Event 
+      </button>
 
-        <form action="" method="post">
-          {{ form.hidden_tag() }}
-          <p>
-            Event Name<br/>
-            {{ form.name(size=48) }}<br/>
-            {% for error in form.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
-            Event Type <br/>
-            {{ form.type(size=32) }}<br/>
-            {% for error in form.type.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
-            Date <br/>
-            {{ form.date(size=32) }}<br/>
-            {% for error in form.date.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+      <br>
+      <br>
 
-          <p>
-            MinElo <br/>
-            {{ form.minELO(size=16) }}<br/>
-            {% for error in form.minELO.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+      <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> <i class="fa fa-plus-circle"></i> Add Event </h4>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <p>
+                      Event Name<br/>
+                      {{ form.name(size=48) }}<br/>
+                      {% for error in form.name.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                    <p>
+                      Event Type <br/>
+                      {{ form.type(size=32) }}<br/>
+                      {% for error in form.type.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                    <p>
+                      End Date <br/>
+                      {{ form.date(size=32) }}<br/>
+                      {% for error in form.date.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+          
+                    <p>
+                      MinElo <br/>
+                      {{ form.minELO(size=16) }}<br/>
+                      {% for error in form.minELO.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+          
+                    <p>
+                      MaxElo <br/>
+                      {{ form.maxELO(size=16) }}<br/>
+                      {% for error in form.maxELO.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
 
-          <p>
-            MaxElo <br/>
-            {{ form.maxELO(size=16) }}<br/>
-            {% for error in form.maxELO.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-        
-          <p>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-              {% for message in messages %}
-              {{ message }}
-              {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-          </p>
+                    <p>
+                      Category <br/>
+                      {{ form.category(size=1) }}<br/>
+                      {% for error in form.category.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  
+                    <p>
+                      {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                      <ul>
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                      {% endwith %}
+                    </p>
+          
+                    <p>{{ form.submit() }}</p>
+                  </form>
 
-          <p>{{ form.submit() }}</p>
-        </form>
+     </div>
+  </div>
+</div>
+</div>
 
-
-      </div>
-    </div>
-
-
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
 
       <div class="w3-twothird">
-        <h5>Upcoming Events</h5>
-        <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+        <h3>Upcoming Events</h3>
+        <table id ="data2" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
-              <th scope="col">Date</th>   
-              <th scope="col">ELO Range</th>              
+              <th scope="col">End Date</th>   
+              <th scope="col">ELO Range</th>  
+              <th scope="col">Category</th>                       
             </tr>
           </thead>
           <tbody>
@@ -100,26 +133,23 @@
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
-
-            </tr>
+                <td>{{event.category}}</td>
+           </tr>
             {% endfor %}
           </tbody>
         </table>
-      </div>
-     
-
-
-
-      
-      <div class="w3-twothird">
-        <h5>Past Events</h5>
-        <table id ="data3" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
+    
+        <h3>Past Events</h3>
+        <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Event Name</th>      
               <th scope="col">Type</th>           
-              <th scope="col">Date</th>  
-              <th scope="col">ELO Range</th>              
+              <th scope="col">End Date</th>  
+              <th scope="col">ELO Range</th>  
+              <th scope="col">Category</th> 
+              <th scope="col">Explore</th> 
+       
             </tr>
           </thead>
           <tbody>
@@ -129,11 +159,21 @@
                 <td>{{event.type}}</td>
                 <td>{{event.date}}</td>
                 <td>{{event.minELO}} - {{event.maxELO}}</td>
+                <td>{{event.category}}</td>
+
+                <td>
+                  <form action="/events_page/{{event.event_id}}" method="POST">
+                    <button type="submit" class="btn btn-info btn-sm" data-toggle="modal">View Profile</button>
+                  </form>
+                </td>
+             
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
+
+
 
   </div>
 
@@ -145,14 +185,12 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    $('#data3').DataTable({
-      "paging": true
-    }
-    );
-    $('#data1').DataTable({
-      "paging": true
-    }
-    );
+    $('#data1').DataTable();
   });
+
+  $(document).ready(function () {
+    $('#data2').DataTable();
+  });
+  
 </script>
 {% endblock %}
