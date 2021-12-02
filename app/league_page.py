@@ -24,18 +24,25 @@ from flask import Blueprint
 from flask import Blueprint
 bp = Blueprint('league_page', __name__)
 
+def validate_league_exists(self, league): 
+    if (len(self.league.data) > 0):
+        rows = Leagues.getFromName(self.league.data)
+        print('rows are', rows)
+        if len(rows) != 1:
+            raise ValidationError(
+                    f"League does not exist")
+
 class LeagueForm(FlaskForm):
-    
     league_name = StringField(_l('League Name'), validators=[DataRequired()])
     your_name = StringField(_l('Your Name'), validators=[DataRequired()])
-    email = StringField(_l('Email'), validators=[DataRequired()])
+    # email = StringField(_l('Email'), validators=[DataRequired()])
 
     submit = SubmitField(_l('Add League'))
 
 class JoinLeagueForm(FlaskForm):
 
-    league = StringField(_l('name'), validators=[DataRequired()])
-    email = StringField(_l('email'), validators=[DataRequired()])
+    league = StringField(_l('name'), validators=[DataRequired(), validate_league_exists])
+    # email = StringField(_l('email'), validators=[DataRequired()])
     status = StringField(_l('status'), validators=[DataRequired()])
 
     submit = SubmitField(_l('Join a League'))
@@ -55,7 +62,7 @@ def league_page():
         form.your_name.data):
             if Member_of.addMember(
         form.league_name.data,
-        form.email.data,
+        current_user.email,
         'president'):
                 print('yay!')
                 return redirect(url_for('league_page.league_page'))
@@ -66,7 +73,7 @@ def league_page():
         # print('success')
         if Member_of.addMember(
         leagueform.league.data,
-        leagueform.email.data,
+        current_user.email,
         leagueform.status.data):
             print('yay!')
             return redirect(url_for('league_page.league_page'))
