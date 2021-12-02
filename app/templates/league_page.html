@@ -72,13 +72,6 @@
           <span style="color: red;">[{{ error }}]</span>
           {% endfor %}
         </p>
-        <p>Your
-          {{ leagueform.email.label }} <br/>
-          {{ leagueform.email(size=64) }}<br/>
-          {% for error in leagueform.email.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
 
         <p>Select Your Status
         <select class="filterStatus" id="status" name="status">
@@ -121,13 +114,6 @@
             {{ form.your_name.label }} <br/>
             {{ form.your_name(size=64) }}<br/>
             {% for error in form.your_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>Your 
-            {{ form.email.label }} <br/>
-            {{ form.email(size=64) }}<br/>
-            {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
           </p>
