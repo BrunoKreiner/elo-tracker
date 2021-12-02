@@ -34,7 +34,7 @@ def validate_league_exists(self, league):
 
 class LeagueForm(FlaskForm):
     league_name = StringField(_l('League Name'), validators=[DataRequired()])
-    your_name = StringField(_l('Your Name'), validators=[DataRequired()])
+    # your_name = StringField(_l('Your Name'), validators=[DataRequired()])
     # email = StringField(_l('Email'), validators=[DataRequired()])
 
     submit = SubmitField(_l('Add League'))
@@ -59,7 +59,7 @@ def league_page():
         # print('success')
         if Leagues.addLeague(
         form.league_name.data,
-        form.your_name.data):
+        current_user.name):
             if Member_of.addMember(
         form.league_name.data,
         current_user.email,
