@@ -104,8 +104,16 @@ def addMatches():
         if (len(form.event.data)>0):
             minEloEvent = Events.getMinElo(form.event.data)
             maxEloEvent = Events.getMaxElo(form.event.data)
-            user1Elo = get_current(user1_id, form.activity.data)
-            user2Elo = get_current(user2_id, form.activity.data)
+            try:
+                user1Elo = get_current(user1_id, form.activity.data)
+            except:
+                user1Elo = 1000
+
+            try:
+                user2Elo = get_current(user2_id, form.activity.data)
+            except:
+                user2Elo = 1000
+
             eventType = Events.getType(form.event.data)
             eventCategory = Events.getCategory(form.event.data)
             user1Type = Rankables.get_category(user1_id)
