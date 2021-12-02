@@ -45,18 +45,6 @@ def in_range(self, name):
             flash('Failure: Your minELO needs to be less than your maxELO')
             raise ValidationError(
                     f"Failure: Your minELO needs to be less than your maxELO")
-
-      
-                          
-def valid_date(self, name): 
-        myDate = self.date.data
-        now = date.today()
-
-        if myDate < now:
-            flash('Event must be a future one')
-            raise ValidationError(
-                    f"Failure: Event must be made in advance")
-     
     
 
 
@@ -64,7 +52,7 @@ def valid_date(self, name):
 class EventsForm(FlaskForm):
     name = StringField(_l('name'), validators=[DataRequired()])
     type = StringField(_l('type'), validators=[DataRequired(), validate_type_category])
-    date = DateField('DateTime', default = datetime.today, validators=[ Required(), valid_date])
+    date = DateField('DateTime', default = datetime.today, validators=[ Required()])
     minELO = IntegerField(_l('minELO'), default = 0, validators=[ in_range])
     maxELO = IntegerField(_l('maxELO'), default = 2000)
     category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')], default = 'People', validators = [Required()])

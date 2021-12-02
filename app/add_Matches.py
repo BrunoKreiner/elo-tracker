@@ -132,7 +132,7 @@ def addMatches():
                     flash('This event only accepts rankables of category: ' + eventCategory)
                     issue = 1
 
-        if issue != 1:
+        if issue == 0:
             if (form_date > now):
                 print('user1_score is: ', form.user1_score.data)
                 print('user2_score is: ', form.user2_score.data)
@@ -156,8 +156,8 @@ def addMatches():
                 flash('Congratulations, you have added a match!')
                 print('yay!')
                 #return redirect(url_for('addMatches.addMatches'))
-            
-                MatchInEvent.addMatchAndEvent(form.event.data)
+                if (len(form.event.data) > 0):
+                    MatchInEvent.addMatchAndEvent(form.event.data)
                 
     return render_template('add_Matches.html', form=form)
 
