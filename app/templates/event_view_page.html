@@ -97,6 +97,17 @@
 <hr>
 <hr>
 
+<div style="padding-bottom: 50px; ">
+
+{% block msg3 %}
+  {% if myMatchCount == 0 %}
+  <h1 style = "text-align: center"> No matches have occured! </h1>
+  
+  {% endif %}
+{% endblock %}
+
+</div>
+
  <div >
   <table id ="data1" class="w3-table w3-striped w3-white w3-bordered w3-hoverable w3-border">
        <caption> <h3>List of Matches</h3></caption>

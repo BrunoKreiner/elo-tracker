@@ -18,6 +18,7 @@ from wtforms.fields.html5 import DateField
 from flask_babel import _, lazy_gettext as _l
 
 
+
 from flask import Blueprint
 bp = Blueprint('events_page', __name__)
 
@@ -46,6 +47,16 @@ def in_range(self, name):
                     f"Failure: Your minELO needs to be less than your maxELO")
 
       
+                          
+def valid_date(self, name): 
+        myDate = self.date.data
+        now = date.today()
+
+        if myDate < now:
+            flash('Event must be a future one')
+            raise ValidationError(
+                    f"Failure: Event must be made in advance")
+     
     
 
 
@@ -53,7 +64,7 @@ def in_range(self, name):
 class EventsForm(FlaskForm):
     name = StringField(_l('name'), validators=[DataRequired()])
     type = StringField(_l('type'), validators=[DataRequired(), validate_type_category])
-    date = DateField('DateTime', default = datetime.today, validators=[Required()])
+    date = DateField('DateTime', default = datetime.today, validators=[ Required(), valid_date])
     minELO = IntegerField(_l('minELO'), default = 0, validators=[ in_range])
     maxELO = IntegerField(_l('maxELO'), default = 2000)
     category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')], default = 'People', validators = [Required()])
@@ -116,34 +127,43 @@ def button():
 
 @bp.route('/events_page/<event_id>', methods = ['GET', 'POST'])
 def event_view(event_id):
-     myEvent = Events.getEvent(event_id)
-     myName = myEvent[1].upper()
-     myType = myEvent[2].capitalize()
-     myDate = myEvent[3]
-     myMinElo = myEvent[4]
-     myMaxElo = myEvent[5]
-     myCategory = myEvent[6].capitalize()
-     myMatches = Events.get_relevant_from_event(event_id)
-     myMatchCount = Events.getNumberOfMatches(event_id)
+    myEvent = Events.getEvent(event_id)
+    if (len(myEvent) > 0):
+        myName = myEvent[1].upper()
+        myType = myEvent[2].capitalize()
+        myDate = myEvent[3]
+        myMinElo = myEvent[4]
+        myMaxElo = myEvent[5]
+        myCategory = myEvent[6].capitalize()
+        myMatches = Events.get_relevant_from_event(event_id)
+        myMatchCount = Events.getNumberOfMatches(event_id)
 
-     myMax1 = Events.getMax1(event_id)
-     myMax2 = Events.getMax2(event_id)
+    if myMatchCount > 0:
+        myMax1 = Events.getMax1(event_id)
+        myMax2 = Events.getMax2(event_id)
 
-     if myMax1 > myMax2:
-         maxScorerUsers = Events.getMaxUser1FromEvent(event_id, myMax1)
-         myMax = myMax1
-     elif myMax1 < myMax2:
-         maxScorerUsers = Events.getMaxUser2FromEvent(event_id, myMax2)
-         myMax = myMax2
-     else:
-         myMax = myMax1
-         myMaxUser1 = Events.getMaxUser1FromEvent(event_id, myMax1)
-         myMaxUser2 = Events.getMaxUser2FromEvent(event_id, myMax2)
-         maxScorerUsers = myMaxUser1.append(myMaxUser2)
+        if myMax1 > myMax2:
+            maxScorerUsers = Events.getMaxUser1FromEvent(event_id, myMax1)
+            myMax = myMax1
+        elif myMax1 < myMax2:
+            maxScorerUsers = Events.getMaxUser2FromEvent(event_id, myMax2)
+            myMax = myMax2
+        else:
+            myMax = myMax1
+            myMaxUser1 = Events.getMaxUser1FromEvent(event_id, myMax1)
+            myMaxUser2 = Events.getMaxUser2FromEvent(event_id, myMax2)
+            maxScorerUsers = myMaxUser1.append(myMaxUser2)
+        sizeOfList = len(maxScorerUsers)
+    else:
+            myMax = 0
+            myMaxUser1 = 0
+            myMaxUser2 = 0
+            maxScorerUsers = [0]
+            sizeOfList = 0
+
 
     
-     sizeOfList = len(maxScorerUsers)
-     return render_template('event_view_page.html', 
+    return render_template('event_view_page.html', 
      myName = myName,
      myType = myType,
      myDate = myDate,
