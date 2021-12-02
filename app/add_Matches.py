@@ -101,44 +101,56 @@ def addMatches():
 
         form_date = datetime.strptime(str(form.datetime.data), '%Y-%m-%d')
 
-    
-        if (form_date > now):
-            print('user1_score is: ', form.user1_score.data)
-            print('user2_score is: ', form.user2_score.data)
-
-            if Match.addMatch(form.activity.data,
-                         current_user.rankable_id,
-                         user2_id,
-                         None,
-                         None,
-                         form.datetime.data, False):
-                flash('Congratulations, you have scheduled a future match!')
-                print('yay!')
-
-        elif (form.user1_score.data is not None) and ((form.user2_score.data is not None)) and Match.addMatch(form.activity.data,
-                         current_user.rankable_id,
-                         user2_id,
-                         form.user1_score.data,
-                         form.user2_score.data,
-                         form.datetime.data, False):
-            flash('Congratulations, you have added a match!')
-            print('yay!')
-            #return redirect(url_for('addMatches.addMatches'))
-
-
-       
-
         if (len(form.event.data)>0):
-            
             minEloEvent = Events.getMinElo(form.event.data)
             maxEloEvent = Events.getMaxElo(form.event.data)
             user1Elo = get_current(user1_id, form.activity.data)
             user2Elo = get_current(user2_id, form.activity.data)
+            eventType = Events.getType(form.event.data)
+            eventCategory = Events.getCategory(form.event.data)
+            user1Type = Rankables.get_category(user1_id)
+            user2Type = Rankables.get_category(user2_id)
 
+        issue = 0
+        
+        if (len(form.event.data) > 0):
             if (user1Elo < minEloEvent) or (user2Elo < minEloEvent) or (user1Elo > maxEloEvent) and (user2Elo > maxEloEvent):
-                flash('ELO of users do not qualify them to compete in this event')
-        
-        
-            MatchInEvent.addMatchAndEvent(form.event.data)
+                    flash('ELO of users do not qualify them to compete in this event')
+                    issue = 1
+            if (eventType != form.activity.data):
+                    flash('This event only accepts activities of type: ' + eventType)
+                    issue = 1
+            if (eventCategory != user1Type ) or (eventCategory != user2Type):
+                    flash('This event only accepts rankables of category: ' + eventCategory)
+                    issue = 1
+
+        if issue != 1:
+            if (form_date > now):
+                print('user1_score is: ', form.user1_score.data)
+                print('user2_score is: ', form.user2_score.data)
+                
+                
+                if Match.addMatch(form.activity.data,
+                            current_user.rankable_id,
+                            user2_id,
+                            None,
+                            None,
+                            form.datetime.data, False):
+                    flash('Congratulations, you have scheduled a future match!')
+                    print('yay!')
+
+            elif (form.user1_score.data is not None) and ((form.user2_score.data is not None)) and Match.addMatch(form.activity.data,
+                            current_user.rankable_id,
+                            user2_id,
+                            form.user1_score.data,
+                            form.user2_score.data,
+                            form.datetime.data, False):
+                flash('Congratulations, you have added a match!')
+                print('yay!')
+                #return redirect(url_for('addMatches.addMatches'))
+            
+                MatchInEvent.addMatchAndEvent(form.event.data)
                 
     return render_template('add_Matches.html', form=form)
+
+

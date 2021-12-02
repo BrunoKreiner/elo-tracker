@@ -91,6 +91,15 @@ WHERE event_id = (:event_id)
 ''', event_id = event_id)
         return rows[0]
 
+# method to get a given category by name
+    @staticmethod
+    def getCategory(event_name):
+        rows = app.db.execute('''
+SELECT category
+FROM Events
+WHERE name = (:event_name)
+''', event_name = event_name)
+        return rows[0][0]
 
 # method to get a given minElo by ID
     @staticmethod
@@ -107,6 +116,16 @@ WHERE name = (:event_name)
     def getMaxElo(event_name):
         rows = app.db.execute('''
 SELECT maxELO
+FROM Events
+WHERE  name = (:event_name)
+''', event_name = event_name)
+        return rows[0][0]
+
+# method to get a given maxElo by ID
+    @staticmethod
+    def getType(event_name):
+        rows = app.db.execute('''
+SELECT type
 FROM Events
 WHERE  name = (:event_name)
 ''', event_name = event_name)
