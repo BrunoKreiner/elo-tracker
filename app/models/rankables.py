@@ -203,6 +203,18 @@ FROM Rankables
             raise KeyError('tried to access category for an id that does not exist')
         return category[0][0]
 
+
+    @staticmethod
+    def get_category(rankable_id):
+        category = app.db.execute('''
+            SELECT category
+            FROM Rankables
+            WHERE :rankable_id=rankable_id
+                                ''', rankable_id=rankable_id)
+        if len(category)==0:
+            raise KeyError('tried to access category for an id that does not exist')
+        return category[0][0]
+        
     @staticmethod
     def get_about(rankable_id):
         about = app.db.execute('''

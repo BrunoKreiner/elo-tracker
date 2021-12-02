@@ -14,6 +14,7 @@ from .models.rankables import Rankables
 from .models.activity import Activity
 from .models.events import Events
 from .models.MatchInEvent import MatchInEvent
+from .models.elo import get_current
 
 
 
@@ -22,7 +23,6 @@ bp = Blueprint('addMatches', __name__)
 
 def validate_activity_category(self, activity):
         rows = Activity.get(self.activity.data)
-
         if len(rows) == 0:
             raise ValidationError(
                     f"Activity does not exist")
@@ -51,6 +51,7 @@ def validate_event_category(self, event):
         if len(rows) != 1:
             raise ValidationError(
                     f"Event does not exist")
+        
 
 
 def validate_notself(self, user2_email):
@@ -125,6 +126,19 @@ def addMatches():
             #return redirect(url_for('addMatches.addMatches'))
 
 
-        if (len(form.event.data)>0) and MatchInEvent.addMatchAndEvent(form.event.data):
-            flash('Successfully connected Match and Event')
+       
+
+        if (len(form.event.data)>0):
+            
+            minEloEvent = Events.getMinElo(form.event.data)
+            maxEloEvent = Events.getMaxElo(form.event.data)
+            user1Elo = get_current(user1_id, form.activity.data)
+            user2Elo = get_current(user2_id, form.activity.data)
+
+            if (user1Elo < minEloEvent) or (user2Elo < minEloEvent) or (user1Elo > maxEloEvent) and (user2Elo > maxEloEvent):
+                flash('ELO of users do not qualify them to compete in this event')
+        
+        
+            MatchInEvent.addMatchAndEvent(form.event.data)
+                
     return render_template('add_Matches.html', form=form)
