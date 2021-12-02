@@ -24,7 +24,7 @@ CREATE TABLE League (
 CREATE TABLE Activity (
     name VARCHAR(255) NOT NULL PRIMARY KEY,
     category VARCHAR NOT NULL,
-    CHECK (category IN ('People', 'Restaurant'))
+    CHECK (category IN ('People', 'Restaurant', 'School' ))
 );
 
 CREATE TABLE Matches (
@@ -47,7 +47,7 @@ CREATE TABLE Rankables (
     name VARCHAR(255) NOT NULL,
     category VARCHAR NOT NULL,
     about VARCHAR NOT NULL,
-    CHECK (category IN ('People', 'Restaurant'))
+    CHECK (category IN ('People', 'Restaurant', 'Code Editor', 'School'))
 );
 
 CREATE TABLE Member_of (

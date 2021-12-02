@@ -48,7 +48,7 @@ class RegistrationForm(FlaskForm):
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
     about = StringField(_l('About'), validators=[DataRequired()])
-    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')])
+    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('School','School')])
     submit = SubmitField(_l('Register'))
 
     def validate_email(self, email):
@@ -68,7 +68,7 @@ class UpdateAboutForm(FlaskForm):
     submit = SubmitField(_l('Confirm'))
 
 class UpdateCategoryForm(FlaskForm):
-    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')])
+    category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('School','School')])
     submit = SubmitField(_l('Confirm'))
 
 class UpdateNameForm(FlaskForm):

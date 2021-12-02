@@ -46,7 +46,7 @@ def activity_page():
     
  
     category = Activity.get_valid_category()
-    # print(category)
+    print("print all categories", category)
 
     # create a form to add a league.
     form = ActivityForm() # should i define another method for adding an activity separate from activity_page?
