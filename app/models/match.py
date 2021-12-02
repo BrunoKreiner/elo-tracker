@@ -223,7 +223,9 @@ AND accepted = TRUE
         if activity is None and start_time is None:
 
             rows = app.db.execute('''
-    SELECT T.activity, T.matchID, T.user1_ID, T.user2_ID, T.user1_score, T.user2_score, to_char(T.date_time, 'Month DD, YYYY'), Rankables.name
+    SELECT R.activity, R.matchID, R.user1_ID, R.user2_ID, R.user1_score, R.user2_score, to_char(R.date_time, 'Month DD, YYYY') , R.name
+    FROM
+    (SELECT T.activity AS activity, T.matchID AS matchID, T.user1_ID AS user1_ID, T.user2_ID AS user2_ID, T.user1_score AS user1_score, T.user2_score AS user2_score, T.date_time AS date_time , Rankables.name AS name
     FROM
     
     ((SELECT activity, matchID, user1_ID, user2_ID, user1_score, user2_score, date_time
@@ -240,9 +242,9 @@ AND accepted = TRUE
     Rankables
     WHERE Rankables.rankable_id = T.user2_ID
 
-    ORDER BY {} {}
+    ORDER BY T.date_time DESC
     LIMIT :limit
-    OFFSET :start_page
+    OFFSET :start_page) AS R
     '''.format(sortBy, asc),
             user_id=user_id, curr_datetime=curr_datetime, limit=offset_lim, start_page=start_page)
 
@@ -555,7 +557,7 @@ RETURNING *
     Rankables
     WHERE Rankables.rankable_id = T.user2_ID
 
-    ORDER BY date_time
+    ORDER BY date_time DESC
     ''',
             user_id=id, curr_datetime=curr_datetime)
 
@@ -629,7 +631,7 @@ RETURNING *
 
     WHERE Rankables.rankable_id = T.user2_ID
 
-    ORDER BY date_time
+    ORDER BY date_time DESC
     ''',
             user_id=user_id, curr_datetime=curr_datetime)
 
