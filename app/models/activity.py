@@ -56,4 +56,12 @@ WHERE name = :name
                 name=name)
         return rows[0][0]
 
-
+    @staticmethod
+    def get_name(name):
+        rows = app.db.execute('''
+SELECT name
+FROM Activity
+WHERE name = :name
+''',
+                name=name)
+        return rows

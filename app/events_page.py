@@ -3,6 +3,7 @@ from flask_login import current_user
 from datetime import date
 from datetime import datetime
 
+from .models.activity import Activity
 from .models.events import Events
 from.models.match import Match
 from .models.rankables import Rankables
@@ -20,11 +21,40 @@ from flask_babel import _, lazy_gettext as _l
 from flask import Blueprint
 bp = Blueprint('events_page', __name__)
 
+
+def validate_type_category(self, name): 
+        rows = Activity.get(self.type.data)
+        if len(rows) < 1:
+            flash('Failure: Activity is invalid')
+            raise ValidationError(
+                    f"Activity does not exist")
+                    
+def in_range(self, name): 
+        minELOAmt = self.minELO.data
+        maxELOAmt = self.maxELO.data
+        if (minELOAmt < 0) or (maxELOAmt < 0):
+            flash('Failure: ELO needs to be above 0')
+            raise ValidationError(
+                    f"Failure: ELO needs to be above 0")
+        elif (minELOAmt > 2000) or (maxELOAmt > 2000):
+            flash('Failure: ELO needs to be below 2000')
+            raise ValidationError(
+                    f"Failure: ELO needs to be below 2000")
+        elif (minELOAmt > maxELOAmt):
+            flash('Failure: Your minELO needs to be less than your maxELO')
+            raise ValidationError(
+                    f"Failure: Your minELO needs to be less than your maxELO")
+
+      
+    
+
+
+
 class EventsForm(FlaskForm):
     name = StringField(_l('name'), validators=[DataRequired()])
-    type = StringField(_l('type'), validators=[DataRequired()])
+    type = StringField(_l('type'), validators=[DataRequired(), validate_type_category])
     date = DateField('DateTime', default = datetime.today, validators=[Required()])
-    minELO = IntegerField(_l('minELO'), default = 0)
+    minELO = IntegerField(_l('minELO'), default = 0, validators=[ in_range])
     maxELO = IntegerField(_l('maxELO'), default = 2000)
     category = SelectField('Category', choices=[('People', 'People'), ('Restaurant', 'Restaurant'), ('Code Editor', 'Code Editor'), ('School','School')], default = 'People', validators = [Required()])
 
@@ -50,12 +80,7 @@ def events_page():
     form = EventsForm()
     if form.validate_on_submit():
         now = datetime.now()
-        #try:
-        #    datetime.strptime(str(form.date.data), '%Y-%m-%d')
-         #   print("This is the correct date string format.")
-        #except ValueError:
-         #   print("This is the incorrect date string format. It should be YYYY-MM-DD")
-
+    
 
         minELOAmt = form.minELO.data
         maxELOAmt = form.maxELO.data
@@ -63,16 +88,7 @@ def events_page():
         if (len(Events.getFromName(myName))> 0):
             flash('Event Name is not Unique')
             return redirect(url_for('events_page.events_page'))  
-
-        if (minELOAmt >  maxELOAmt):
-            flash('Failure: Your minELO needs to be less than your maxELO')
-            return redirect(url_for('events_page.events_page'))
-        if ((minELOAmt < 0) or (maxELOAmt < 0)):
-            flash('Failure: ELO needs to be above 0')
-            return redirect(url_for('events_page.events_page')) 
-        if ((minELOAmt > 2000) or (maxELOAmt > 2000)):
-            flash('Failure: ELO needs to be below 2000')
-            return redirect(url_for('events_page.events_page'))         
+       
         if Events.addEvent(
         myName,
         form.type.data,
