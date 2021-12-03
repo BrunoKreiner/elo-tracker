@@ -116,6 +116,7 @@ def addMatches():
 
             eventType = Events.getType(form.event.data)
             eventCategory = Events.getCategory(form.event.data)
+            eventDate = Events.getDate(form.event.data)
             user1Type = Rankables.get_category(user1_id)
             user2Type = Rankables.get_category(user2_id)
 
@@ -131,7 +132,10 @@ def addMatches():
             if (eventCategory != user1Type ) or (eventCategory != user2Type):
                     flash('This event only accepts rankables of category: ' + eventCategory)
                     issue = 1
-
+            if (eventDate < form.datetime.data):
+                    flash('The match must be before the events enddate')
+                    issue = 1
+         
         if issue == 0:
             if (form_date > now):
                 print('user1_score is: ', form.user1_score.data)

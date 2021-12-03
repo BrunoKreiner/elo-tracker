@@ -101,6 +101,17 @@ WHERE name = (:event_name)
 ''', event_name = event_name)
         return rows[0][0]
 
+
+# method to get a given category by name
+    @staticmethod
+    def getDate(event_name):
+        rows = app.db.execute('''
+SELECT date
+FROM Events
+WHERE name = (:event_name)
+''', event_name = event_name)
+        return rows[0][0]
+
 # method to get a given minElo by ID
     @staticmethod
     def getMinElo(event_name):
@@ -219,7 +230,7 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
     @staticmethod
     def getMaxUser1FromEvent(event_id, max):
         rows = app.db.execute('''
-          SELECT Rankables.name AS name, PART1.user1_score AS user_score
+          SELECT Rankables.name AS name
         FROM
         (
             Rankables INNER JOIN
@@ -241,7 +252,7 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
     @staticmethod
     def getMaxUser2FromEvent(event_id, max):
         rows = app.db.execute('''
-          SELECT Rankables.name AS name, PART1.user2_score AS user_score
+          SELECT Rankables.name AS name
         FROM
         (
             Rankables INNER JOIN

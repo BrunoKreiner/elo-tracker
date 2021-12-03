@@ -8,6 +8,8 @@ from .models.events import Events
 from.models.match import Match
 from .models.rankables import Rankables
 
+import numpy as np 
+
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
@@ -132,16 +134,26 @@ def event_view(event_id):
 
         if myMax1 > myMax2:
             maxScorerUsers = Events.getMaxUser1FromEvent(event_id, myMax1)
+            maxScorerUsers = np.append(maxScorerUsers,maxScorerUsers)
             myMax = myMax1
         elif myMax1 < myMax2:
             maxScorerUsers = Events.getMaxUser2FromEvent(event_id, myMax2)
+            maxScorerUsers = np.append(maxScorerUsers,maxScorerUsers)
             myMax = myMax2
         else:
             myMax = myMax1
             myMaxUser1 = Events.getMaxUser1FromEvent(event_id, myMax1)
             myMaxUser2 = Events.getMaxUser2FromEvent(event_id, myMax2)
-            maxScorerUsers = myMaxUser1.append(myMaxUser2)
+            maxScorerUsers = np.append(myMaxUser1, myMaxUser2)
+
+        # removing duplicates
+        res = []
+        [res.append(x) for x in maxScorerUsers if x not in res]
+        maxScorerUsers = res 
+        print(maxScorerUsers)
+
         sizeOfList = len(maxScorerUsers)
+
     else:
             myMax = 0
             myMaxUser1 = 0
