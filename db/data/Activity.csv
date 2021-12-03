@@ -8,11 +8,6 @@ basketball,People
 tennis,People
 smash,People
 mariokart,People
-popularity,Restaurant
-spice-level,Restaurant
-visiters,Restaurant
-customer reviews,Restaurant
-customer ratings,Restaurant
 fakeactivity26,People
 fakeactivity27,People
 fakeactivity28,People
@@ -4987,3 +4982,9 @@ fakeactivity4996,People
 fakeactivity4997,People
 fakeactivity4998,People
 fakeactivity4999,People
+popularity,Restaurant
+spice-level,Restaurant
+visiters,Restaurant
+customer reviews,Restaurant
+customer ratings,Restaurant
+usa news ranking,School
