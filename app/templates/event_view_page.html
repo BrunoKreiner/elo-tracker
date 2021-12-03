@@ -121,9 +121,11 @@
        {% for match in myMatches%}
        <tr>
         {% if not match.user1_score  %} 
-
+        <td style = "background-color: pink"> <strong>{{match.name1}}</strong> : N/A</td>
+        <td style = "background-color: pink"><strong>{{match.name2}}</strong> : N/A</td>
         {% elif not match.user2_score  %} 
-
+        <td style = "background-color: pink"> <strong>{{match.name1}}</strong> : N/A</td>
+        <td style = "background-color: pink"><strong>{{match.name2}}</strong> : N/A</td>
 
         {% elif match.user1_score > match.user2_score %}
 
