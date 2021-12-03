@@ -157,7 +157,8 @@ def addMatches():
                 print('yay!')
                 #return redirect(url_for('addMatches.addMatches'))
                 if (len(form.event.data) > 0):
-                    MatchInEvent.addMatchAndEvent(form.event.data)
+                    matchID = Match.getMatchID()
+                    MatchInEvent.addMatchAndEvent(form.event.data, matchID)
                 
     return render_template('add_Matches.html', form=form)
 

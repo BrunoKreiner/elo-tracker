@@ -637,3 +637,23 @@ RETURNING *
 
         rows = [Match(*row) for row in rows]
         return rows
+
+
+
+    @staticmethod
+    def getMatchID():
+
+        try:
+            maxMatchID = app.db.execute("""
+SELECT MAX(matchID)
+FROM Matches;
+"""
+                                  )[0][0]
+
+            return maxMatchID + 1
+            
+        except Exception as e:
+            print(str(e))
+            # likely email already in use; better error checking and
+            # reporting needed
+            return 0

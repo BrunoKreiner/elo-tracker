@@ -157,7 +157,6 @@ SELECT T.match_id AS matchID, Matches.user1_ID AS user1_ID, Matches.user2_ID AS 
                     WHERE event_id = :event_id
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true
 
 
 
@@ -204,7 +203,6 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
                     WHERE event_id = :event_id
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true
             ) AS M
         ON Rankables.rankable_id = M.user1_ID)
 
@@ -232,8 +230,7 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
                     FROM MatchInEvent
                     WHERE event_id = :event_id
                 ) AS T, Matches
-            WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true) PART1
+            WHERE Matches.matchID = T.match_id) PART1
             ON Rankables.rankable_id = PART1.user1_ID AND PART1.user1_score = :max)
         
 
@@ -255,8 +252,7 @@ SELECT D.activity AS activity, D.matchID AS matchID, D.name1 AS name1, Rankables
                     FROM MatchInEvent
                     WHERE event_id = :event_id
                 ) AS T, Matches
-            WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true) PART1
+            WHERE Matches.matchID = T.match_id) PART1
             ON Rankables.rankable_id = PART1.user2_ID AND PART1.user2_score = :max)
 
 ''', event_id = event_id, max = max)
@@ -275,7 +271,6 @@ SELECT MAX(Matches.user1_score) AS user1_score
                     WHERE event_id = :event_id
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true
 ''', event_id = event_id)[0][0]
 
 
@@ -289,7 +284,6 @@ SELECT MAX(Matches.user2_score) AS user2_score
                     WHERE event_id = :event_id
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true
 ''', event_id = event_id)[0][0]
 
 
@@ -303,5 +297,4 @@ SELECT COUNT(Matches.user1_score) AS myCount
                     WHERE event_id = :event_id
                 ) AS T, Matches
             WHERE Matches.matchID = T.match_id
-            AND Matches.accepted = true
 ''', event_id = event_id)[0][0]

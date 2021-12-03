@@ -107,53 +107,53 @@ CREATE TABLE MatchInEvent (
 );
 
 -- trigger to enforce that for MatchInEvent, the match and the event are of the same activity/type
-CREATE FUNCTION Match_Event_Activity_Alike_Match() RETURNS TRIGGER as $$
+--CREATE FUNCTION Match_Event_Activity_Alike_Match() RETURNS TRIGGER as $$
 
-DECLARE
+--DECLARE
 
-  temp_var1 activityFromMatch;
-  temp_var2 activityFromEvent;
-
-
-BEGIN
-  select T.activity
-  into temp_var1
-  from (
-  SELECT activity
-  FROM Events
-  WHERE Events.id = New.event_id
-  ) as T
+ -- temp_var1 activityFromMatch;
+ -- temp_var2 activityFromEvent;
 
 
-  select J.activity
-  into temp_var2
-  from (
-  SELECT user1_ID
-  FROM Matches
-  WHERE Matches.matchID = New.match_id
+--BEGIN
+  --select T.activity
+  --into temp_var1
+  --from (
+  --SELECT activity
+  --FROM Events
+  --WHERE Events.id = New.event_id
+--) as T
+
+
+ -- select J.activity
+ -- into temp_var2
+ -- from (
+ -- SELECT user1_ID
+ -- FROM Matches
+ -- WHERE Matches.matchID = New.match_id
   
   
   
-  ) as J
+ -- ) as J
 
   
-  IF (temp_var1 <> temp_var2) 
-  THEN
-    Raise Exception 'The match activity type does not match the event activity type'
+ -- IF (temp_var1 <> temp_var2) 
+ --- THEN
+  --  Raise Exception 'The match activity type does not match the event activity type'
   
-  End if;
+ -- End if;
   
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+ -- RETURN NEW;
+--END;
+--$$ LANGUAGE plpgsql;
 
 
 
 
-CREATE TRIGGER Match_Event_Activity_Alike
-  BEFORE INSERT OR UPDATE ON MatchInEvent
-  FOR EACH ROW
-  EXECUTE PROCEDURE Match_Event_Activity_Alike_Match();
+--CREATE TRIGGER Match_Event_Activity_Alike
+ -- BEFORE INSERT OR UPDATE ON MatchInEvent
+  --FOR EACH ROW
+  --EXECUTE PROCEDURE Match_Event_Activity_Alike_Match();
 
 -- trigger to enforce that for MatchInEvent, the elo scores of the players (when added) are within the range
 

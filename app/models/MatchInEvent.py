@@ -7,33 +7,27 @@ class MatchInEvent:
         self.eventID = eventID
 
     @staticmethod
-    def addMatchAndEvent(event):
-            maxMatchID = app.db.execute("""
-SELECT MAX(matchID)
-FROM Matches;
-"""
-                                  )[0][0]
+    def addMatchAndEvent(event, matchID):
 
-
-            if (len(event)> 0):
-                eventID = app.db.execute("""
+        if (len(event)> 0):
+            eventID = app.db.execute("""
 SELECT event_id
 FROM Events
 WHERE name = :event
 """, event = event)
             if (len(eventID) == 0):
-                 return
+                    return
 
             eventID = eventID[0][0]
             if(len(event) > 0):
                 rows = app.db.execute("""
-INSERT INTO MatchInEvent(match_id,event_id)
-VALUES(:maxMatchID, :eventID)
-RETURNING event_id
-""",
-                                  maxMatchID=maxMatchID,
-                                  eventID = eventID
-                                 )
+    INSERT INTO MatchInEvent(match_id,event_id)
+    VALUES(:matchID, :eventID)
+    RETURNING event_id
+    """,
+                                    matchID=matchID,
+                                    eventID = eventID
+                                    )
             eventID = rows[0][0]
         
             
