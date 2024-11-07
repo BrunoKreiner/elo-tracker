@@ -1,6 +1,6 @@
 # Demo
 
-Link: https://youtu.be/2HGcZ9YVitQ 
+Link: https://youtu.be/2HGcZ9YVitQ
 
 # Authors
 
@@ -27,15 +27,12 @@ If you have a different setup, your mileage with the following instructions may 
 1. Fork this repo by clicking the small 'Fork' button at the very top right [on Gitlab](www.example.com).
    It's important that you fork first, because if you clone the directory directly you won't be able to push changes (save your progress) back to Gitlab.
    Name your forked repo as you prefer.
-
 2. In your newly forked repo, find the blue "Clone" button.
    Copy the "Clone with SSH" text.
    In your terminal on the VM, you can now issue the command `git clone THE_TEXT_YOU_JUST_COPIED`.
    Make sure to replace 'THE_TEXT_YOU_JUST_COPIED' with the "Clone with SSH" text.
-
 3. In your VM, move into the repository directory and then run `install.sh`.
    This will install a bunch of things, set up an important file called `.flashenv`, and creates a simple PostgreSQL database named `amazon`.
-
 4. If you are running a Google VM, to view the app in your browser, you may need to edit the firewall rules.
    The [Google VM instructions](https://sites.duke.edu/compsci316_01_f2021/creating-and-running-vm-on-google-cloud/) on the course page has instructions for how to add rules at the bottom.
    if those for some reason are outdated, here are [instructions provided by Google](https://cloud.google.com/vpc/docs/using-firewalls).
@@ -43,11 +40,36 @@ If you have a different setup, your mileage with the following instructions may 
 
 ## Running/Stopping the Website
 
+python3 -m venv env
+
+source env/bin/activate
+
+pip install -r requirements.txt
+
+rename flaskenv to .env and edit
+
+flask run
+
+i had to pip install numpy for it to work
+
+
+if not work maybe because of psycopg2:
+sudo apt-get update
+sudo apt-get install libpq-dev
+
+pip uninstall psycopg2
+pip install psycopg2
+
+pip uninstall psycopg2
+pip install psycopg2-binary
+
 To run your website, in your VM, go into the repository directory and issue the following commands:
+
 ```
 source env/bin/activate
 flask run
 ```
+
 The first command will activate a specialized Python environment for running Flask.
 While the environment is activated, you should see a `(env)` prefix in the command prompt in your VM shell.
 You should only run Flask while inside this environment; otherwise it will produce an error.
@@ -55,8 +77,9 @@ You should only run Flask while inside this environment; otherwise it will produ
 If you are running a local Vagrant VM, to view the app in your browser, you simply need to visit [http://localhost:5000/](http://localhost:5000/).
 If you are running a Google VM, you will need to point your browser to `http://vm_external_ip_addr:5000/`, where `vm_external_ip_addr` is the external IP address of your Google VM.
 
-To stop your website, simply press <kbd>Ctrl</kbd><kbd>C</kbd> in the VM shell where flask is running.
+To stop your website, simply press `<kbd>`Ctrl `</kbd><kbd>`C `</kbd>` in the VM shell where flask is running.
 You can then deactivate the environment using
+
 ```
 deactiviate
 ```
@@ -73,7 +96,7 @@ If you need specific help setting up VSCode, the TAs will be able to help you in
    2. Now, we need to give the public key (`vm_316.pub`) to the VM instance on Google Cloud. You might have already done this if you followed along with the "SETTING UP AN SSH KEY PAIR TO ACCESS VMS" tutorial on the course website. If so, skip this.
       1. In your internet browser, go to Google Cloud and find the VM instance you want to be able to connect with. Click on its name and then click 'Edit' in the top bar.
       2. Find 'SSH Keys', click 'Show and edit'. The section will expand. Click on the '+ Add Item' button. Now keep this tab open, we are going to paste your key in here.
-      3. Back in your local host terminal, run the command `cat /Users/YOUR_MAC_USERNAME/.ssh/vm_316.pub` The output will be your public key. Copy this text (all of it). 
+      3. Back in your local host terminal, run the command `cat /Users/YOUR_MAC_USERNAME/.ssh/vm_316.pub` The output will be your public key. Copy this text (all of it).
       4. Paste the text into the text box you just opened in your browser. Before saving, however, edit the username at the very end of this key. The key will look something like "...OFUNwEsWO/dJNK user@MBP.local". Replace the last bit with your gmail username. That means it would look like this: "...OFUNwEsWO/dJNK gmailusername". Now click save.
 2. Download Visual Studio Code (VS Code) from [this link](https://code.visualstudio.com/Download).
 3. VS Code has a bunch of useful extensions. To use it with our VM we are going to need to download the 'remote-ssh' extension.
